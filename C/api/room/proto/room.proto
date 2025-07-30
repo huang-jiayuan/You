@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package room;
+
+option go_package = "/";
+
+message StreamReq {
+  string name = 1;
+}
+
+message StreamResp {
+  string greet = 1;
+}
+
+service Room {
+  rpc greet(StreamReq) returns (StreamResp);
+}

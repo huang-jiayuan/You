@@ -1,0 +1,11 @@
+Mysql:
+  User: root
+  Password: mysql_sMrsja
+  Host: 14.103.149.194
+  Port: 3306
+  Database: you
+
+Redis:
+  Host: 14.103.149.194:6379
+  Password: 1220130Hjy
+  Db: 0
