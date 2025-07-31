@@ -6,8 +6,8 @@ import (
 	"google.golang.org/grpc"
 	"log"
 	"net"
-	"server/room/basic/config"
-	inits2 "server/room/basic/inits"
+	"server/user/basic/config"
+	inits2 "server/user/basic/inits"
 	"server/user/handler"
 	__ "server/user/proto"
 )
