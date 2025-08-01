@@ -3,7 +3,7 @@ package inits
 import (
 	"context"
 	"github.com/go-redis/redis/v8"
-	"server/room/basic/config"
+	"server/user/basic/config"
 	"time"
 )
 

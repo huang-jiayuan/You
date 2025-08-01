@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"regexp"
 	"server/models"
+	"server/pkg"
 	"server/user/basic/inits"
 	__ "server/user/proto"
 )
@@ -80,7 +81,7 @@ func (s *Server) UserPassword(_ context.Context, in *__.UserPasswordRequest) (*_
 	if user.Id != 0 {
 		return nil, errors.New("还未注册，请前往注册")
 	}
-	if in.Password != user.Password {
+	if pkg.PwdMd5(in.Password) != user.Password {
 		return nil, errors.New("密码错误,请重新输入")
 	}
 	return &__.UserPasswordResponse{Greet: int64(user.Id)}, nil
