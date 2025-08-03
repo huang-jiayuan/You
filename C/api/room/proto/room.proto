@@ -11,7 +11,100 @@ message StreamReq {
 message StreamResp {
   string greet = 1;
 }
+//创建房间
+message CreateRoomStreamReq {
+  string room_name =1;
+  int32 user_id =2;
+  int32 tag_id =3;
+  string content =4;
+  string idCard =5;
+  string realName =6;
+}
+
+message CreateRoomStreamResp {
+  int32 id =1;
+}
+//修改房间信息
+message UpdateRoomStreamReq {
+  string announcement =1;
+  int32  id =2;
+  string status =3;
+}
+
+message UpdateRoomStreamResp {
+  int32 id =1;
+}
+
+
+// 房间信息结构
+message RoomInfo {
+  int64 id = 1;
+  string room_name = 2;
+  uint64 user_id = 3;
+  string owner_nickname = 4;
+  string owner_avatar = 5;
+  string room_type = 6;
+  string status = 7;
+  string announcement = 8;
+  string created_at = 9;
+  string last_active_time = 10;
+  int32 member_count = 11;
+  string image = 12;
+  uint64 tag_id = 13;
+  string tag_name = 14;
+}
+
+// 推荐房间接口
+message GetRecommendRoomsReq {
+  int32 page = 1;
+  int32 page_size = 2;
+}
+
+message GetRecommendRoomsResp {
+  repeated RoomInfo rooms = 1;
+  int32 total = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+  int32 total_pages = 5;
+}
+
+// 分类浏览接口
+message GetRoomsByCategoryReq {
+  uint64 tag_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+}
+
+message GetRoomsByCategoryResp {
+  repeated RoomInfo rooms = 1;
+  int32 total = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+  int32 total_pages = 5;
+  string category_name = 6;
+}
+
+// 搜索房间接口
+message SearchRoomsReq {
+  string keyword = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+}
+
+message SearchRoomsResp {
+  repeated RoomInfo rooms = 1;
+  int32 total = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+  int32 total_pages = 5;
+  string keyword = 6;
+}
 
 service Room {
   rpc greet(StreamReq) returns (StreamResp);
+  rpc UpdateRoom(UpdateRoomStreamReq) returns (UpdateRoomStreamResp);
+  rpc CreateRoom(CreateRoomStreamReq) returns (CreateRoomStreamResp);
+  rpc GetRecommendRooms(GetRecommendRoomsReq) returns (GetRecommendRoomsResp);
+  rpc GetRoomsByCategory(GetRoomsByCategoryReq) returns (GetRoomsByCategoryResp);
+  rpc SearchRooms(SearchRoomsReq) returns (SearchRoomsResp);
 }

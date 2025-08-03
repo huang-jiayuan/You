@@ -3,6 +3,7 @@ module server
 go 1.24
 
 require (
+	github.com/Baidu-AIP/golang-sdk v1.1.1
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/spf13/viper v1.20.1
 	google.golang.org/grpc v1.67.3
