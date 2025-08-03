@@ -1,5 +1,10 @@
 {
   "/src/view/about/index.vue": "About",
+  "/src/view/carouse/carouselImage/carouselImage.vue": "HomePage",
+  "/src/view/carouse/carouselImage/carouselImageForm.vue": "CarouselImageForm",
+  "/src/view/carouse/carouselImage/components/CarouselDialog.vue": "CarouselDialog",
+  "/src/view/carouse/carouselImage/components/CarouselPreview.vue": "CarouselPreview",
+  "/src/view/carouse/carouselImage/components/DeleteConfirm.vue": "DeleteConfirm",
   "/src/view/dashboard/components/banner.vue": "Banner",
   "/src/view/dashboard/components/card.vue": "Card",
   "/src/view/dashboard/components/charts-content-numbers.vue": "ChartsContentNumbers",
@@ -68,6 +73,8 @@
   "/src/view/systemTools/installPlugin/index.vue": "Index",
   "/src/view/systemTools/pubPlug/pubPlug.vue": "PubPlug",
   "/src/view/systemTools/system/system.vue": "Config",
+  "/src/view/users/user/user.vue": "User",
+  "/src/view/users/user/userForm.vue": "UserForm",
   "/src/plugin/announcement/form/info.vue": "InfoForm",
   "/src/plugin/announcement/view/info.vue": "Info",
   "/src/plugin/email/view/index.vue": "Email"

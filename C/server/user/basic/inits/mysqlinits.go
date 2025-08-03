@@ -5,8 +5,8 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
-	"server/room/basic/config"
-	"server/room/basic/global"
+	"server/user/basic/config"
+	"server/user/basic/global"
 )
 
 func InitMysql() {

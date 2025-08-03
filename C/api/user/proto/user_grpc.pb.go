@@ -19,7 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	User_Greet_FullMethodName = "/user.User/greet"
+	User_Greet_FullMethodName        = "/user.User/greet"
+	User_SendSms_FullMethodName      = "/user.User/SendSms"
+	User_UserLogin_FullMethodName    = "/user.User/UserLogin"
+	User_UserPassword_FullMethodName = "/user.User/UserPassword"
 )
 
 // UserClient is the client API for User service.
@@ -27,6 +30,9 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserClient interface {
 	Greet(ctx context.Context, in *StreamReq, opts ...grpc.CallOption) (*StreamResp, error)
+	SendSms(ctx context.Context, in *SendSmsRequest, opts ...grpc.CallOption) (*SendSmsResponse, error)
+	UserLogin(ctx context.Context, in *UserLoginRequest, opts ...grpc.CallOption) (*UserLoginResponse, error)
+	UserPassword(ctx context.Context, in *UserPasswordRequest, opts ...grpc.CallOption) (*UserPasswordResponse, error)
 }
 
 type userClient struct {
@@ -47,11 +53,44 @@ func (c *userClient) Greet(ctx context.Context, in *StreamReq, opts ...grpc.Call
 	return out, nil
 }
 
+func (c *userClient) SendSms(ctx context.Context, in *SendSmsRequest, opts ...grpc.CallOption) (*SendSmsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SendSmsResponse)
+	err := c.cc.Invoke(ctx, User_SendSms_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) UserLogin(ctx context.Context, in *UserLoginRequest, opts ...grpc.CallOption) (*UserLoginResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UserLoginResponse)
+	err := c.cc.Invoke(ctx, User_UserLogin_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) UserPassword(ctx context.Context, in *UserPasswordRequest, opts ...grpc.CallOption) (*UserPasswordResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UserPasswordResponse)
+	err := c.cc.Invoke(ctx, User_UserPassword_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
 type UserServer interface {
 	Greet(context.Context, *StreamReq) (*StreamResp, error)
+	SendSms(context.Context, *SendSmsRequest) (*SendSmsResponse, error)
+	UserLogin(context.Context, *UserLoginRequest) (*UserLoginResponse, error)
+	UserPassword(context.Context, *UserPasswordRequest) (*UserPasswordResponse, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -61,6 +100,15 @@ type UnimplementedUserServer struct {
 
 func (UnimplementedUserServer) Greet(context.Context, *StreamReq) (*StreamResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Greet not implemented")
+}
+func (UnimplementedUserServer) SendSms(context.Context, *SendSmsRequest) (*SendSmsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendSms not implemented")
+}
+func (UnimplementedUserServer) UserLogin(context.Context, *UserLoginRequest) (*UserLoginResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserLogin not implemented")
+}
+func (UnimplementedUserServer) UserPassword(context.Context, *UserPasswordRequest) (*UserPasswordResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserPassword not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -93,6 +141,60 @@ func _User_Greet_Handler(srv interface{}, ctx context.Context, dec func(interfac
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_SendSms_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendSmsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).SendSms(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_SendSms_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).SendSms(ctx, req.(*SendSmsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_UserLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserLoginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UserLogin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_UserLogin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UserLogin(ctx, req.(*UserLoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_UserPassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserPasswordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UserPassword(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_UserPassword_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UserPassword(ctx, req.(*UserPasswordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -103,6 +205,18 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "greet",
 			Handler:    _User_Greet_Handler,
+		},
+		{
+			MethodName: "SendSms",
+			Handler:    _User_SendSms_Handler,
+		},
+		{
+			MethodName: "UserLogin",
+			Handler:    _User_UserLogin_Handler,
+		},
+		{
+			MethodName: "UserPassword",
+			Handler:    _User_UserPassword_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
