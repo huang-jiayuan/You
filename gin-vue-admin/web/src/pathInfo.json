@@ -1,6 +1,6 @@
 {
   "/src/view/about/index.vue": "About",
-  "/src/view/carouse/carouselImage/carouselImage.vue": "HomePage",
+  "/src/view/carouse/carouselImage/carouselImage.vue": "CarouselImage",
   "/src/view/carouse/carouselImage/carouselImageForm.vue": "CarouselImageForm",
   "/src/view/carouse/carouselImage/components/CarouselDialog.vue": "CarouselDialog",
   "/src/view/carouse/carouselImage/components/CarouselPreview.vue": "CarouselPreview",
@@ -23,6 +23,8 @@
   "/src/view/example/index.vue": "Example",
   "/src/view/example/upload/scanUpload.vue": "scanUpload",
   "/src/view/example/upload/upload.vue": "Upload",
+  "/src/view/hot_room/hotRoom/hotRoom.vue": "HotRoom",
+  "/src/view/hot_room/hotRoom/hotRoomForm.vue": "HotRoomForm",
   "/src/view/init/index.vue": "Init",
   "/src/view/layout/aside/asideComponent/asyncSubmenu.vue": "AsyncSubmenu",
   "/src/view/layout/aside/asideComponent/index.vue": "AsideComponent",

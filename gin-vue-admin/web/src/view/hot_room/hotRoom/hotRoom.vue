@@ -23,26 +23,28 @@
           />
        </el-form-item>
       
-            <el-form-item label="图片预览" prop="image">
-  <el-input v-model="searchInfo.image" placeholder="搜索条件" />
+            <el-form-item label="房间id" prop="roomId">
+  <el-input v-model.number="searchInfo.roomId" placeholder="搜索条件" />
 </el-form-item>
             
-            <el-form-item label="标题" prop="title">
-  <el-input v-model="searchInfo.title" placeholder="搜索条件" />
-</el-form-item>
-            
-            <el-form-item label="跳转链接" prop="url">
-  <el-input v-model="searchInfo.url" placeholder="搜索条件" />
-</el-form-item>
-            
-            <el-form-item label="排序序号" prop="orderId">
-  <el-input v-model.number="searchInfo.orderId" placeholder="搜索条件" />
-</el-form-item>
-            
-            <el-form-item label="状态" prop="status">
-  <el-select v-model="searchInfo.status" clearable filterable placeholder="请选择" @clear="()=>{searchInfo.status=undefined}">
-    <el-option v-for="(item,key) in statusOptions" :key="key" :label="item.label" :value="item.value" />
+            <el-form-item label="房间类型" prop="roomType">
+  <el-select v-model="searchInfo.roomType" clearable filterable placeholder="请选择" @clear="()=>{searchInfo.roomType=undefined}">
+    <el-option v-for="(item,key) in room_typeOptions" :key="key" :label="item.label" :value="item.value" />
   </el-select>
+</el-form-item>
+            
+            <el-form-item label="房间标签" prop="roomTags">
+  <el-input v-model="searchInfo.roomTags" placeholder="搜索条件" />
+</el-form-item>
+            
+            <el-form-item label="房间状态" prop="roomStatus">
+  <el-select v-model="searchInfo.roomStatus" clearable filterable placeholder="请选择" @clear="()=>{searchInfo.roomStatus=undefined}">
+    <el-option v-for="(item,key) in rom_statusOptions" :key="key" :label="item.label" :value="item.value" />
+  </el-select>
+</el-form-item>
+            
+            <el-form-item label="房主" prop="roomHost">
+  <el-input v-model="searchInfo.roomHost" placeholder="搜索条件" />
 </el-form-item>
             
 
@@ -62,9 +64,9 @@
         <div class="gva-btn-list">
             <el-button v-auth="btnAuth.add" type="primary" icon="plus" @click="openDialog()">新增</el-button>
             <el-button v-auth="btnAuth.batchDelete" icon="delete" style="margin-left: 10px;" :disabled="!multipleSelection.length" @click="onDelete">删除</el-button>
-            <ExportTemplate v-auth="btnAuth.exportTemplate" template-id="carouse_CarouselImage" />
-            <ExportExcel v-auth="btnAuth.exportExcel" template-id="carouse_CarouselImage" filterDeleted/>
-            <ImportExcel v-auth="btnAuth.importExcel" template-id="carouse_CarouselImage" @on-success="getTableData" />
+            <ExportTemplate v-auth="btnAuth.exportTemplate" template-id="hot_room_HotRoom" />
+            <ExportExcel v-auth="btnAuth.exportExcel" template-id="hot_room_HotRoom" filterDeleted/>
+            <ImportExcel v-auth="btnAuth.importExcel" template-id="hot_room_HotRoom" @on-success="getTableData" />
         </div>
         <el-table
         ref="multipleTable"
@@ -80,23 +82,26 @@
             <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
         </el-table-column>
         
-            <el-table-column align="left" label="图片预览" prop="image" width="120" />
+            <el-table-column align="left" label="房间id" prop="roomId" width="120" />
 
-            <el-table-column align="left" label="标题" prop="title" width="120" />
-
-            <el-table-column align="left" label="跳转链接" prop="url" width="120" />
-
-            <el-table-column align="left" label="排序序号" prop="orderId" width="120" />
-
-            <el-table-column align="left" label="状态" prop="status" width="120">
+            <el-table-column align="left" label="房间类型" prop="roomType" width="120">
     <template #default="scope">
-    {{ filterDict(scope.row.status,statusOptions) }}
+    {{ filterDict(scope.row.roomType,room_typeOptions) }}
     </template>
 </el-table-column>
+            <el-table-column align="left" label="房间标签" prop="roomTags" width="120" />
+
+            <el-table-column align="left" label="房间状态" prop="roomStatus" width="120">
+    <template #default="scope">
+    {{ filterDict(scope.row.roomStatus,rom_statusOptions) }}
+    </template>
+</el-table-column>
+            <el-table-column align="left" label="房主" prop="roomHost" width="120" />
+
         <el-table-column align="left" label="操作" fixed="right" :min-width="appStore.operateMinWith">
             <template #default="scope">
             <el-button v-auth="btnAuth.info" type="primary" link class="table-button" @click="getDetails(scope.row)"><el-icon style="margin-right: 5px"><InfoFilled /></el-icon>查看</el-button>
-            <el-button v-auth="btnAuth.edit" type="primary" link icon="edit" class="table-button" @click="updateCarouselImageFunc(scope.row)">编辑</el-button>
+            <el-button v-auth="btnAuth.edit" type="primary" link icon="edit" class="table-button" @click="updateHotRoomFunc(scope.row)">编辑</el-button>
             <el-button  v-auth="btnAuth.delete" type="primary" link icon="delete" @click="deleteRow(scope.row)">删除</el-button>
             </template>
         </el-table-column>
@@ -125,42 +130,44 @@
             </template>
 
           <el-form :model="formData" label-position="top" ref="elFormRef" :rules="rule" label-width="80px">
-            <el-form-item label="图片预览:" prop="image">
-    <el-input v-model="formData.image" :clearable="true" placeholder="请输入图片预览" />
+            <el-form-item label="房间id:" prop="roomId">
+    <el-input v-model.number="formData.roomId" :clearable="true" placeholder="请输入房间id" />
 </el-form-item>
-            <el-form-item label="标题:" prop="title">
-    <el-input v-model="formData.title" :clearable="true" placeholder="请输入标题" />
-</el-form-item>
-            <el-form-item label="跳转链接:" prop="url">
-    <el-input v-model="formData.url" :clearable="true" placeholder="请输入跳转链接" />
-</el-form-item>
-            <el-form-item label="排序序号:" prop="orderId">
-    <el-input v-model.number="formData.orderId" :clearable="true" placeholder="请输入排序序号" />
-</el-form-item>
-            <el-form-item label="状态:" prop="status">
-    <el-select v-model="formData.status" placeholder="请选择状态" style="width:100%" filterable :clearable="true">
-        <el-option v-for="(item,key) in statusOptions" :key="key" :label="item.label" :value="item.value" />
+            <el-form-item label="房间类型:" prop="roomType">
+    <el-select v-model="formData.roomType" placeholder="请选择房间类型" style="width:100%" filterable :clearable="true">
+        <el-option v-for="(item,key) in room_typeOptions" :key="key" :label="item.label" :value="item.value" />
     </el-select>
+</el-form-item>
+            <el-form-item label="房间标签:" prop="roomTags">
+    <el-input v-model="formData.roomTags" :clearable="true" placeholder="请输入房间标签" />
+</el-form-item>
+            <el-form-item label="房间状态:" prop="roomStatus">
+    <el-select v-model="formData.roomStatus" placeholder="请选择房间状态" style="width:100%" filterable :clearable="true">
+        <el-option v-for="(item,key) in rom_statusOptions" :key="key" :label="item.label" :value="item.value" />
+    </el-select>
+</el-form-item>
+            <el-form-item label="房主:" prop="roomHost">
+    <el-input v-model="formData.roomHost" :clearable="true" placeholder="请输入房主" />
 </el-form-item>
           </el-form>
     </el-drawer>
 
     <el-drawer destroy-on-close :size="appStore.drawerSize" v-model="detailShow" :show-close="true" :before-close="closeDetailShow" title="查看">
             <el-descriptions :column="1" border>
-                    <el-descriptions-item label="图片预览">
-    {{ detailFrom.image }}
+                    <el-descriptions-item label="房间id">
+    {{ detailFrom.roomId }}
 </el-descriptions-item>
-                    <el-descriptions-item label="标题">
-    {{ detailFrom.title }}
+                    <el-descriptions-item label="房间类型">
+    {{ detailFrom.roomType }}
 </el-descriptions-item>
-                    <el-descriptions-item label="跳转链接">
-    {{ detailFrom.url }}
+                    <el-descriptions-item label="房间标签">
+    {{ detailFrom.roomTags }}
 </el-descriptions-item>
-                    <el-descriptions-item label="排序序号">
-    {{ detailFrom.orderId }}
+                    <el-descriptions-item label="房间状态">
+    {{ detailFrom.roomStatus }}
 </el-descriptions-item>
-                    <el-descriptions-item label="状态">
-    {{ detailFrom.status }}
+                    <el-descriptions-item label="房主">
+    {{ detailFrom.roomHost }}
 </el-descriptions-item>
             </el-descriptions>
         </el-drawer>
@@ -170,13 +177,13 @@
 
 <script setup>
 import {
-  createCarouselImage,
-  deleteCarouselImage,
-  deleteCarouselImageByIds,
-  updateCarouselImage,
-  findCarouselImage,
-  getCarouselImageList
-} from '@/api/carouse/carouselImage'
+  createHotRoom,
+  deleteHotRoom,
+  deleteHotRoomByIds,
+  updateHotRoom,
+  findHotRoom,
+  getHotRoomList
+} from '@/api/hot_room/hotRoom'
 
 // 全量引入格式化工具 请按需保留
 import { getDictFunc, formatDate, formatBoolean, filterDict ,filterDataSource, returnArrImg, onDownloadFile } from '@/utils/format'
@@ -195,7 +202,7 @@ import ExportTemplate from '@/components/exportExcel/exportTemplate.vue'
 
 
 defineOptions({
-    name: 'CarouselImage'
+    name: 'HotRoom'
 })
 // 按钮权限实例化
     const btnAuth = useBtnAuth()
@@ -208,20 +215,27 @@ const appStore = useAppStore()
 const showAllQuery = ref(false)
 
 // 自动化生成的字典（可能为空）以及字段
-const statusOptions = ref([])
+const rom_statusOptions = ref([])
+const room_typeOptions = ref([])
 const formData = ref({
-            image: '',
-            title: '',
-            url: '',
-            orderId: undefined,
-            status: '',
+            roomId: undefined,
+            roomType: '',
+            roomTags: '',
+            roomStatus: '',
+            roomHost: '',
         })
 
 
 
 // 验证规则
 const rule = reactive({
-               image : [{
+               roomId : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               },
+              ],
+               roomType : [{
                    required: true,
                    message: '',
                    trigger: ['input','blur'],
@@ -232,7 +246,7 @@ const rule = reactive({
                    trigger: ['input', 'blur'],
               }
               ],
-               title : [{
+               roomTags : [{
                    required: true,
                    message: '',
                    trigger: ['input','blur'],
@@ -243,7 +257,7 @@ const rule = reactive({
                    trigger: ['input', 'blur'],
               }
               ],
-               url : [{
+               roomStatus : [{
                    required: true,
                    message: '',
                    trigger: ['input','blur'],
@@ -254,13 +268,7 @@ const rule = reactive({
                    trigger: ['input', 'blur'],
               }
               ],
-               orderId : [{
-                   required: true,
-                   message: '',
-                   trigger: ['input','blur'],
-               },
-              ],
-               status : [{
+               roomHost : [{
                    required: true,
                    message: '',
                    trigger: ['input','blur'],
@@ -311,7 +319,7 @@ const handleCurrentChange = (val) => {
 
 // 查询
 const getTableData = async() => {
-  const table = await getCarouselImageList({ page: page.value, pageSize: pageSize.value, ...searchInfo.value })
+  const table = await getHotRoomList({ page: page.value, pageSize: pageSize.value, ...searchInfo.value })
   if (table.code === 0) {
     tableData.value = table.data.list
     total.value = table.data.total
@@ -326,7 +334,8 @@ getTableData()
 
 // 获取需要的字典 可能为空 按需保留
 const setOptions = async () =>{
-    statusOptions.value = await getDictFunc('status')
+    rom_statusOptions.value = await getDictFunc('rom_status')
+    room_typeOptions.value = await getDictFunc('room_type')
 }
 
 // 获取需要的字典 可能为空 按需保留
@@ -347,7 +356,7 @@ const deleteRow = (row) => {
         cancelButtonText: '取消',
         type: 'warning'
     }).then(() => {
-            deleteCarouselImageFunc(row)
+            deleteHotRoomFunc(row)
         })
     }
 
@@ -370,7 +379,7 @@ const onDelete = async() => {
         multipleSelection.value.map(item => {
           IDs.push(item.ID)
         })
-      const res = await deleteCarouselImageByIds({ IDs })
+      const res = await deleteHotRoomByIds({ IDs })
       if (res.code === 0) {
         ElMessage({
           type: 'success',
@@ -388,8 +397,8 @@ const onDelete = async() => {
 const type = ref('')
 
 // 更新行
-const updateCarouselImageFunc = async(row) => {
-    const res = await findCarouselImage({ ID: row.ID })
+const updateHotRoomFunc = async(row) => {
+    const res = await findHotRoom({ ID: row.ID })
     type.value = 'update'
     if (res.code === 0) {
         formData.value = res.data
@@ -399,8 +408,8 @@ const updateCarouselImageFunc = async(row) => {
 
 
 // 删除行
-const deleteCarouselImageFunc = async (row) => {
-    const res = await deleteCarouselImage({ ID: row.ID })
+const deleteHotRoomFunc = async (row) => {
+    const res = await deleteHotRoom({ ID: row.ID })
     if (res.code === 0) {
         ElMessage({
                 type: 'success',
@@ -426,11 +435,11 @@ const openDialog = () => {
 const closeDialog = () => {
     dialogFormVisible.value = false
     formData.value = {
-        image: '',
-        title: '',
-        url: '',
-        orderId: undefined,
-        status: '',
+        roomId: undefined,
+        roomType: '',
+        roomTags: '',
+        roomStatus: '',
+        roomHost: '',
         }
 }
 // 弹窗确定
@@ -441,13 +450,13 @@ const enterDialog = async () => {
               let res
               switch (type.value) {
                 case 'create':
-                  res = await createCarouselImage(formData.value)
+                  res = await createHotRoom(formData.value)
                   break
                 case 'update':
-                  res = await updateCarouselImage(formData.value)
+                  res = await updateHotRoom(formData.value)
                   break
                 default:
-                  res = await createCarouselImage(formData.value)
+                  res = await createHotRoom(formData.value)
                   break
               }
               btnLoading.value = false
@@ -477,7 +486,7 @@ const openDetailShow = () => {
 // 打开详情
 const getDetails = async (row) => {
   // 打开弹窗
-  const res = await findCarouselImage({ ID: row.ID })
+  const res = await findHotRoom({ ID: row.ID })
   if (res.code === 0) {
     detailFrom.value = res.data
     openDetailShow()
