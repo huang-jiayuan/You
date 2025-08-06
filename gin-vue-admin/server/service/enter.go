@@ -7,6 +7,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/service/room_type"
 	"github.com/flipped-aurora/gin-vue-admin/server/service/system"
 	"github.com/flipped-aurora/gin-vue-admin/server/service/users"
+	"github.com/flipped-aurora/gin-vue-admin/server/service/violation"
 )
 
 var ServiceGroupApp = new(ServiceGroup)
@@ -18,4 +19,5 @@ type ServiceGroup struct {
 	UsersServiceGroup     users.ServiceGroup
 	Hot_roomServiceGroup  hot_room.ServiceGroup
 	Room_typeServiceGroup room_type.ServiceGroup
+	ViolationServiceGroup violation.ServiceGroup
 }

@@ -77,7 +77,15 @@
   "/src/view/systemTools/system/system.vue": "Config",
   "/src/view/users/user/user.vue": "User",
   "/src/view/users/user/userForm.vue": "UserForm",
+  "/src/view/violation/violation/violation.vue": "Violation",
+  "/src/view/violation/violation/violationForm.vue": "ViolationForm",
   "/src/plugin/announcement/form/info.vue": "InfoForm",
   "/src/plugin/announcement/view/info.vue": "Info",
-  "/src/plugin/email/view/index.vue": "Email"
+  "/src/plugin/chamber/form/room.vue": "RoomForm",
+  "/src/plugin/chamber/form/roomTagDict.vue": "RoomTagDictForm",
+  "/src/plugin/chamber/view/room.vue": "Room",
+  "/src/plugin/chamber/view/roomTagDict.vue": "RoomTagDict",
+  "/src/plugin/email/view/index.vue": "Email",
+  "/src/plugin/silence/form/mute.vue": "MuteForm",
+  "/src/plugin/silence/view/mute.vue": "Mute"
 }

@@ -11,7 +11,37 @@ message StreamReq {
 message StreamResp {
   string greet = 1;
 }
+//todo：短信
+message SendSmsRequest {
+  string mobile = 1; //手机号
+  string source = 2; //来源
+}
+
+message SendSmsResponse {
+  string greet = 1;
+}
+
+//todo:登录注册一体化
+message UserLoginRequest{
+  string mobile = 1; //手机号
+  string  code   = 2; //验证码
+}
+message UserLoginResponse{
+  int64 greet = 1;
+}
+
+//todo:手机号密码登录
+message UserPasswordRequest{
+  string mobile = 1;
+  string password = 2;
+}
+message UserPasswordResponse{
+  int64 greet = 1;
+}
 
 service User {
   rpc greet(StreamReq) returns (StreamResp);
+  rpc SendSms(SendSmsRequest) returns(SendSmsResponse);
+  rpc UserLogin(UserLoginRequest) returns(UserLoginResponse);
+  rpc UserPassword(UserPasswordRequest) returns(UserPasswordResponse);
 }
