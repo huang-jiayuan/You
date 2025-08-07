@@ -914,9 +914,8 @@ func (x *SearchRoomsResp) GetKeyword() string {
 // 关闭房间接口
 type CloseRoomStreamReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Status        string                 `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
-	ClosedAt      string                 `protobuf:"bytes,3,opt,name=closed_at,json=closedAt,proto3" json:"closed_at,omitempty"`
+	RoomId        int64                  `protobuf:"varint,1,opt,name=room_id,json=roomId,proto3" json:"room_id,omitempty"`
+	UserId        uint64                 `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -951,30 +950,25 @@ func (*CloseRoomStreamReq) Descriptor() ([]byte, []int) {
 	return file_room_proto_rawDescGZIP(), []int{13}
 }
 
-func (x *CloseRoomStreamReq) GetId() int32 {
+func (x *CloseRoomStreamReq) GetRoomId() int64 {
 	if x != nil {
-		return x.Id
+		return x.RoomId
 	}
 	return 0
 }
 
-func (x *CloseRoomStreamReq) GetStatus() string {
+func (x *CloseRoomStreamReq) GetUserId() uint64 {
 	if x != nil {
-		return x.Status
+		return x.UserId
 	}
-	return ""
-}
-
-func (x *CloseRoomStreamReq) GetClosedAt() string {
-	if x != nil {
-		return x.ClosedAt
-	}
-	return ""
+	return 0
 }
 
 type CloseRoomStreamResp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	RoomId        int64                  `protobuf:"varint,3,opt,name=room_id,json=roomId,proto3" json:"room_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1009,9 +1003,1048 @@ func (*CloseRoomStreamResp) Descriptor() ([]byte, []int) {
 	return file_room_proto_rawDescGZIP(), []int{14}
 }
 
-func (x *CloseRoomStreamResp) GetId() int32 {
+func (x *CloseRoomStreamResp) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *CloseRoomStreamResp) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *CloseRoomStreamResp) GetRoomId() int64 {
+	if x != nil {
+		return x.RoomId
+	}
+	return 0
+}
+
+// 进入房间接口
+type JoinRoomStreamReq struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RoomId        int64                  `protobuf:"varint,1,opt,name=room_id,json=roomId,proto3" json:"room_id,omitempty"`
+	UserId        uint64                 `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *JoinRoomStreamReq) Reset() {
+	*x = JoinRoomStreamReq{}
+	mi := &file_room_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *JoinRoomStreamReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*JoinRoomStreamReq) ProtoMessage() {}
+
+func (x *JoinRoomStreamReq) ProtoReflect() protoreflect.Message {
+	mi := &file_room_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use JoinRoomStreamReq.ProtoReflect.Descriptor instead.
+func (*JoinRoomStreamReq) Descriptor() ([]byte, []int) {
+	return file_room_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *JoinRoomStreamReq) GetRoomId() int64 {
+	if x != nil {
+		return x.RoomId
+	}
+	return 0
+}
+
+func (x *JoinRoomStreamReq) GetUserId() uint64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+type JoinRoomStreamResp struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	Success            bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message            string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	CurrentMemberCount int32                  `protobuf:"varint,3,opt,name=current_member_count,json=currentMemberCount,proto3" json:"current_member_count,omitempty"`
+	RoomInfo           *RoomInfo              `protobuf:"bytes,4,opt,name=room_info,json=roomInfo,proto3" json:"room_info,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *JoinRoomStreamResp) Reset() {
+	*x = JoinRoomStreamResp{}
+	mi := &file_room_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *JoinRoomStreamResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*JoinRoomStreamResp) ProtoMessage() {}
+
+func (x *JoinRoomStreamResp) ProtoReflect() protoreflect.Message {
+	mi := &file_room_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use JoinRoomStreamResp.ProtoReflect.Descriptor instead.
+func (*JoinRoomStreamResp) Descriptor() ([]byte, []int) {
+	return file_room_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *JoinRoomStreamResp) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *JoinRoomStreamResp) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *JoinRoomStreamResp) GetCurrentMemberCount() int32 {
+	if x != nil {
+		return x.CurrentMemberCount
+	}
+	return 0
+}
+
+func (x *JoinRoomStreamResp) GetRoomInfo() *RoomInfo {
+	if x != nil {
+		return x.RoomInfo
+	}
+	return nil
+}
+
+// 申请上麦请求
+type ApplyMicReq struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RoomId        int64                  `protobuf:"varint,1,opt,name=room_id,json=roomId,proto3" json:"room_id,omitempty"`
+	UserId        uint64                 `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ApplyMicReq) Reset() {
+	*x = ApplyMicReq{}
+	mi := &file_room_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ApplyMicReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ApplyMicReq) ProtoMessage() {}
+
+func (x *ApplyMicReq) ProtoReflect() protoreflect.Message {
+	mi := &file_room_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ApplyMicReq.ProtoReflect.Descriptor instead.
+func (*ApplyMicReq) Descriptor() ([]byte, []int) {
+	return file_room_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *ApplyMicReq) GetRoomId() int64 {
+	if x != nil {
+		return x.RoomId
+	}
+	return 0
+}
+
+func (x *ApplyMicReq) GetUserId() uint64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+type ApplyMicResp struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	ApplicationId int64                  `protobuf:"varint,3,opt,name=application_id,json=applicationId,proto3" json:"application_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ApplyMicResp) Reset() {
+	*x = ApplyMicResp{}
+	mi := &file_room_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ApplyMicResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ApplyMicResp) ProtoMessage() {}
+
+func (x *ApplyMicResp) ProtoReflect() protoreflect.Message {
+	mi := &file_room_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ApplyMicResp.ProtoReflect.Descriptor instead.
+func (*ApplyMicResp) Descriptor() ([]byte, []int) {
+	return file_room_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *ApplyMicResp) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *ApplyMicResp) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *ApplyMicResp) GetApplicationId() int64 {
+	if x != nil {
+		return x.ApplicationId
+	}
+	return 0
+}
+
+// 处理上麦申请请求
+type HandleMicApplicationReq struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ApplicationId int64                  `protobuf:"varint,1,opt,name=application_id,json=applicationId,proto3" json:"application_id,omitempty"`
+	HandlerId     uint64                 `protobuf:"varint,2,opt,name=handler_id,json=handlerId,proto3" json:"handler_id,omitempty"`
+	Action        int32                  `protobuf:"varint,3,opt,name=action,proto3" json:"action,omitempty"` // 1-批准, 2-拒绝
+	Reason        string                 `protobuf:"bytes,4,opt,name=reason,proto3" json:"reason,omitempty"`  // 拒绝原因
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HandleMicApplicationReq) Reset() {
+	*x = HandleMicApplicationReq{}
+	mi := &file_room_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HandleMicApplicationReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HandleMicApplicationReq) ProtoMessage() {}
+
+func (x *HandleMicApplicationReq) ProtoReflect() protoreflect.Message {
+	mi := &file_room_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HandleMicApplicationReq.ProtoReflect.Descriptor instead.
+func (*HandleMicApplicationReq) Descriptor() ([]byte, []int) {
+	return file_room_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *HandleMicApplicationReq) GetApplicationId() int64 {
+	if x != nil {
+		return x.ApplicationId
+	}
+	return 0
+}
+
+func (x *HandleMicApplicationReq) GetHandlerId() uint64 {
+	if x != nil {
+		return x.HandlerId
+	}
+	return 0
+}
+
+func (x *HandleMicApplicationReq) GetAction() int32 {
+	if x != nil {
+		return x.Action
+	}
+	return 0
+}
+
+func (x *HandleMicApplicationReq) GetReason() string {
+	if x != nil {
+		return x.Reason
+	}
+	return ""
+}
+
+type HandleMicApplicationResp struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	MicInfo       *MicInfo               `protobuf:"bytes,3,opt,name=mic_info,json=micInfo,proto3" json:"mic_info,omitempty"` // 批准时返回麦位信息
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HandleMicApplicationResp) Reset() {
+	*x = HandleMicApplicationResp{}
+	mi := &file_room_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HandleMicApplicationResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HandleMicApplicationResp) ProtoMessage() {}
+
+func (x *HandleMicApplicationResp) ProtoReflect() protoreflect.Message {
+	mi := &file_room_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HandleMicApplicationResp.ProtoReflect.Descriptor instead.
+func (*HandleMicApplicationResp) Descriptor() ([]byte, []int) {
+	return file_room_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *HandleMicApplicationResp) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *HandleMicApplicationResp) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *HandleMicApplicationResp) GetMicInfo() *MicInfo {
+	if x != nil {
+		return x.MicInfo
+	}
+	return nil
+}
+
+// 下麦请求
+type LeaveMicReq struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RoomId        int64                  `protobuf:"varint,1,opt,name=room_id,json=roomId,proto3" json:"room_id,omitempty"`
+	UserId        uint64                 `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LeaveMicReq) Reset() {
+	*x = LeaveMicReq{}
+	mi := &file_room_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LeaveMicReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LeaveMicReq) ProtoMessage() {}
+
+func (x *LeaveMicReq) ProtoReflect() protoreflect.Message {
+	mi := &file_room_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LeaveMicReq.ProtoReflect.Descriptor instead.
+func (*LeaveMicReq) Descriptor() ([]byte, []int) {
+	return file_room_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *LeaveMicReq) GetRoomId() int64 {
+	if x != nil {
+		return x.RoomId
+	}
+	return 0
+}
+
+func (x *LeaveMicReq) GetUserId() uint64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+type LeaveMicResp struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	MicPosition   int32                  `protobuf:"varint,3,opt,name=mic_position,json=micPosition,proto3" json:"mic_position,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LeaveMicResp) Reset() {
+	*x = LeaveMicResp{}
+	mi := &file_room_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LeaveMicResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LeaveMicResp) ProtoMessage() {}
+
+func (x *LeaveMicResp) ProtoReflect() protoreflect.Message {
+	mi := &file_room_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LeaveMicResp.ProtoReflect.Descriptor instead.
+func (*LeaveMicResp) Descriptor() ([]byte, []int) {
+	return file_room_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *LeaveMicResp) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *LeaveMicResp) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *LeaveMicResp) GetMicPosition() int32 {
+	if x != nil {
+		return x.MicPosition
+	}
+	return 0
+}
+
+// 踢人下麦请求
+type KickFromMicReq struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RoomId        int64                  `protobuf:"varint,1,opt,name=room_id,json=roomId,proto3" json:"room_id,omitempty"`
+	OperatorId    uint64                 `protobuf:"varint,2,opt,name=operator_id,json=operatorId,proto3" json:"operator_id,omitempty"`
+	TargetUserId  uint64                 `protobuf:"varint,3,opt,name=target_user_id,json=targetUserId,proto3" json:"target_user_id,omitempty"`
+	Reason        string                 `protobuf:"bytes,4,opt,name=reason,proto3" json:"reason,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *KickFromMicReq) Reset() {
+	*x = KickFromMicReq{}
+	mi := &file_room_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *KickFromMicReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*KickFromMicReq) ProtoMessage() {}
+
+func (x *KickFromMicReq) ProtoReflect() protoreflect.Message {
+	mi := &file_room_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use KickFromMicReq.ProtoReflect.Descriptor instead.
+func (*KickFromMicReq) Descriptor() ([]byte, []int) {
+	return file_room_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *KickFromMicReq) GetRoomId() int64 {
+	if x != nil {
+		return x.RoomId
+	}
+	return 0
+}
+
+func (x *KickFromMicReq) GetOperatorId() uint64 {
+	if x != nil {
+		return x.OperatorId
+	}
+	return 0
+}
+
+func (x *KickFromMicReq) GetTargetUserId() uint64 {
+	if x != nil {
+		return x.TargetUserId
+	}
+	return 0
+}
+
+func (x *KickFromMicReq) GetReason() string {
+	if x != nil {
+		return x.Reason
+	}
+	return ""
+}
+
+type KickFromMicResp struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	MicPosition   int32                  `protobuf:"varint,3,opt,name=mic_position,json=micPosition,proto3" json:"mic_position,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *KickFromMicResp) Reset() {
+	*x = KickFromMicResp{}
+	mi := &file_room_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *KickFromMicResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*KickFromMicResp) ProtoMessage() {}
+
+func (x *KickFromMicResp) ProtoReflect() protoreflect.Message {
+	mi := &file_room_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use KickFromMicResp.ProtoReflect.Descriptor instead.
+func (*KickFromMicResp) Descriptor() ([]byte, []int) {
+	return file_room_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *KickFromMicResp) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *KickFromMicResp) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *KickFromMicResp) GetMicPosition() int32 {
+	if x != nil {
+		return x.MicPosition
+	}
+	return 0
+}
+
+// 禁言/解禁请求
+type MuteMicUserReq struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RoomId        int64                  `protobuf:"varint,1,opt,name=room_id,json=roomId,proto3" json:"room_id,omitempty"`
+	OperatorId    uint64                 `protobuf:"varint,2,opt,name=operator_id,json=operatorId,proto3" json:"operator_id,omitempty"`
+	TargetUserId  uint64                 `protobuf:"varint,3,opt,name=target_user_id,json=targetUserId,proto3" json:"target_user_id,omitempty"`
+	Action        int32                  `protobuf:"varint,4,opt,name=action,proto3" json:"action,omitempty"`     // 1-禁言, 2-解禁
+	Duration      int32                  `protobuf:"varint,5,opt,name=duration,proto3" json:"duration,omitempty"` // 禁言时长(分钟)
+	Reason        string                 `protobuf:"bytes,6,opt,name=reason,proto3" json:"reason,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MuteMicUserReq) Reset() {
+	*x = MuteMicUserReq{}
+	mi := &file_room_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MuteMicUserReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MuteMicUserReq) ProtoMessage() {}
+
+func (x *MuteMicUserReq) ProtoReflect() protoreflect.Message {
+	mi := &file_room_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MuteMicUserReq.ProtoReflect.Descriptor instead.
+func (*MuteMicUserReq) Descriptor() ([]byte, []int) {
+	return file_room_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *MuteMicUserReq) GetRoomId() int64 {
+	if x != nil {
+		return x.RoomId
+	}
+	return 0
+}
+
+func (x *MuteMicUserReq) GetOperatorId() uint64 {
+	if x != nil {
+		return x.OperatorId
+	}
+	return 0
+}
+
+func (x *MuteMicUserReq) GetTargetUserId() uint64 {
+	if x != nil {
+		return x.TargetUserId
+	}
+	return 0
+}
+
+func (x *MuteMicUserReq) GetAction() int32 {
+	if x != nil {
+		return x.Action
+	}
+	return 0
+}
+
+func (x *MuteMicUserReq) GetDuration() int32 {
+	if x != nil {
+		return x.Duration
+	}
+	return 0
+}
+
+func (x *MuteMicUserReq) GetReason() string {
+	if x != nil {
+		return x.Reason
+	}
+	return ""
+}
+
+type MuteMicUserResp struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MuteMicUserResp) Reset() {
+	*x = MuteMicUserResp{}
+	mi := &file_room_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MuteMicUserResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MuteMicUserResp) ProtoMessage() {}
+
+func (x *MuteMicUserResp) ProtoReflect() protoreflect.Message {
+	mi := &file_room_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MuteMicUserResp.ProtoReflect.Descriptor instead.
+func (*MuteMicUserResp) Descriptor() ([]byte, []int) {
+	return file_room_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *MuteMicUserResp) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *MuteMicUserResp) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+// 获取麦位状态请求
+type GetMicStatusReq struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RoomId        int64                  `protobuf:"varint,1,opt,name=room_id,json=roomId,proto3" json:"room_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMicStatusReq) Reset() {
+	*x = GetMicStatusReq{}
+	mi := &file_room_proto_msgTypes[27]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMicStatusReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMicStatusReq) ProtoMessage() {}
+
+func (x *GetMicStatusReq) ProtoReflect() protoreflect.Message {
+	mi := &file_room_proto_msgTypes[27]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMicStatusReq.ProtoReflect.Descriptor instead.
+func (*GetMicStatusReq) Descriptor() ([]byte, []int) {
+	return file_room_proto_rawDescGZIP(), []int{27}
+}
+
+func (x *GetMicStatusReq) GetRoomId() int64 {
+	if x != nil {
+		return x.RoomId
+	}
+	return 0
+}
+
+type GetMicStatusResp struct {
+	state               protoimpl.MessageState `protogen:"open.v1"`
+	Mics                []*MicInfo             `protobuf:"bytes,1,rep,name=mics,proto3" json:"mics,omitempty"`
+	PendingApplications []*MicApplication      `protobuf:"bytes,2,rep,name=pending_applications,json=pendingApplications,proto3" json:"pending_applications,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
+}
+
+func (x *GetMicStatusResp) Reset() {
+	*x = GetMicStatusResp{}
+	mi := &file_room_proto_msgTypes[28]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMicStatusResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMicStatusResp) ProtoMessage() {}
+
+func (x *GetMicStatusResp) ProtoReflect() protoreflect.Message {
+	mi := &file_room_proto_msgTypes[28]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMicStatusResp.ProtoReflect.Descriptor instead.
+func (*GetMicStatusResp) Descriptor() ([]byte, []int) {
+	return file_room_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *GetMicStatusResp) GetMics() []*MicInfo {
+	if x != nil {
+		return x.Mics
+	}
+	return nil
+}
+
+func (x *GetMicStatusResp) GetPendingApplications() []*MicApplication {
+	if x != nil {
+		return x.PendingApplications
+	}
+	return nil
+}
+
+// 麦位信息
+type MicInfo struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Position      int32                  `protobuf:"varint,1,opt,name=position,proto3" json:"position,omitempty"`
+	Status        int32                  `protobuf:"varint,2,opt,name=status,proto3" json:"status,omitempty"` // 0-空闲, 1-占用, 2-禁用
+	UserId        uint64                 `protobuf:"varint,3,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	UserNickname  string                 `protobuf:"bytes,4,opt,name=user_nickname,json=userNickname,proto3" json:"user_nickname,omitempty"`
+	UserAvatar    string                 `protobuf:"bytes,5,opt,name=user_avatar,json=userAvatar,proto3" json:"user_avatar,omitempty"`
+	OccupyTime    string                 `protobuf:"bytes,6,opt,name=occupy_time,json=occupyTime,proto3" json:"occupy_time,omitempty"`
+	IsLocked      bool                   `protobuf:"varint,7,opt,name=is_locked,json=isLocked,proto3" json:"is_locked,omitempty"`
+	IsMuted       bool                   `protobuf:"varint,8,opt,name=is_muted,json=isMuted,proto3" json:"is_muted,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MicInfo) Reset() {
+	*x = MicInfo{}
+	mi := &file_room_proto_msgTypes[29]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MicInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MicInfo) ProtoMessage() {}
+
+func (x *MicInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_room_proto_msgTypes[29]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MicInfo.ProtoReflect.Descriptor instead.
+func (*MicInfo) Descriptor() ([]byte, []int) {
+	return file_room_proto_rawDescGZIP(), []int{29}
+}
+
+func (x *MicInfo) GetPosition() int32 {
+	if x != nil {
+		return x.Position
+	}
+	return 0
+}
+
+func (x *MicInfo) GetStatus() int32 {
+	if x != nil {
+		return x.Status
+	}
+	return 0
+}
+
+func (x *MicInfo) GetUserId() uint64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *MicInfo) GetUserNickname() string {
+	if x != nil {
+		return x.UserNickname
+	}
+	return ""
+}
+
+func (x *MicInfo) GetUserAvatar() string {
+	if x != nil {
+		return x.UserAvatar
+	}
+	return ""
+}
+
+func (x *MicInfo) GetOccupyTime() string {
+	if x != nil {
+		return x.OccupyTime
+	}
+	return ""
+}
+
+func (x *MicInfo) GetIsLocked() bool {
+	if x != nil {
+		return x.IsLocked
+	}
+	return false
+}
+
+func (x *MicInfo) GetIsMuted() bool {
+	if x != nil {
+		return x.IsMuted
+	}
+	return false
+}
+
+// 麦位申请信息
+type MicApplication struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	UserId        uint64                 `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	UserNickname  string                 `protobuf:"bytes,3,opt,name=user_nickname,json=userNickname,proto3" json:"user_nickname,omitempty"`
+	UserAvatar    string                 `protobuf:"bytes,4,opt,name=user_avatar,json=userAvatar,proto3" json:"user_avatar,omitempty"`
+	ApplyTime     string                 `protobuf:"bytes,5,opt,name=apply_time,json=applyTime,proto3" json:"apply_time,omitempty"`
+	Status        int32                  `protobuf:"varint,6,opt,name=status,proto3" json:"status,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MicApplication) Reset() {
+	*x = MicApplication{}
+	mi := &file_room_proto_msgTypes[30]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MicApplication) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MicApplication) ProtoMessage() {}
+
+func (x *MicApplication) ProtoReflect() protoreflect.Message {
+	mi := &file_room_proto_msgTypes[30]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MicApplication.ProtoReflect.Descriptor instead.
+func (*MicApplication) Descriptor() ([]byte, []int) {
+	return file_room_proto_rawDescGZIP(), []int{30}
+}
+
+func (x *MicApplication) GetId() int64 {
 	if x != nil {
 		return x.Id
+	}
+	return 0
+}
+
+func (x *MicApplication) GetUserId() uint64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *MicApplication) GetUserNickname() string {
+	if x != nil {
+		return x.UserNickname
+	}
+	return ""
+}
+
+func (x *MicApplication) GetUserAvatar() string {
+	if x != nil {
+		return x.UserAvatar
+	}
+	return ""
+}
+
+func (x *MicApplication) GetApplyTime() string {
+	if x != nil {
+		return x.ApplyTime
+	}
+	return ""
+}
+
+func (x *MicApplication) GetStatus() int32 {
+	if x != nil {
+		return x.Status
 	}
 	return 0
 }
@@ -1092,15 +2125,95 @@ const file_room_proto_rawDesc = "" +
 	"\tpage_size\x18\x04 \x01(\x05R\bpageSize\x12\x1f\n" +
 	"\vtotal_pages\x18\x05 \x01(\x05R\n" +
 	"totalPages\x12\x18\n" +
-	"\akeyword\x18\x06 \x01(\tR\akeyword\"Y\n" +
-	"\x12CloseRoomStreamReq\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x16\n" +
-	"\x06status\x18\x02 \x01(\tR\x06status\x12\x1b\n" +
-	"\tclosed_at\x18\x03 \x01(\tR\bclosedAt\"%\n" +
-	"\x13CloseRoomStreamResp\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id2\xd9\x03\n" +
+	"\akeyword\x18\x06 \x01(\tR\akeyword\"F\n" +
+	"\x12CloseRoomStreamReq\x12\x17\n" +
+	"\aroom_id\x18\x01 \x01(\x03R\x06roomId\x12\x17\n" +
+	"\auser_id\x18\x02 \x01(\x04R\x06userId\"b\n" +
+	"\x13CloseRoomStreamResp\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12\x17\n" +
+	"\aroom_id\x18\x03 \x01(\x03R\x06roomId\"E\n" +
+	"\x11JoinRoomStreamReq\x12\x17\n" +
+	"\aroom_id\x18\x01 \x01(\x03R\x06roomId\x12\x17\n" +
+	"\auser_id\x18\x02 \x01(\x04R\x06userId\"\xa7\x01\n" +
+	"\x12JoinRoomStreamResp\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x120\n" +
+	"\x14current_member_count\x18\x03 \x01(\x05R\x12currentMemberCount\x12+\n" +
+	"\troom_info\x18\x04 \x01(\v2\x0e.room.RoomInfoR\broomInfo\"?\n" +
+	"\vApplyMicReq\x12\x17\n" +
+	"\aroom_id\x18\x01 \x01(\x03R\x06roomId\x12\x17\n" +
+	"\auser_id\x18\x02 \x01(\x04R\x06userId\"i\n" +
+	"\fApplyMicResp\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12%\n" +
+	"\x0eapplication_id\x18\x03 \x01(\x03R\rapplicationId\"\x8f\x01\n" +
+	"\x17HandleMicApplicationReq\x12%\n" +
+	"\x0eapplication_id\x18\x01 \x01(\x03R\rapplicationId\x12\x1d\n" +
+	"\n" +
+	"handler_id\x18\x02 \x01(\x04R\thandlerId\x12\x16\n" +
+	"\x06action\x18\x03 \x01(\x05R\x06action\x12\x16\n" +
+	"\x06reason\x18\x04 \x01(\tR\x06reason\"x\n" +
+	"\x18HandleMicApplicationResp\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12(\n" +
+	"\bmic_info\x18\x03 \x01(\v2\r.room.MicInfoR\amicInfo\"?\n" +
+	"\vLeaveMicReq\x12\x17\n" +
+	"\aroom_id\x18\x01 \x01(\x03R\x06roomId\x12\x17\n" +
+	"\auser_id\x18\x02 \x01(\x04R\x06userId\"e\n" +
+	"\fLeaveMicResp\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12!\n" +
+	"\fmic_position\x18\x03 \x01(\x05R\vmicPosition\"\x88\x01\n" +
+	"\x0eKickFromMicReq\x12\x17\n" +
+	"\aroom_id\x18\x01 \x01(\x03R\x06roomId\x12\x1f\n" +
+	"\voperator_id\x18\x02 \x01(\x04R\n" +
+	"operatorId\x12$\n" +
+	"\x0etarget_user_id\x18\x03 \x01(\x04R\ftargetUserId\x12\x16\n" +
+	"\x06reason\x18\x04 \x01(\tR\x06reason\"h\n" +
+	"\x0fKickFromMicResp\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12!\n" +
+	"\fmic_position\x18\x03 \x01(\x05R\vmicPosition\"\xbc\x01\n" +
+	"\x0eMuteMicUserReq\x12\x17\n" +
+	"\aroom_id\x18\x01 \x01(\x03R\x06roomId\x12\x1f\n" +
+	"\voperator_id\x18\x02 \x01(\x04R\n" +
+	"operatorId\x12$\n" +
+	"\x0etarget_user_id\x18\x03 \x01(\x04R\ftargetUserId\x12\x16\n" +
+	"\x06action\x18\x04 \x01(\x05R\x06action\x12\x1a\n" +
+	"\bduration\x18\x05 \x01(\x05R\bduration\x12\x16\n" +
+	"\x06reason\x18\x06 \x01(\tR\x06reason\"E\n" +
+	"\x0fMuteMicUserResp\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"*\n" +
+	"\x0fGetMicStatusReq\x12\x17\n" +
+	"\aroom_id\x18\x01 \x01(\x03R\x06roomId\"~\n" +
+	"\x10GetMicStatusResp\x12!\n" +
+	"\x04mics\x18\x01 \x03(\v2\r.room.MicInfoR\x04mics\x12G\n" +
+	"\x14pending_applications\x18\x02 \x03(\v2\x14.room.MicApplicationR\x13pendingApplications\"\xf5\x01\n" +
+	"\aMicInfo\x12\x1a\n" +
+	"\bposition\x18\x01 \x01(\x05R\bposition\x12\x16\n" +
+	"\x06status\x18\x02 \x01(\x05R\x06status\x12\x17\n" +
+	"\auser_id\x18\x03 \x01(\x04R\x06userId\x12#\n" +
+	"\ruser_nickname\x18\x04 \x01(\tR\fuserNickname\x12\x1f\n" +
+	"\vuser_avatar\x18\x05 \x01(\tR\n" +
+	"userAvatar\x12\x1f\n" +
+	"\voccupy_time\x18\x06 \x01(\tR\n" +
+	"occupyTime\x12\x1b\n" +
+	"\tis_locked\x18\a \x01(\bR\bisLocked\x12\x19\n" +
+	"\bis_muted\x18\b \x01(\bR\aisMuted\"\xb6\x01\n" +
+	"\x0eMicApplication\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x17\n" +
+	"\auser_id\x18\x02 \x01(\x04R\x06userId\x12#\n" +
+	"\ruser_nickname\x18\x03 \x01(\tR\fuserNickname\x12\x1f\n" +
+	"\vuser_avatar\x18\x04 \x01(\tR\n" +
+	"userAvatar\x12\x1d\n" +
+	"\n" +
+	"apply_time\x18\x05 \x01(\tR\tapplyTime\x12\x16\n" +
+	"\x06status\x18\x06 \x01(\x05R\x06status2\x8c\a\n" +
 	"\x04Room\x12*\n" +
-	"\x05greet\x12\x0f.room.StreamReq\x1a\x10.room.StreamResp\x12@\n" +
+	"\x05greet\x12\x0f.room.StreamReq\x1a\x10.room.StreamResp\x12=\n" +
+	"\bJoinRoom\x12\x17.room.JoinRoomStreamReq\x1a\x18.room.JoinRoomStreamResp\x12@\n" +
 	"\tCloseRoom\x12\x18.room.CloseRoomStreamReq\x1a\x19.room.CloseRoomStreamResp\x12C\n" +
 	"\n" +
 	"UpdateRoom\x12\x19.room.UpdateRoomStreamReq\x1a\x1a.room.UpdateRoomStreamResp\x12C\n" +
@@ -1108,7 +2221,13 @@ const file_room_proto_rawDesc = "" +
 	"CreateRoom\x12\x19.room.CreateRoomStreamReq\x1a\x1a.room.CreateRoomStreamResp\x12L\n" +
 	"\x11GetRecommendRooms\x12\x1a.room.GetRecommendRoomsReq\x1a\x1b.room.GetRecommendRoomsResp\x12O\n" +
 	"\x12GetRoomsByCategory\x12\x1b.room.GetRoomsByCategoryReq\x1a\x1c.room.GetRoomsByCategoryResp\x12:\n" +
-	"\vSearchRooms\x12\x14.room.SearchRoomsReq\x1a\x15.room.SearchRoomsRespB\x03Z\x01/b\x06proto3"
+	"\vSearchRooms\x12\x14.room.SearchRoomsReq\x1a\x15.room.SearchRoomsResp\x121\n" +
+	"\bApplyMic\x12\x11.room.ApplyMicReq\x1a\x12.room.ApplyMicResp\x12U\n" +
+	"\x14HandleMicApplication\x12\x1d.room.HandleMicApplicationReq\x1a\x1e.room.HandleMicApplicationResp\x121\n" +
+	"\bLeaveMic\x12\x11.room.LeaveMicReq\x1a\x12.room.LeaveMicResp\x12:\n" +
+	"\vKickFromMic\x12\x14.room.KickFromMicReq\x1a\x15.room.KickFromMicResp\x12:\n" +
+	"\vMuteMicUser\x12\x14.room.MuteMicUserReq\x1a\x15.room.MuteMicUserResp\x12=\n" +
+	"\fGetMicStatus\x12\x15.room.GetMicStatusReq\x1a\x16.room.GetMicStatusRespB\x03Z\x01/b\x06proto3"
 
 var (
 	file_room_proto_rawDescOnce sync.Once
@@ -1122,47 +2241,81 @@ func file_room_proto_rawDescGZIP() []byte {
 	return file_room_proto_rawDescData
 }
 
-var file_room_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_room_proto_msgTypes = make([]protoimpl.MessageInfo, 31)
 var file_room_proto_goTypes = []any{
-	(*StreamReq)(nil),              // 0: room.StreamReq
-	(*StreamResp)(nil),             // 1: room.StreamResp
-	(*CreateRoomStreamReq)(nil),    // 2: room.CreateRoomStreamReq
-	(*CreateRoomStreamResp)(nil),   // 3: room.CreateRoomStreamResp
-	(*UpdateRoomStreamReq)(nil),    // 4: room.UpdateRoomStreamReq
-	(*UpdateRoomStreamResp)(nil),   // 5: room.UpdateRoomStreamResp
-	(*RoomInfo)(nil),               // 6: room.RoomInfo
-	(*GetRecommendRoomsReq)(nil),   // 7: room.GetRecommendRoomsReq
-	(*GetRecommendRoomsResp)(nil),  // 8: room.GetRecommendRoomsResp
-	(*GetRoomsByCategoryReq)(nil),  // 9: room.GetRoomsByCategoryReq
-	(*GetRoomsByCategoryResp)(nil), // 10: room.GetRoomsByCategoryResp
-	(*SearchRoomsReq)(nil),         // 11: room.SearchRoomsReq
-	(*SearchRoomsResp)(nil),        // 12: room.SearchRoomsResp
-	(*CloseRoomStreamReq)(nil),     // 13: room.CloseRoomStreamReq
-	(*CloseRoomStreamResp)(nil),    // 14: room.CloseRoomStreamResp
+	(*StreamReq)(nil),                // 0: room.StreamReq
+	(*StreamResp)(nil),               // 1: room.StreamResp
+	(*CreateRoomStreamReq)(nil),      // 2: room.CreateRoomStreamReq
+	(*CreateRoomStreamResp)(nil),     // 3: room.CreateRoomStreamResp
+	(*UpdateRoomStreamReq)(nil),      // 4: room.UpdateRoomStreamReq
+	(*UpdateRoomStreamResp)(nil),     // 5: room.UpdateRoomStreamResp
+	(*RoomInfo)(nil),                 // 6: room.RoomInfo
+	(*GetRecommendRoomsReq)(nil),     // 7: room.GetRecommendRoomsReq
+	(*GetRecommendRoomsResp)(nil),    // 8: room.GetRecommendRoomsResp
+	(*GetRoomsByCategoryReq)(nil),    // 9: room.GetRoomsByCategoryReq
+	(*GetRoomsByCategoryResp)(nil),   // 10: room.GetRoomsByCategoryResp
+	(*SearchRoomsReq)(nil),           // 11: room.SearchRoomsReq
+	(*SearchRoomsResp)(nil),          // 12: room.SearchRoomsResp
+	(*CloseRoomStreamReq)(nil),       // 13: room.CloseRoomStreamReq
+	(*CloseRoomStreamResp)(nil),      // 14: room.CloseRoomStreamResp
+	(*JoinRoomStreamReq)(nil),        // 15: room.JoinRoomStreamReq
+	(*JoinRoomStreamResp)(nil),       // 16: room.JoinRoomStreamResp
+	(*ApplyMicReq)(nil),              // 17: room.ApplyMicReq
+	(*ApplyMicResp)(nil),             // 18: room.ApplyMicResp
+	(*HandleMicApplicationReq)(nil),  // 19: room.HandleMicApplicationReq
+	(*HandleMicApplicationResp)(nil), // 20: room.HandleMicApplicationResp
+	(*LeaveMicReq)(nil),              // 21: room.LeaveMicReq
+	(*LeaveMicResp)(nil),             // 22: room.LeaveMicResp
+	(*KickFromMicReq)(nil),           // 23: room.KickFromMicReq
+	(*KickFromMicResp)(nil),          // 24: room.KickFromMicResp
+	(*MuteMicUserReq)(nil),           // 25: room.MuteMicUserReq
+	(*MuteMicUserResp)(nil),          // 26: room.MuteMicUserResp
+	(*GetMicStatusReq)(nil),          // 27: room.GetMicStatusReq
+	(*GetMicStatusResp)(nil),         // 28: room.GetMicStatusResp
+	(*MicInfo)(nil),                  // 29: room.MicInfo
+	(*MicApplication)(nil),           // 30: room.MicApplication
 }
 var file_room_proto_depIdxs = []int32{
 	6,  // 0: room.GetRecommendRoomsResp.rooms:type_name -> room.RoomInfo
 	6,  // 1: room.GetRoomsByCategoryResp.rooms:type_name -> room.RoomInfo
 	6,  // 2: room.SearchRoomsResp.rooms:type_name -> room.RoomInfo
-	0,  // 3: room.Room.greet:input_type -> room.StreamReq
-	13, // 4: room.Room.CloseRoom:input_type -> room.CloseRoomStreamReq
-	4,  // 5: room.Room.UpdateRoom:input_type -> room.UpdateRoomStreamReq
-	2,  // 6: room.Room.CreateRoom:input_type -> room.CreateRoomStreamReq
-	7,  // 7: room.Room.GetRecommendRooms:input_type -> room.GetRecommendRoomsReq
-	9,  // 8: room.Room.GetRoomsByCategory:input_type -> room.GetRoomsByCategoryReq
-	11, // 9: room.Room.SearchRooms:input_type -> room.SearchRoomsReq
-	1,  // 10: room.Room.greet:output_type -> room.StreamResp
-	14, // 11: room.Room.CloseRoom:output_type -> room.CloseRoomStreamResp
-	5,  // 12: room.Room.UpdateRoom:output_type -> room.UpdateRoomStreamResp
-	3,  // 13: room.Room.CreateRoom:output_type -> room.CreateRoomStreamResp
-	8,  // 14: room.Room.GetRecommendRooms:output_type -> room.GetRecommendRoomsResp
-	10, // 15: room.Room.GetRoomsByCategory:output_type -> room.GetRoomsByCategoryResp
-	12, // 16: room.Room.SearchRooms:output_type -> room.SearchRoomsResp
-	10, // [10:17] is the sub-list for method output_type
-	3,  // [3:10] is the sub-list for method input_type
-	3,  // [3:3] is the sub-list for extension type_name
-	3,  // [3:3] is the sub-list for extension extendee
-	0,  // [0:3] is the sub-list for field type_name
+	6,  // 3: room.JoinRoomStreamResp.room_info:type_name -> room.RoomInfo
+	29, // 4: room.HandleMicApplicationResp.mic_info:type_name -> room.MicInfo
+	29, // 5: room.GetMicStatusResp.mics:type_name -> room.MicInfo
+	30, // 6: room.GetMicStatusResp.pending_applications:type_name -> room.MicApplication
+	0,  // 7: room.Room.greet:input_type -> room.StreamReq
+	15, // 8: room.Room.JoinRoom:input_type -> room.JoinRoomStreamReq
+	13, // 9: room.Room.CloseRoom:input_type -> room.CloseRoomStreamReq
+	4,  // 10: room.Room.UpdateRoom:input_type -> room.UpdateRoomStreamReq
+	2,  // 11: room.Room.CreateRoom:input_type -> room.CreateRoomStreamReq
+	7,  // 12: room.Room.GetRecommendRooms:input_type -> room.GetRecommendRoomsReq
+	9,  // 13: room.Room.GetRoomsByCategory:input_type -> room.GetRoomsByCategoryReq
+	11, // 14: room.Room.SearchRooms:input_type -> room.SearchRoomsReq
+	17, // 15: room.Room.ApplyMic:input_type -> room.ApplyMicReq
+	19, // 16: room.Room.HandleMicApplication:input_type -> room.HandleMicApplicationReq
+	21, // 17: room.Room.LeaveMic:input_type -> room.LeaveMicReq
+	23, // 18: room.Room.KickFromMic:input_type -> room.KickFromMicReq
+	25, // 19: room.Room.MuteMicUser:input_type -> room.MuteMicUserReq
+	27, // 20: room.Room.GetMicStatus:input_type -> room.GetMicStatusReq
+	1,  // 21: room.Room.greet:output_type -> room.StreamResp
+	16, // 22: room.Room.JoinRoom:output_type -> room.JoinRoomStreamResp
+	14, // 23: room.Room.CloseRoom:output_type -> room.CloseRoomStreamResp
+	5,  // 24: room.Room.UpdateRoom:output_type -> room.UpdateRoomStreamResp
+	3,  // 25: room.Room.CreateRoom:output_type -> room.CreateRoomStreamResp
+	8,  // 26: room.Room.GetRecommendRooms:output_type -> room.GetRecommendRoomsResp
+	10, // 27: room.Room.GetRoomsByCategory:output_type -> room.GetRoomsByCategoryResp
+	12, // 28: room.Room.SearchRooms:output_type -> room.SearchRoomsResp
+	18, // 29: room.Room.ApplyMic:output_type -> room.ApplyMicResp
+	20, // 30: room.Room.HandleMicApplication:output_type -> room.HandleMicApplicationResp
+	22, // 31: room.Room.LeaveMic:output_type -> room.LeaveMicResp
+	24, // 32: room.Room.KickFromMic:output_type -> room.KickFromMicResp
+	26, // 33: room.Room.MuteMicUser:output_type -> room.MuteMicUserResp
+	28, // 34: room.Room.GetMicStatus:output_type -> room.GetMicStatusResp
+	21, // [21:35] is the sub-list for method output_type
+	7,  // [7:21] is the sub-list for method input_type
+	7,  // [7:7] is the sub-list for extension type_name
+	7,  // [7:7] is the sub-list for extension extendee
+	0,  // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_room_proto_init() }
@@ -1176,7 +2329,7 @@ func file_room_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_room_proto_rawDesc), len(file_room_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   15,
+			NumMessages:   31,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

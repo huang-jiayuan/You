@@ -19,13 +19,20 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Room_Greet_FullMethodName              = "/room.Room/greet"
-	Room_CloseRoom_FullMethodName          = "/room.Room/CloseRoom"
-	Room_UpdateRoom_FullMethodName         = "/room.Room/UpdateRoom"
-	Room_CreateRoom_FullMethodName         = "/room.Room/CreateRoom"
-	Room_GetRecommendRooms_FullMethodName  = "/room.Room/GetRecommendRooms"
-	Room_GetRoomsByCategory_FullMethodName = "/room.Room/GetRoomsByCategory"
-	Room_SearchRooms_FullMethodName        = "/room.Room/SearchRooms"
+	Room_Greet_FullMethodName                = "/room.Room/greet"
+	Room_JoinRoom_FullMethodName             = "/room.Room/JoinRoom"
+	Room_CloseRoom_FullMethodName            = "/room.Room/CloseRoom"
+	Room_UpdateRoom_FullMethodName           = "/room.Room/UpdateRoom"
+	Room_CreateRoom_FullMethodName           = "/room.Room/CreateRoom"
+	Room_GetRecommendRooms_FullMethodName    = "/room.Room/GetRecommendRooms"
+	Room_GetRoomsByCategory_FullMethodName   = "/room.Room/GetRoomsByCategory"
+	Room_SearchRooms_FullMethodName          = "/room.Room/SearchRooms"
+	Room_ApplyMic_FullMethodName             = "/room.Room/ApplyMic"
+	Room_HandleMicApplication_FullMethodName = "/room.Room/HandleMicApplication"
+	Room_LeaveMic_FullMethodName             = "/room.Room/LeaveMic"
+	Room_KickFromMic_FullMethodName          = "/room.Room/KickFromMic"
+	Room_MuteMicUser_FullMethodName          = "/room.Room/MuteMicUser"
+	Room_GetMicStatus_FullMethodName         = "/room.Room/GetMicStatus"
 )
 
 // RoomClient is the client API for Room service.
@@ -33,12 +40,20 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RoomClient interface {
 	Greet(ctx context.Context, in *StreamReq, opts ...grpc.CallOption) (*StreamResp, error)
+	JoinRoom(ctx context.Context, in *JoinRoomStreamReq, opts ...grpc.CallOption) (*JoinRoomStreamResp, error)
 	CloseRoom(ctx context.Context, in *CloseRoomStreamReq, opts ...grpc.CallOption) (*CloseRoomStreamResp, error)
 	UpdateRoom(ctx context.Context, in *UpdateRoomStreamReq, opts ...grpc.CallOption) (*UpdateRoomStreamResp, error)
 	CreateRoom(ctx context.Context, in *CreateRoomStreamReq, opts ...grpc.CallOption) (*CreateRoomStreamResp, error)
 	GetRecommendRooms(ctx context.Context, in *GetRecommendRoomsReq, opts ...grpc.CallOption) (*GetRecommendRoomsResp, error)
 	GetRoomsByCategory(ctx context.Context, in *GetRoomsByCategoryReq, opts ...grpc.CallOption) (*GetRoomsByCategoryResp, error)
 	SearchRooms(ctx context.Context, in *SearchRoomsReq, opts ...grpc.CallOption) (*SearchRoomsResp, error)
+	// 麦位管理相关RPC方法
+	ApplyMic(ctx context.Context, in *ApplyMicReq, opts ...grpc.CallOption) (*ApplyMicResp, error)
+	HandleMicApplication(ctx context.Context, in *HandleMicApplicationReq, opts ...grpc.CallOption) (*HandleMicApplicationResp, error)
+	LeaveMic(ctx context.Context, in *LeaveMicReq, opts ...grpc.CallOption) (*LeaveMicResp, error)
+	KickFromMic(ctx context.Context, in *KickFromMicReq, opts ...grpc.CallOption) (*KickFromMicResp, error)
+	MuteMicUser(ctx context.Context, in *MuteMicUserReq, opts ...grpc.CallOption) (*MuteMicUserResp, error)
+	GetMicStatus(ctx context.Context, in *GetMicStatusReq, opts ...grpc.CallOption) (*GetMicStatusResp, error)
 }
 
 type roomClient struct {
@@ -53,6 +68,16 @@ func (c *roomClient) Greet(ctx context.Context, in *StreamReq, opts ...grpc.Call
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(StreamResp)
 	err := c.cc.Invoke(ctx, Room_Greet_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *roomClient) JoinRoom(ctx context.Context, in *JoinRoomStreamReq, opts ...grpc.CallOption) (*JoinRoomStreamResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(JoinRoomStreamResp)
+	err := c.cc.Invoke(ctx, Room_JoinRoom_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -119,17 +144,85 @@ func (c *roomClient) SearchRooms(ctx context.Context, in *SearchRoomsReq, opts .
 	return out, nil
 }
 
+func (c *roomClient) ApplyMic(ctx context.Context, in *ApplyMicReq, opts ...grpc.CallOption) (*ApplyMicResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ApplyMicResp)
+	err := c.cc.Invoke(ctx, Room_ApplyMic_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *roomClient) HandleMicApplication(ctx context.Context, in *HandleMicApplicationReq, opts ...grpc.CallOption) (*HandleMicApplicationResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(HandleMicApplicationResp)
+	err := c.cc.Invoke(ctx, Room_HandleMicApplication_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *roomClient) LeaveMic(ctx context.Context, in *LeaveMicReq, opts ...grpc.CallOption) (*LeaveMicResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(LeaveMicResp)
+	err := c.cc.Invoke(ctx, Room_LeaveMic_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *roomClient) KickFromMic(ctx context.Context, in *KickFromMicReq, opts ...grpc.CallOption) (*KickFromMicResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(KickFromMicResp)
+	err := c.cc.Invoke(ctx, Room_KickFromMic_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *roomClient) MuteMicUser(ctx context.Context, in *MuteMicUserReq, opts ...grpc.CallOption) (*MuteMicUserResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(MuteMicUserResp)
+	err := c.cc.Invoke(ctx, Room_MuteMicUser_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *roomClient) GetMicStatus(ctx context.Context, in *GetMicStatusReq, opts ...grpc.CallOption) (*GetMicStatusResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetMicStatusResp)
+	err := c.cc.Invoke(ctx, Room_GetMicStatus_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RoomServer is the server API for Room service.
 // All implementations must embed UnimplementedRoomServer
 // for forward compatibility.
 type RoomServer interface {
 	Greet(context.Context, *StreamReq) (*StreamResp, error)
+	JoinRoom(context.Context, *JoinRoomStreamReq) (*JoinRoomStreamResp, error)
 	CloseRoom(context.Context, *CloseRoomStreamReq) (*CloseRoomStreamResp, error)
 	UpdateRoom(context.Context, *UpdateRoomStreamReq) (*UpdateRoomStreamResp, error)
 	CreateRoom(context.Context, *CreateRoomStreamReq) (*CreateRoomStreamResp, error)
 	GetRecommendRooms(context.Context, *GetRecommendRoomsReq) (*GetRecommendRoomsResp, error)
 	GetRoomsByCategory(context.Context, *GetRoomsByCategoryReq) (*GetRoomsByCategoryResp, error)
 	SearchRooms(context.Context, *SearchRoomsReq) (*SearchRoomsResp, error)
+	// 麦位管理相关RPC方法
+	ApplyMic(context.Context, *ApplyMicReq) (*ApplyMicResp, error)
+	HandleMicApplication(context.Context, *HandleMicApplicationReq) (*HandleMicApplicationResp, error)
+	LeaveMic(context.Context, *LeaveMicReq) (*LeaveMicResp, error)
+	KickFromMic(context.Context, *KickFromMicReq) (*KickFromMicResp, error)
+	MuteMicUser(context.Context, *MuteMicUserReq) (*MuteMicUserResp, error)
+	GetMicStatus(context.Context, *GetMicStatusReq) (*GetMicStatusResp, error)
 	mustEmbedUnimplementedRoomServer()
 }
 
@@ -142,6 +235,9 @@ type UnimplementedRoomServer struct{}
 
 func (UnimplementedRoomServer) Greet(context.Context, *StreamReq) (*StreamResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Greet not implemented")
+}
+func (UnimplementedRoomServer) JoinRoom(context.Context, *JoinRoomStreamReq) (*JoinRoomStreamResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method JoinRoom not implemented")
 }
 func (UnimplementedRoomServer) CloseRoom(context.Context, *CloseRoomStreamReq) (*CloseRoomStreamResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CloseRoom not implemented")
@@ -160,6 +256,24 @@ func (UnimplementedRoomServer) GetRoomsByCategory(context.Context, *GetRoomsByCa
 }
 func (UnimplementedRoomServer) SearchRooms(context.Context, *SearchRoomsReq) (*SearchRoomsResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SearchRooms not implemented")
+}
+func (UnimplementedRoomServer) ApplyMic(context.Context, *ApplyMicReq) (*ApplyMicResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ApplyMic not implemented")
+}
+func (UnimplementedRoomServer) HandleMicApplication(context.Context, *HandleMicApplicationReq) (*HandleMicApplicationResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method HandleMicApplication not implemented")
+}
+func (UnimplementedRoomServer) LeaveMic(context.Context, *LeaveMicReq) (*LeaveMicResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LeaveMic not implemented")
+}
+func (UnimplementedRoomServer) KickFromMic(context.Context, *KickFromMicReq) (*KickFromMicResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method KickFromMic not implemented")
+}
+func (UnimplementedRoomServer) MuteMicUser(context.Context, *MuteMicUserReq) (*MuteMicUserResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MuteMicUser not implemented")
+}
+func (UnimplementedRoomServer) GetMicStatus(context.Context, *GetMicStatusReq) (*GetMicStatusResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMicStatus not implemented")
 }
 func (UnimplementedRoomServer) mustEmbedUnimplementedRoomServer() {}
 func (UnimplementedRoomServer) testEmbeddedByValue()              {}
@@ -196,6 +310,24 @@ func _Room_Greet_Handler(srv interface{}, ctx context.Context, dec func(interfac
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RoomServer).Greet(ctx, req.(*StreamReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Room_JoinRoom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(JoinRoomStreamReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RoomServer).JoinRoom(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Room_JoinRoom_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RoomServer).JoinRoom(ctx, req.(*JoinRoomStreamReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -308,6 +440,114 @@ func _Room_SearchRooms_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Room_ApplyMic_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ApplyMicReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RoomServer).ApplyMic(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Room_ApplyMic_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RoomServer).ApplyMic(ctx, req.(*ApplyMicReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Room_HandleMicApplication_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HandleMicApplicationReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RoomServer).HandleMicApplication(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Room_HandleMicApplication_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RoomServer).HandleMicApplication(ctx, req.(*HandleMicApplicationReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Room_LeaveMic_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LeaveMicReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RoomServer).LeaveMic(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Room_LeaveMic_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RoomServer).LeaveMic(ctx, req.(*LeaveMicReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Room_KickFromMic_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(KickFromMicReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RoomServer).KickFromMic(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Room_KickFromMic_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RoomServer).KickFromMic(ctx, req.(*KickFromMicReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Room_MuteMicUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MuteMicUserReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RoomServer).MuteMicUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Room_MuteMicUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RoomServer).MuteMicUser(ctx, req.(*MuteMicUserReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Room_GetMicStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMicStatusReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RoomServer).GetMicStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Room_GetMicStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RoomServer).GetMicStatus(ctx, req.(*GetMicStatusReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Room_ServiceDesc is the grpc.ServiceDesc for Room service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -318,6 +558,10 @@ var Room_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "greet",
 			Handler:    _Room_Greet_Handler,
+		},
+		{
+			MethodName: "JoinRoom",
+			Handler:    _Room_JoinRoom_Handler,
 		},
 		{
 			MethodName: "CloseRoom",
@@ -342,6 +586,30 @@ var Room_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SearchRooms",
 			Handler:    _Room_SearchRooms_Handler,
+		},
+		{
+			MethodName: "ApplyMic",
+			Handler:    _Room_ApplyMic_Handler,
+		},
+		{
+			MethodName: "HandleMicApplication",
+			Handler:    _Room_HandleMicApplication_Handler,
+		},
+		{
+			MethodName: "LeaveMic",
+			Handler:    _Room_LeaveMic_Handler,
+		},
+		{
+			MethodName: "KickFromMic",
+			Handler:    _Room_KickFromMic_Handler,
+		},
+		{
+			MethodName: "MuteMicUser",
+			Handler:    _Room_MuteMicUser_Handler,
+		},
+		{
+			MethodName: "GetMicStatus",
+			Handler:    _Room_GetMicStatus_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

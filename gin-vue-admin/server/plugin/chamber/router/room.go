@@ -17,6 +17,8 @@ func (r *room) Init(public *gin.RouterGroup, private *gin.RouterGroup) {
 		group.DELETE("deleteRoom", apiRoom.DeleteRoom) // 删除房间表
 		group.DELETE("deleteRoomByIds", apiRoom.DeleteRoomByIds) // 批量删除房间表
 		group.PUT("updateRoom", apiRoom.UpdateRoom)    // 更新房间表
+		group.POST("kickFromMic", apiRoom.KickFromMic) // 踢人下麦
+		group.POST("muteMicUser", apiRoom.MuteMicUser) // 禁言管理
 	}
 	{
 	    group := private.Group("room")
