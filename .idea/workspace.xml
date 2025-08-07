@@ -4,20 +4,7 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8879827a-ff20-41a2-8856-6cc8c9d126bb" name="更改" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/GOHCache.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/GOHCache.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/You.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/thriftCompilerAssist.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/api/enter.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/api/enter.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/gen/gen.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/gen/gen.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/initialize/gorm.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/initialize/gorm.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/initialize/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/initialize/router.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/router/enter.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/router/enter.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/service/enter.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/service/enter.go" afterDir="false" />
-    </list>
+    <list default="true" id="8879827a-ff20-41a2-8856-6cc8c9d126bb" name="更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
