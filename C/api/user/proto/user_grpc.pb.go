@@ -27,6 +27,8 @@ const (
 	User_Logout_FullMethodName             = "/user.User/Logout"
 	User_UpdatePassword_FullMethodName     = "/user.User/UpdatePassword"
 	User_ImproveUserMessage_FullMethodName = "/user.User/ImproveUserMessage"
+	User_FollowUser_FullMethodName         = "/user.User/FollowUser"
+	User_UnFollowUser_FullMethodName       = "/user.User/UnFollowUser"
 )
 
 // UserClient is the client API for User service.
@@ -41,6 +43,8 @@ type UserClient interface {
 	Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*LogoutResponse, error)
 	UpdatePassword(ctx context.Context, in *UpdatePasswordRequest, opts ...grpc.CallOption) (*UpdatePasswordResponse, error)
 	ImproveUserMessage(ctx context.Context, in *ImproveUserMessageRequest, opts ...grpc.CallOption) (*ImproveUserMessageResponse, error)
+	FollowUser(ctx context.Context, in *FollowUserRequest, opts ...grpc.CallOption) (*FollowUserResponse, error)
+	UnFollowUser(ctx context.Context, in *UnFollowUserRequest, opts ...grpc.CallOption) (*UnFollowUserResponse, error)
 }
 
 type userClient struct {
@@ -131,6 +135,26 @@ func (c *userClient) ImproveUserMessage(ctx context.Context, in *ImproveUserMess
 	return out, nil
 }
 
+func (c *userClient) FollowUser(ctx context.Context, in *FollowUserRequest, opts ...grpc.CallOption) (*FollowUserResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(FollowUserResponse)
+	err := c.cc.Invoke(ctx, User_FollowUser_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) UnFollowUser(ctx context.Context, in *UnFollowUserRequest, opts ...grpc.CallOption) (*UnFollowUserResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UnFollowUserResponse)
+	err := c.cc.Invoke(ctx, User_UnFollowUser_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -143,6 +167,8 @@ type UserServer interface {
 	Logout(context.Context, *LogoutRequest) (*LogoutResponse, error)
 	UpdatePassword(context.Context, *UpdatePasswordRequest) (*UpdatePasswordResponse, error)
 	ImproveUserMessage(context.Context, *ImproveUserMessageRequest) (*ImproveUserMessageResponse, error)
+	FollowUser(context.Context, *FollowUserRequest) (*FollowUserResponse, error)
+	UnFollowUser(context.Context, *UnFollowUserRequest) (*UnFollowUserResponse, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -173,6 +199,12 @@ func (UnimplementedUserServer) UpdatePassword(context.Context, *UpdatePasswordRe
 }
 func (UnimplementedUserServer) ImproveUserMessage(context.Context, *ImproveUserMessageRequest) (*ImproveUserMessageResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ImproveUserMessage not implemented")
+}
+func (UnimplementedUserServer) FollowUser(context.Context, *FollowUserRequest) (*FollowUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FollowUser not implemented")
+}
+func (UnimplementedUserServer) UnFollowUser(context.Context, *UnFollowUserRequest) (*UnFollowUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UnFollowUser not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -331,6 +363,42 @@ func _User_ImproveUserMessage_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_FollowUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FollowUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).FollowUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_FollowUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).FollowUser(ctx, req.(*FollowUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_UnFollowUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UnFollowUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UnFollowUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_UnFollowUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UnFollowUser(ctx, req.(*UnFollowUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -369,6 +437,14 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ImproveUserMessage",
 			Handler:    _User_ImproveUserMessage_Handler,
+		},
+		{
+			MethodName: "FollowUser",
+			Handler:    _User_FollowUser_Handler,
+		},
+		{
+			MethodName: "UnFollowUser",
+			Handler:    _User_UnFollowUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

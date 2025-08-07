@@ -177,3 +177,21 @@ func (s *Server) ImproveUserMessage(_ context.Context, in *__.ImproveUserMessage
 	}
 	return &__.ImproveUserMessageResponse{Greet: "完善成功"}, nil
 }
+
+func (s *Server) FollowUser(_ context.Context, in *__.FollowUserRequest) (*__.FollowUserResponse, error) {
+	uf := &models.UserFollow{}
+	err := uf.Follow(in.UserId, in.FollowedId)
+	if err != nil {
+		return nil, err
+	}
+	return &__.FollowUserResponse{Greet: "关注成功"}, nil
+}
+
+func (s *Server) UnFollowUser(_ context.Context, in *__.UnFollowUserRequest) (*__.UnFollowUserResponse, error) {
+	uf := &models.UserFollow{}
+	err := uf.Unfollow(in.UserId, in.FollowedId)
+	if err != nil {
+		return nil, err
+	}
+	return &__.UnFollowUserResponse{Greet: "成功取消关注"}, nil
+}

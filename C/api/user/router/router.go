@@ -17,7 +17,8 @@ func Router(r *gin.Engine) {
 			user.Use(pkg.JWTAuth("2211a"))
 			user.POST("/update/password", handler.UpdatePassword)
 			user.POST("/improve/message", handler.ImproveUserMessage)
-
+			user.POST("/follow", handler.FollowUser)
+			user.POST("/unfollow", handler.UnFollowUser)
 		}
 		// 需认证路由
 		authGroup := r.Group("/auth")
