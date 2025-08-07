@@ -10,6 +10,20 @@
             </set>
           </value>
         </entry>
+        <entry key="AdminUser">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/model/admin_user.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="AdminUserSearch">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/model/request/admin_user.go" />
+            </set>
+          </value>
+        </entry>
         <entry key="AliyunOSS">
           <value>
             <set>
@@ -328,7 +342,14 @@
             <set>
               <option value="file://$PROJECT_DIR$/C/server/room/basic/config/config.go" />
               <option value="file://$PROJECT_DIR$/C/server/user/basic/config/config.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/config/config.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/announcement/config/config.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/config/config.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/config/config.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/manage/config/config.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/room/config/config.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/config/config.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/users/config/config.go" />
             </set>
           </value>
         </entry>
@@ -521,6 +542,20 @@
           <value>
             <set>
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/model/system/request/sys_user.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="GiftInfo">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/822814500/server/plugin/gift/model/gift_info.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="GiftInfoSearch">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/822814500/server/plugin/gift/model/request/gift_info.go" />
             </set>
           </value>
         </entry>
@@ -758,6 +793,26 @@
             </set>
           </value>
         </entry>
+        <entry key="Mute">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/437989300/server/plugin/silence/model/mute.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/625445900/server/plugin/silence/model/mute.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/626603100/server/plugin/silence/model/mute.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/model/mute.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="MuteSearch">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/437989300/server/plugin/silence/model/request/mute.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/625445900/server/plugin/silence/model/request/mute.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/626603100/server/plugin/silence/model/request/mute.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/model/request/mute.go" />
+            </set>
+          </value>
+        </entry>
         <entry key="Mysql">
           <value>
             <set>
@@ -966,6 +1021,54 @@
           <value>
             <set>
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/model/common/response/response.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="Room">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/394698100/server/plugin/manage/model/room.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/618244400/server/plugin/room/model/room.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/model/room.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="RoomSearch">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/394698100/server/plugin/manage/model/request/room.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/618244400/server/plugin/room/model/request/room.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/model/request/room.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="RoomTagDict">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/643880200/server/plugin/chamber/model/room_tag_dict.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/model/room_tag_dict.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="RoomTagDictSearch">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/643880200/server/plugin/chamber/model/request/room_tag_dict.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/model/request/room_tag_dict.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="Rooms">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/538552600/server/plugin/manage/model/rooms.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="RoomsSearch">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/538552600/server/plugin/manage/model/request/rooms.go" />
             </set>
           </value>
         </entry>
@@ -1504,10 +1607,26 @@
             </set>
           </value>
         </entry>
+        <entry key="adminUser">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/api/admin_user.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/router/admin_user.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/service/admin_user.go" />
+            </set>
+          </value>
+        </entry>
         <entry key="api">
           <value>
             <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/api/enter.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/announcement/api/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/api/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/api/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/manage/api/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/room/api/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/api/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/users/api/enter.go" />
             </set>
           </value>
         </entry>
@@ -1609,6 +1728,15 @@
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/utils/ast/plugin_initialize_gorm_test.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/utils/ast/plugin_initialize_router_test.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/utils/ast/plugin_initialize_v2_test.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="giftInfo">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/822814500/server/plugin/gift/api/gift_info.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/822814500/server/plugin/gift/router/gift_info.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/822814500/server/plugin/gift/service/gift_info.go" />
             </set>
           </value>
         </entry>
@@ -1720,6 +1848,24 @@
             </set>
           </value>
         </entry>
+        <entry key="mute">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/437989300/server/plugin/silence/api/mute.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/437989300/server/plugin/silence/router/mute.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/437989300/server/plugin/silence/service/mute.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/625445900/server/plugin/silence/api/mute.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/625445900/server/plugin/silence/router/mute.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/625445900/server/plugin/silence/service/mute.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/626603100/server/plugin/silence/api/mute.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/626603100/server/plugin/silence/router/mute.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/626603100/server/plugin/silence/service/mute.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/api/mute.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/router/mute.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/service/mute.go" />
+            </set>
+          </value>
+        </entry>
         <entry key="orderedInitializer">
           <value>
             <set>
@@ -1730,7 +1876,14 @@
         <entry key="plugin">
           <value>
             <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/plugin.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/announcement/plugin.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/plugin.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/plugin.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/manage/plugin.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/room/plugin.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/plugin.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/users/plugin.go" />
             </set>
           </value>
         </entry>
@@ -1738,6 +1891,18 @@
           <value>
             <set>
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/middleware/operation.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="room">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/394698100/server/plugin/manage/api/room.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/394698100/server/plugin/manage/router/room.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/394698100/server/plugin/manage/service/room.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/api/room.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/router/room.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/service/room.go" />
             </set>
           </value>
         </entry>
@@ -1749,17 +1914,55 @@
             </set>
           </value>
         </entry>
+        <entry key="roomTagDict">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/643880200/server/plugin/chamber/api/room_tag_dict.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/643880200/server/plugin/chamber/router/room_tag_dict.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/643880200/server/plugin/chamber/service/room_tag_dict.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/api/room_tag_dict.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/router/room_tag_dict.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/service/room_tag_dict.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="rooms">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/538552600/server/plugin/manage/api/rooms.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/538552600/server/plugin/manage/router/rooms.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/538552600/server/plugin/manage/service/rooms.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/618244400/server/plugin/room/api/room.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/618244400/server/plugin/room/router/room.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/618244400/server/plugin/room/service/room.go" />
+            </set>
+          </value>
+        </entry>
         <entry key="router">
           <value>
             <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/router/enter.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/announcement/router/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/router/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/router/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/manage/router/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/room/router/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/router/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/users/router/enter.go" />
             </set>
           </value>
         </entry>
         <entry key="service">
           <value>
             <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/service/enter.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/announcement/service/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/service/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/service/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/manage/service/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/room/service/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/service/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/users/service/enter.go" />
             </set>
           </value>
         </entry>
@@ -1940,6 +2143,13 @@
             </ScannedPath>
           </value>
         </entry>
+        <entry key="file://$PROJECT_DIR$/C/server/pkg/demo.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1753968075263" />
+            </ScannedPath>
+          </value>
+        </entry>
         <entry key="file://$PROJECT_DIR$/C/server/room/basic/config/config.go">
           <value>
             <ScannedPath>
@@ -2093,6 +2303,486 @@
                 <list>
                   <option value="userClient" />
                   <option value="UnimplementedUserServer" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/394698100/server/plugin/manage/api/room.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754012731350" />
+              <option name="schema">
+                <list>
+                  <option value="room" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/394698100/server/plugin/manage/model/request/room.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754012731310" />
+              <option name="schema">
+                <list>
+                  <option value="RoomSearch" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/394698100/server/plugin/manage/model/room.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754012731351" />
+              <option name="schema">
+                <list>
+                  <option value="Room" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/394698100/server/plugin/manage/router/room.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754012731352" />
+              <option name="schema">
+                <list>
+                  <option value="room" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/394698100/server/plugin/manage/service/room.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754012731352" />
+              <option name="schema">
+                <list>
+                  <option value="room" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/437989300/server/plugin/silence/api/mute.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754018608314" />
+              <option name="schema">
+                <list>
+                  <option value="mute" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/437989300/server/plugin/silence/model/mute.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754018608313" />
+              <option name="schema">
+                <list>
+                  <option value="Mute" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/437989300/server/plugin/silence/model/request/mute.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754018608317" />
+              <option name="schema">
+                <list>
+                  <option value="MuteSearch" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/437989300/server/plugin/silence/router/mute.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754018608314" />
+              <option name="schema">
+                <list>
+                  <option value="mute" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/437989300/server/plugin/silence/service/mute.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754018608318" />
+              <option name="schema">
+                <list>
+                  <option value="mute" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/538552600/server/plugin/manage/api/rooms.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754011258426" />
+              <option name="schema">
+                <list>
+                  <option value="rooms" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/538552600/server/plugin/manage/model/request/rooms.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754011258427" />
+              <option name="schema">
+                <list>
+                  <option value="RoomsSearch" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/538552600/server/plugin/manage/model/rooms.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754011258426" />
+              <option name="schema">
+                <list>
+                  <option value="Rooms" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/538552600/server/plugin/manage/router/rooms.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754011258381" />
+              <option name="schema">
+                <list>
+                  <option value="rooms" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/538552600/server/plugin/manage/service/rooms.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754011258427" />
+              <option name="schema">
+                <list>
+                  <option value="rooms" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/618244400/server/plugin/room/api/room.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1753971438063" />
+              <option name="schema">
+                <list>
+                  <option value="rooms" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/618244400/server/plugin/room/model/request/room.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1753971438067" />
+              <option name="schema">
+                <list>
+                  <option value="RoomSearch" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/618244400/server/plugin/room/model/room.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1753971438056" />
+              <option name="schema">
+                <list>
+                  <option value="Room" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/618244400/server/plugin/room/router/room.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1753971438057" />
+              <option name="schema">
+                <list>
+                  <option value="rooms" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/618244400/server/plugin/room/service/room.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1753971438068" />
+              <option name="schema">
+                <list>
+                  <option value="rooms" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/625445900/server/plugin/silence/api/mute.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754019195624" />
+              <option name="schema">
+                <list>
+                  <option value="mute" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/625445900/server/plugin/silence/model/mute.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754019195622" />
+              <option name="schema">
+                <list>
+                  <option value="Mute" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/625445900/server/plugin/silence/model/request/mute.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754019195625" />
+              <option name="schema">
+                <list>
+                  <option value="MuteSearch" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/625445900/server/plugin/silence/router/mute.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754019195626" />
+              <option name="schema">
+                <list>
+                  <option value="mute" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/625445900/server/plugin/silence/service/mute.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754019195627" />
+              <option name="schema">
+                <list>
+                  <option value="mute" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/626603100/server/plugin/silence/api/mute.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754030028715" />
+              <option name="schema">
+                <list>
+                  <option value="mute" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/626603100/server/plugin/silence/model/mute.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754030028716" />
+              <option name="schema">
+                <list>
+                  <option value="Mute" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/626603100/server/plugin/silence/model/request/mute.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754030028720" />
+              <option name="schema">
+                <list>
+                  <option value="MuteSearch" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/626603100/server/plugin/silence/router/mute.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754030028714" />
+              <option name="schema">
+                <list>
+                  <option value="mute" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/626603100/server/plugin/silence/service/mute.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754030028718" />
+              <option name="schema">
+                <list>
+                  <option value="mute" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/643880200/server/plugin/chamber/api/room_tag_dict.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754015061174" />
+              <option name="schema">
+                <list>
+                  <option value="roomTagDict" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/643880200/server/plugin/chamber/model/request/room_tag_dict.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754015061176" />
+              <option name="schema">
+                <list>
+                  <option value="RoomTagDictSearch" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/643880200/server/plugin/chamber/model/room_tag_dict.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754015061175" />
+              <option name="schema">
+                <list>
+                  <option value="RoomTagDict" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/643880200/server/plugin/chamber/router/room_tag_dict.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754015061189" />
+              <option name="schema">
+                <list>
+                  <option value="roomTagDict" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/643880200/server/plugin/chamber/service/room_tag_dict.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754015061192" />
+              <option name="schema">
+                <list>
+                  <option value="roomTagDict" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/822814500/server/plugin/gift/api/gift_info.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754103425387" />
+              <option name="schema">
+                <list>
+                  <option value="giftInfo" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/822814500/server/plugin/gift/model/gift_info.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754103425362" />
+              <option name="schema">
+                <list>
+                  <option value="GiftInfo" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/822814500/server/plugin/gift/model/request/gift_info.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754103425375" />
+              <option name="schema">
+                <list>
+                  <option value="GiftInfoSearch" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/822814500/server/plugin/gift/router/gift_info.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754103425375" />
+              <option name="schema">
+                <list>
+                  <option value="giftInfo" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/822814500/server/plugin/gift/service/gift_info.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754103425377" />
+              <option name="schema">
+                <list>
+                  <option value="giftInfo" />
                 </list>
               </option>
             </ScannedPath>
@@ -2932,7 +3622,7 @@
         <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/initialize/plugin_biz_v2.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1753943805205" />
+              <option name="lastModified" value="1754280183797" />
             </ScannedPath>
           </value>
         </entry>
@@ -3702,6 +4392,175 @@
             </ScannedPath>
           </value>
         </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/api/admin_user.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754280337449" />
+              <option name="schema">
+                <list>
+                  <option value="adminUser" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/api/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754280337453" />
+              <option name="schema">
+                <list>
+                  <option value="api" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/config/config.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754280183751" />
+              <option name="schema">
+                <list>
+                  <option value="Config" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/gen/gen.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754280337449" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/initialize/api.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754280183765" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/initialize/gorm.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754280337449" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/initialize/menu.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754280183769" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/initialize/router.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754280337451" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/initialize/viper.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754280183759" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/model/admin_user.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754280337450" />
+              <option name="schema">
+                <list>
+                  <option value="AdminUser" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/model/request/admin_user.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754280337445" />
+              <option name="schema">
+                <list>
+                  <option value="AdminUserSearch" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/plugin.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754280183778" />
+              <option name="schema">
+                <list>
+                  <option value="plugin" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/plugin/plugin.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754280183771" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/router/admin_user.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754280337445" />
+              <option name="schema">
+                <list>
+                  <option value="adminUser" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/router/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754280337452" />
+              <option name="schema">
+                <list>
+                  <option value="router" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/service/admin_user.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754280337446" />
+              <option name="schema">
+                <list>
+                  <option value="adminUser" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/service/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754280337453" />
+              <option name="schema">
+                <list>
+                  <option value="service" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
         <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/announcement/api/enter.go">
           <value>
             <ScannedPath>
@@ -3871,6 +4730,235 @@
             </ScannedPath>
           </value>
         </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/api/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754054686196" />
+              <option name="schema">
+                <list>
+                  <option value="api" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/api/room.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754013744141" />
+              <option name="schema">
+                <list>
+                  <option value="room" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/api/room_tag_dict.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754054686195" />
+              <option name="schema">
+                <list>
+                  <option value="roomTagDict" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/config/config.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754013527686" />
+              <option name="schema">
+                <list>
+                  <option value="Config" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/gen/gen.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754054686154" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/initialize/api.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754013527735" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/initialize/gorm.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754054686154" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/initialize/menu.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754013527688" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/initialize/router.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754054686155" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/initialize/viper.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754013527736" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/model/request/room.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754013744140" />
+              <option name="schema">
+                <list>
+                  <option value="RoomSearch" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/model/request/room_tag_dict.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754054686196" />
+              <option name="schema">
+                <list>
+                  <option value="RoomTagDictSearch" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/model/room.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754229844082" />
+              <option name="schema">
+                <list>
+                  <option value="Room" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/model/room_tag_dict.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754054686154" />
+              <option name="schema">
+                <list>
+                  <option value="RoomTagDict" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/plugin.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754013527728" />
+              <option name="schema">
+                <list>
+                  <option value="plugin" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/plugin/plugin.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754013527737" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/router/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754054686155" />
+              <option name="schema">
+                <list>
+                  <option value="router" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/router/room.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754013744141" />
+              <option name="schema">
+                <list>
+                  <option value="room" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/router/room_tag_dict.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754054686155" />
+              <option name="schema">
+                <list>
+                  <option value="roomTagDict" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/service/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754054686154" />
+              <option name="schema">
+                <list>
+                  <option value="service" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/service/room.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754013744156" />
+              <option name="schema">
+                <list>
+                  <option value="room" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/service/room_tag_dict.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754054686197" />
+              <option name="schema">
+                <list>
+                  <option value="roomTagDict" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
         <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/email/api/enter.go">
           <value>
             <ScannedPath>
@@ -3998,10 +5086,615 @@
             </ScannedPath>
           </value>
         </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/api/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754103650812" />
+              <option name="schema">
+                <list>
+                  <option value="api" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/config/config.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754098732432" />
+              <option name="schema">
+                <list>
+                  <option value="Config" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/gen/gen.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754103650815" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/initialize/api.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754098732434" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/initialize/gorm.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754103650818" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/initialize/menu.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754098732446" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/initialize/router.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754103650820" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/initialize/viper.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754098732435" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/plugin.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754098732441" />
+              <option name="schema">
+                <list>
+                  <option value="plugin" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/plugin/plugin.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754098732436" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/router/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754103650821" />
+              <option name="schema">
+                <list>
+                  <option value="router" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/service/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754103650822" />
+              <option name="schema">
+                <list>
+                  <option value="service" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/manage/api/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754013468387" />
+              <option name="schema">
+                <list>
+                  <option value="api" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/manage/config/config.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754010800421" />
+              <option name="schema">
+                <list>
+                  <option value="Config" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/manage/gen/gen.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754013468389" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/manage/initialize/api.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754010800421" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/manage/initialize/gorm.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754013468392" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/manage/initialize/menu.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754010800410" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/manage/initialize/router.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754013468394" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/manage/initialize/viper.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754010800414" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/manage/plugin.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754010800430" />
+              <option name="schema">
+                <list>
+                  <option value="plugin" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/manage/plugin/plugin.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754010800425" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/manage/router/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754013468385" />
+              <option name="schema">
+                <list>
+                  <option value="router" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/manage/service/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754013468386" />
+              <option name="schema">
+                <list>
+                  <option value="service" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
         <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/plugin-tool/utils/check.go">
           <value>
             <ScannedPath>
               <option name="lastModified" value="1753943805331" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/room/api/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1753971970592" />
+              <option name="schema">
+                <list>
+                  <option value="api" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/room/config/config.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1753968643736" />
+              <option name="schema">
+                <list>
+                  <option value="Config" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/room/gen/gen.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1753971970598" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/room/initialize/api.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1753968643645" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/room/initialize/gorm.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1753971970606" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/room/initialize/menu.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1753968643745" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/room/initialize/router.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1753971970611" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/room/initialize/viper.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1753968643758" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/room/plugin.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1753968643696" />
+              <option name="schema">
+                <list>
+                  <option value="plugin" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/room/plugin/plugin.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1753968643781" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/room/router/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1753971970615" />
+              <option name="schema">
+                <list>
+                  <option value="router" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/room/service/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1753971970618" />
+              <option name="schema">
+                <list>
+                  <option value="service" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/api/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754054650862" />
+              <option name="schema">
+                <list>
+                  <option value="api" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/api/mute.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754054650854" />
+              <option name="schema">
+                <list>
+                  <option value="mute" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/config/config.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754016851459" />
+              <option name="schema">
+                <list>
+                  <option value="Config" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/gen/gen.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754054650861" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/initialize/api.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754016851445" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/initialize/gorm.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754054650861" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/initialize/menu.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754016851449" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/initialize/router.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754054650854" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/initialize/viper.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754016851452" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/model/mute.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754054650861" />
+              <option name="schema">
+                <list>
+                  <option value="Mute" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/model/request/mute.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754054650854" />
+              <option name="schema">
+                <list>
+                  <option value="MuteSearch" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/plugin.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754016851441" />
+              <option name="schema">
+                <list>
+                  <option value="plugin" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/plugin/plugin.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754016851454" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/router/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754054650861" />
+              <option name="schema">
+                <list>
+                  <option value="router" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/router/mute.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754054650854" />
+              <option name="schema">
+                <list>
+                  <option value="mute" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/service/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754054650862" />
+              <option name="schema">
+                <list>
+                  <option value="service" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/silence/service/mute.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754054650861" />
+              <option name="schema">
+                <list>
+                  <option value="mute" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/users/api/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754033613978" />
+              <option name="schema">
+                <list>
+                  <option value="api" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/users/config/config.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754033613973" />
+              <option name="schema">
+                <list>
+                  <option value="Config" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/users/gen/gen.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754033613980" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/users/initialize/api.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754033613966" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/users/initialize/gorm.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754033613967" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/users/initialize/menu.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754033613968" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/users/initialize/router.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754033613969" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/users/initialize/viper.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754033613974" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/users/plugin.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754033613972" />
+              <option name="schema">
+                <list>
+                  <option value="plugin" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/users/plugin/plugin.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754033613970" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/users/router/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754033613976" />
+              <option name="schema">
+                <list>
+                  <option value="router" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/users/service/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754033613977" />
+              <option name="schema">
+                <list>
+                  <option value="service" />
+                </list>
+              </option>
             </ScannedPath>
           </value>
         </entry>
@@ -5413,6 +7106,8 @@
       <map>
         <entry key="_gorm" value="_gorm" />
         <entry key="add_menu_authority_info" value="AddMenuAuthorityInfo" />
+        <entry key="admin_user" value="adminUser" />
+        <entry key="admin_user_search" value="AdminUserSearch" />
         <entry key="aliyun_oss" value="AliyunOSS" />
         <entry key="api" value="api" />
         <entry key="api_group" value="ApiGroup" />
@@ -5498,6 +7193,8 @@
         <entry key="get_by_id" value="GetById" />
         <entry key="get_nickname" value="GetNickname" />
         <entry key="get_user_list" value="GetUserList" />
+        <entry key="gift_info" value="giftInfo" />
+        <entry key="gift_info_search" value="GiftInfoSearch" />
         <entry key="gva_model" value="GVA_MODEL" />
         <entry key="hua_wei_obs" value="HuaWeiObs" />
         <entry key="ids_req" value="IdsReq" />
@@ -5543,6 +7240,8 @@
         <entry key="mongo_host" value="MongoHost" />
         <entry key="mssql" value="Mssql" />
         <entry key="mssql_init_handler" value="MssqlInitHandler" />
+        <entry key="mute" value="mute" />
+        <entry key="mute_search" value="MuteSearch" />
         <entry key="mysql" value="Mysql" />
         <entry key="mysql_init_handler" value="MysqlInitHandler" />
         <entry key="obs" value="Obs" />
@@ -5576,7 +7275,13 @@
         <entry key="reset_password" value="ResetPassword" />
         <entry key="response" value="Response" />
         <entry key="response_body_writer" value="responseBodyWriter" />
+        <entry key="room" value="Room" />
         <entry key="room_client" value="roomClient" />
+        <entry key="room_search" value="RoomSearch" />
+        <entry key="room_tag_dict" value="roomTagDict" />
+        <entry key="room_tag_dict_search" value="RoomTagDictSearch" />
+        <entry key="rooms" value="rooms" />
+        <entry key="rooms_search" value="RoomsSearch" />
         <entry key="router" value="router" />
         <entry key="router_group" value="RouterGroup" />
         <entry key="search_api_params" value="SearchApiParams" />
@@ -5659,6 +7364,6 @@
         <entry key="zap_core" value="ZapCore" />
       </map>
     </option>
-    <option name="lastTimeChecked" value="1753949138747" />
+    <option name="lastTimeChecked" value="1754355820710" />
   </component>
 </project>
