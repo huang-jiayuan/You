@@ -1,8 +1,10 @@
 package initialize
 
 import (
+	"github.com/flipped-aurora/gin-vue-admin/server/plugin/admin"
 	"github.com/flipped-aurora/gin-vue-admin/server/plugin/announcement"
 	"github.com/flipped-aurora/gin-vue-admin/server/plugin/chamber"
+	"github.com/flipped-aurora/gin-vue-admin/server/plugin/gift"
 	"github.com/flipped-aurora/gin-vue-admin/server/plugin/manage"
 	"github.com/flipped-aurora/gin-vue-admin/server/plugin/room"
 	"github.com/flipped-aurora/gin-vue-admin/server/plugin/silence"
@@ -23,4 +25,6 @@ func bizPluginV2(engine *gin.Engine) {
 	PluginInitV2(engine, chamber.Plugin)
 	PluginInitV2(engine, silence.Plugin)
 	PluginInitV2(engine, users.Plugin)
+	PluginInitV2(engine, gift.Plugin)
+	PluginInitV2(engine, admin.Plugin)
 }

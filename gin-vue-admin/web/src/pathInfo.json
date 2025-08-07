@@ -1,6 +1,6 @@
 {
   "/src/view/about/index.vue": "About",
-  "/src/view/carouse/carouselImage/carouselImage.vue": "HomePage",
+  "/src/view/carouse/carouselImage/carouselImage.vue": "CarouselImage",
   "/src/view/carouse/carouselImage/carouselImageForm.vue": "CarouselImageForm",
   "/src/view/carouse/carouselImage/components/CarouselDialog.vue": "CarouselDialog",
   "/src/view/carouse/carouselImage/components/CarouselPreview.vue": "CarouselPreview",
@@ -23,6 +23,8 @@
   "/src/view/example/index.vue": "Example",
   "/src/view/example/upload/scanUpload.vue": "scanUpload",
   "/src/view/example/upload/upload.vue": "Upload",
+  "/src/view/hot_room/hostRoom/hostRoom.vue": "HostRoom",
+  "/src/view/hot_room/hostRoom/hostRoomForm.vue": "HostRoomForm",
   "/src/view/init/index.vue": "Init",
   "/src/view/layout/aside/asideComponent/asyncSubmenu.vue": "AsyncSubmenu",
   "/src/view/layout/aside/asideComponent/index.vue": "AsideComponent",
@@ -75,7 +77,19 @@
   "/src/view/systemTools/system/system.vue": "Config",
   "/src/view/users/user/user.vue": "User",
   "/src/view/users/user/userForm.vue": "UserForm",
+  "/src/view/violation/mute/mute.vue": "Mute",
+  "/src/view/violation/mute/muteForm.vue": "MuteForm",
+  "/src/plugin/admin/form/adminUser.vue": "AdminUserForm",
+  "/src/plugin/admin/view/adminUser.vue": "AdminUser",
   "/src/plugin/announcement/form/info.vue": "InfoForm",
   "/src/plugin/announcement/view/info.vue": "Info",
-  "/src/plugin/email/view/index.vue": "Email"
+  "/src/plugin/chamber/form/room.vue": "RoomForm",
+  "/src/plugin/chamber/form/roomTagDict.vue": "RoomTagDictForm",
+  "/src/plugin/chamber/view/room.vue": "Room",
+  "/src/plugin/chamber/view/roomTagDict.vue": "RoomTagDict",
+  "/src/plugin/email/view/index.vue": "Email",
+  "/src/plugin/gift/form/giftInfo.vue": "GiftInfoForm",
+  "/src/plugin/gift/view/giftInfo.vue": "GiftInfo",
+  "/src/plugin/silence/form/mute.vue": "MuteForm",
+  "/src/plugin/silence/view/mute.vue": "Mute"
 }
