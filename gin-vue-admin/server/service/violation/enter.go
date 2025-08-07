@@ -1,3 +1,3 @@
 package violation
 
-type ServiceGroup struct{ ViolationService }
+type ServiceGroup struct{ MuteService }

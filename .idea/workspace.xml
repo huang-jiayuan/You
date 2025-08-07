@@ -4,23 +4,7 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1e9eee4-c056-49d7-a0b5-befec437937f" name="更改" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/GOHCache.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/GOHCache.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/api/v1/hot_room/enter.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/api/v1/hot_room/enter.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/api/v1/hot_room/hot_room.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/initialize/gorm_biz.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/initialize/gorm_biz.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/initialize/router_biz.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/initialize/router_biz.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/model/hot_room/hot_room.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/model/hot_room/request/hot_room.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/router/hot_room/enter.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/router/hot_room/enter.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/router/hot_room/hot_room.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/service/hot_room/enter.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/service/hot_room/enter.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/service/hot_room/hot_room.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gin-vue-admin/web/src/api/hot_room/hotRoom.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gin-vue-admin/web/src/view/hot_room/hotRoom/hotRoom.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gin-vue-admin/web/src/view/hot_room/hotRoom/hotRoomForm.vue" beforeDir="false" />
-    </list>
+    <list default="true" id="e6dcdeab-cc10-4c87-ba0d-d4ecd3c13885" name="更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -28,61 +12,44 @@
   </component>
   <component name="GOROOT" url="file://$PROJECT_DIR$/../../go语言/go" />
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="main" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;YG-A1&quot;
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "YG-A1"
   }
-}</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/huang-jiayuan/You.git&quot;,
-    &quot;accountId&quot;: &quot;df69715c-a255-48e9-957f-6be18fd073c9&quot;
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/huang-jiayuan/You.git",
+    "accountId": "df69715c-a255-48e9-957f-6be18fd073c9"
   }
-}</component>
-  <component name="ProjectColorInfo">{
-  &quot;customColor&quot;: &quot;&quot;,
-  &quot;associatedIndex&quot;: 7
-}</component>
-  <component name="ProjectId" id="30drYaGbmlVtJkyoQpB3qX9QX5W" />
-  <component name="ProjectLevelVcsManager">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 8
+}]]></component>
+  <component name="ProjectId" id="30wVUcJZ5RlQlaErZZ9rv8kdwFg" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;yg&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/gowork/You/gin-vue-admin/web/public&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;D:\\golangs\\GoLand 2025.1.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "go.import.settings.migrated": "true",
+    "go.sdk.automatically.set": "true",
+    "last_opened_file_path": "C:/Users/17380",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\gowork\You\gin-vue-admin\web\public" />
-    </key>
-  </component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -93,11 +60,11 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="默认任务">
-      <changelist id="c1e9eee4-c056-49d7-a0b5-befec437937f" name="更改" comment="" />
-      <created>1753968338827</created>
+      <changelist id="e6dcdeab-cc10-4c87-ba0d-d4ecd3c13885" name="更改" comment="" />
+      <created>1754538641217</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1753968338827</updated>
+      <updated>1754538641217</updated>
     </task>
     <servers />
   </component>

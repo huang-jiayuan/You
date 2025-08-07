@@ -13,7 +13,7 @@ message StreamResp {
 }
 //todo：短信
 message SendSmsRequest {
-  string mobile = 1; //手机号
+  string username = 1; //手机号
   string source = 2; //来源
 }
 
@@ -23,8 +23,9 @@ message SendSmsResponse {
 
 //todo:登录注册一体化
 message UserLoginRequest{
-  string mobile = 1; //手机号
+  string username = 1; //手机号
   string  code   = 2; //验证码
+  string lastLoginIp = 3;
 }
 message UserLoginResponse{
   int64 greet = 1;
@@ -32,11 +33,54 @@ message UserLoginResponse{
 
 //todo:手机号密码登录
 message UserPasswordRequest{
-  string mobile = 1;
+  string username = 1;
   string password = 2;
+  bool rememberMe = 3;
 }
 message UserPasswordResponse{
   int64 greet = 1;
+  string token = 2;
+}
+// 验证令牌请求
+message VerifyTokenRequest {
+  string token = 1;
+}
+
+// 验证令牌响应
+message VerifyTokenResponse {
+  bool valid = 1;
+  string username = 2; // 令牌对应的用户名
+}
+// 登出请求
+message LogoutRequest {
+  string token = 1;
+}
+
+// 登出响应
+message LogoutResponse {
+  string greet = 1;
+}
+
+//todo:修改密码
+message UpdatePasswordRequest{
+  int64 userId = 1;
+  string password = 2;
+}
+message UpdatePasswordResponse{
+  string greet = 1;
+}
+
+//todo:完善个人信息
+message ImproveUserMessageRequest{
+  int64 userId = 1;
+  string nickname = 2;
+  string avatar = 3;
+  string gender = 4;
+  string voiceTag = 5;
+  string InterestTags = 6;
+}
+message ImproveUserMessageResponse{
+  string greet = 1;
 }
 
 service User {
@@ -44,4 +88,8 @@ service User {
   rpc SendSms(SendSmsRequest) returns(SendSmsResponse);
   rpc UserLogin(UserLoginRequest) returns(UserLoginResponse);
   rpc UserPassword(UserPasswordRequest) returns(UserPasswordResponse);
+  rpc VerifyToken (VerifyTokenRequest) returns (VerifyTokenResponse);
+  rpc Logout (LogoutRequest) returns (LogoutResponse);
+  rpc UpdatePassword(UpdatePasswordRequest) returns(UpdatePasswordResponse);
+  rpc ImproveUserMessage(ImproveUserMessageRequest) returns(ImproveUserMessageResponse);
 }

@@ -2,6 +2,6 @@ package violation
 
 import "github.com/flipped-aurora/gin-vue-admin/server/service"
 
-type ApiGroup struct{ ViolationApi }
+type ApiGroup struct{ MuteApi }
 
-var violationsService = service.ServiceGroupApp.ViolationServiceGroup.ViolationService
+var muteService = service.ServiceGroupApp.ViolationServiceGroup.MuteService
