@@ -1,3 +1,3 @@
 package hot_room
 
-type ServiceGroup struct{ HotRoomService }
+type ServiceGroup struct{ HostRoomService }

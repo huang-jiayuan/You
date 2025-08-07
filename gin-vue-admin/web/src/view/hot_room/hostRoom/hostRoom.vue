@@ -47,6 +47,10 @@
   <el-input v-model="searchInfo.roomHost" placeholder="搜索条件" />
 </el-form-item>
             
+            <el-form-item label="房间人数" prop="roomNum">
+  <el-input v-model.number="searchInfo.roomNum" placeholder="搜索条件" />
+</el-form-item>
+            
 
         <template v-if="showAllQuery">
           <!-- 将需要控制显示状态的查询条件添加到此范围内 -->
@@ -64,9 +68,9 @@
         <div class="gva-btn-list">
             <el-button v-auth="btnAuth.add" type="primary" icon="plus" @click="openDialog()">新增</el-button>
             <el-button v-auth="btnAuth.batchDelete" icon="delete" style="margin-left: 10px;" :disabled="!multipleSelection.length" @click="onDelete">删除</el-button>
-            <ExportTemplate v-auth="btnAuth.exportTemplate" template-id="hot_room_HotRoom" />
-            <ExportExcel v-auth="btnAuth.exportExcel" template-id="hot_room_HotRoom" filterDeleted/>
-            <ImportExcel v-auth="btnAuth.importExcel" template-id="hot_room_HotRoom" @on-success="getTableData" />
+            <ExportTemplate v-auth="btnAuth.exportTemplate" template-id="hot_room_HostRoom" />
+            <ExportExcel v-auth="btnAuth.exportExcel" template-id="hot_room_HostRoom" filterDeleted/>
+            <ImportExcel v-auth="btnAuth.importExcel" template-id="hot_room_HostRoom" @on-success="getTableData" />
         </div>
         <el-table
         ref="multipleTable"
@@ -75,6 +79,7 @@
         :data="tableData"
         row-key="ID"
         @selection-change="handleSelectionChange"
+        @sort-change="sortChange"
         >
         <el-table-column type="selection" width="55" />
         
@@ -98,10 +103,12 @@
 </el-table-column>
             <el-table-column align="left" label="房主" prop="roomHost" width="120" />
 
+            <el-table-column sortable align="left" label="房间人数" prop="roomNum" width="120" />
+
         <el-table-column align="left" label="操作" fixed="right" :min-width="appStore.operateMinWith">
             <template #default="scope">
             <el-button v-auth="btnAuth.info" type="primary" link class="table-button" @click="getDetails(scope.row)"><el-icon style="margin-right: 5px"><InfoFilled /></el-icon>查看</el-button>
-            <el-button v-auth="btnAuth.edit" type="primary" link icon="edit" class="table-button" @click="updateHotRoomFunc(scope.row)">编辑</el-button>
+            <el-button v-auth="btnAuth.edit" type="primary" link icon="edit" class="table-button" @click="updateHostRoomFunc(scope.row)">编辑</el-button>
             <el-button  v-auth="btnAuth.delete" type="primary" link icon="delete" @click="deleteRow(scope.row)">删除</el-button>
             </template>
         </el-table-column>
@@ -149,6 +156,9 @@
             <el-form-item label="房主:" prop="roomHost">
     <el-input v-model="formData.roomHost" :clearable="true" placeholder="请输入房主" />
 </el-form-item>
+            <el-form-item label="房间人数:" prop="roomNum">
+    <el-input v-model.number="formData.roomNum" :clearable="true" placeholder="请输入房间人数" />
+</el-form-item>
           </el-form>
     </el-drawer>
 
@@ -169,6 +179,9 @@
                     <el-descriptions-item label="房主">
     {{ detailFrom.roomHost }}
 </el-descriptions-item>
+                    <el-descriptions-item label="房间人数">
+    {{ detailFrom.roomNum }}
+</el-descriptions-item>
             </el-descriptions>
         </el-drawer>
 
@@ -177,13 +190,13 @@
 
 <script setup>
 import {
-  createHotRoom,
-  deleteHotRoom,
-  deleteHotRoomByIds,
-  updateHotRoom,
-  findHotRoom,
-  getHotRoomList
-} from '@/api/hot_room/hotRoom'
+  createHostRoom,
+  deleteHostRoom,
+  deleteHostRoomByIds,
+  updateHostRoom,
+  findHostRoom,
+  getHostRoomList
+} from '@/api/hot_room/hostRoom'
 
 // 全量引入格式化工具 请按需保留
 import { getDictFunc, formatDate, formatBoolean, filterDict ,filterDataSource, returnArrImg, onDownloadFile } from '@/utils/format'
@@ -202,7 +215,7 @@ import ExportTemplate from '@/components/exportExcel/exportTemplate.vue'
 
 
 defineOptions({
-    name: 'HotRoom'
+    name: 'HostRoom'
 })
 // 按钮权限实例化
     const btnAuth = useBtnAuth()
@@ -215,14 +228,15 @@ const appStore = useAppStore()
 const showAllQuery = ref(false)
 
 // 自动化生成的字典（可能为空）以及字段
-const rom_statusOptions = ref([])
 const room_typeOptions = ref([])
+const rom_statusOptions = ref([])
 const formData = ref({
             roomId: undefined,
             roomType: '',
             roomTags: '',
             roomStatus: '',
             roomHost: '',
+            roomNum: undefined,
         })
 
 
@@ -279,6 +293,12 @@ const rule = reactive({
                    trigger: ['input', 'blur'],
               }
               ],
+               roomNum : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               },
+              ],
 })
 
 const elFormRef = ref()
@@ -290,6 +310,23 @@ const total = ref(0)
 const pageSize = ref(10)
 const tableData = ref([])
 const searchInfo = ref({})
+// 排序
+const sortChange = ({ prop, order }) => {
+  const sortMap = {
+    CreatedAt:"CreatedAt",
+    ID:"ID",
+            roomNum: 'room_num',
+  }
+
+  let sort = sortMap[prop]
+  if(!sort){
+   sort = prop.replace(/[A-Z]/g, match => `_${match.toLowerCase()}`)
+  }
+
+  searchInfo.value.sort = sort
+  searchInfo.value.order = order
+  getTableData()
+}
 // 重置
 const onReset = () => {
   searchInfo.value = {}
@@ -319,7 +356,7 @@ const handleCurrentChange = (val) => {
 
 // 查询
 const getTableData = async() => {
-  const table = await getHotRoomList({ page: page.value, pageSize: pageSize.value, ...searchInfo.value })
+  const table = await getHostRoomList({ page: page.value, pageSize: pageSize.value, ...searchInfo.value })
   if (table.code === 0) {
     tableData.value = table.data.list
     total.value = table.data.total
@@ -334,8 +371,8 @@ getTableData()
 
 // 获取需要的字典 可能为空 按需保留
 const setOptions = async () =>{
-    rom_statusOptions.value = await getDictFunc('rom_status')
     room_typeOptions.value = await getDictFunc('room_type')
+    rom_statusOptions.value = await getDictFunc('rom_status')
 }
 
 // 获取需要的字典 可能为空 按需保留
@@ -356,7 +393,7 @@ const deleteRow = (row) => {
         cancelButtonText: '取消',
         type: 'warning'
     }).then(() => {
-            deleteHotRoomFunc(row)
+            deleteHostRoomFunc(row)
         })
     }
 
@@ -379,7 +416,7 @@ const onDelete = async() => {
         multipleSelection.value.map(item => {
           IDs.push(item.ID)
         })
-      const res = await deleteHotRoomByIds({ IDs })
+      const res = await deleteHostRoomByIds({ IDs })
       if (res.code === 0) {
         ElMessage({
           type: 'success',
@@ -397,8 +434,8 @@ const onDelete = async() => {
 const type = ref('')
 
 // 更新行
-const updateHotRoomFunc = async(row) => {
-    const res = await findHotRoom({ ID: row.ID })
+const updateHostRoomFunc = async(row) => {
+    const res = await findHostRoom({ ID: row.ID })
     type.value = 'update'
     if (res.code === 0) {
         formData.value = res.data
@@ -408,8 +445,8 @@ const updateHotRoomFunc = async(row) => {
 
 
 // 删除行
-const deleteHotRoomFunc = async (row) => {
-    const res = await deleteHotRoom({ ID: row.ID })
+const deleteHostRoomFunc = async (row) => {
+    const res = await deleteHostRoom({ ID: row.ID })
     if (res.code === 0) {
         ElMessage({
                 type: 'success',
@@ -440,6 +477,7 @@ const closeDialog = () => {
         roomTags: '',
         roomStatus: '',
         roomHost: '',
+        roomNum: undefined,
         }
 }
 // 弹窗确定
@@ -450,13 +488,13 @@ const enterDialog = async () => {
               let res
               switch (type.value) {
                 case 'create':
-                  res = await createHotRoom(formData.value)
+                  res = await createHostRoom(formData.value)
                   break
                 case 'update':
-                  res = await updateHotRoom(formData.value)
+                  res = await updateHostRoom(formData.value)
                   break
                 default:
-                  res = await createHotRoom(formData.value)
+                  res = await createHostRoom(formData.value)
                   break
               }
               btnLoading.value = false
@@ -486,7 +524,7 @@ const openDetailShow = () => {
 // 打开详情
 const getDetails = async (row) => {
   // 打开弹窗
-  const res = await findHotRoom({ ID: row.ID })
+  const res = await findHostRoom({ ID: row.ID })
   if (res.code === 0) {
     detailFrom.value = res.data
     openDetailShow()

@@ -253,10 +253,6 @@
         <entry key="CarouselImage">
           <value>
             <set>
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/602561600/server/model/carouse/carousel_image.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/672911100/server/model/carouse/carousel_image.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/803727100/server/model/carouse/carousel_image.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/881564200/server/model/carouse/carousel_image.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/model/carouse/carousel_image.go" />
             </set>
           </value>
@@ -264,10 +260,6 @@
         <entry key="CarouselImageApi">
           <value>
             <set>
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/602561600/server/api/v1/carouse/carousel_image.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/672911100/server/api/v1/carouse/carousel_image.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/803727100/server/api/v1/carouse/carousel_image.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/881564200/server/api/v1/carouse/carousel_image.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/api/v1/carouse/carousel_image.go" />
             </set>
           </value>
@@ -275,10 +267,6 @@
         <entry key="CarouselImageRouter">
           <value>
             <set>
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/602561600/server/router/carouse/carousel_image.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/672911100/server/router/carouse/carousel_image.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/803727100/server/router/carouse/carousel_image.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/881564200/server/router/carouse/carousel_image.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/router/carouse/carousel_image.go" />
             </set>
           </value>
@@ -286,10 +274,6 @@
         <entry key="CarouselImageSearch">
           <value>
             <set>
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/602561600/server/model/carouse/request/carousel_image.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/672911100/server/model/carouse/request/carousel_image.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/803727100/server/model/carouse/request/carousel_image.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/881564200/server/model/carouse/request/carousel_image.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/model/carouse/request/carousel_image.go" />
             </set>
           </value>
@@ -297,10 +281,6 @@
         <entry key="CarouselImageService">
           <value>
             <set>
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/602561600/server/service/carouse/carousel_image.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/672911100/server/service/carouse/carousel_image.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/803727100/server/service/carouse/carousel_image.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/881564200/server/service/carouse/carousel_image.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/service/carouse/carousel_image.go" />
             </set>
           </value>
@@ -593,9 +573,6 @@
         <entry key="HotRoom">
           <value>
             <set>
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/47926200/server/model/hot_room/hot_room.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/533995500/server/model/hot_room/hot_room.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/909391900/server/model/hot_room/hot_room.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/model/hot_room/hot_room.go" />
             </set>
           </value>
@@ -603,9 +580,6 @@
         <entry key="HotRoomApi">
           <value>
             <set>
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/47926200/server/api/v1/hot_room/hot_room.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/533995500/server/api/v1/hot_room/hot_room.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/909391900/server/api/v1/hot_room/hot_room.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/api/v1/hot_room/hot_room.go" />
             </set>
           </value>
@@ -613,9 +587,6 @@
         <entry key="HotRoomRouter">
           <value>
             <set>
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/47926200/server/router/hot_room/hot_room.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/533995500/server/router/hot_room/hot_room.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/909391900/server/router/hot_room/hot_room.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/router/hot_room/hot_room.go" />
             </set>
           </value>
@@ -623,9 +594,6 @@
         <entry key="HotRoomSearch">
           <value>
             <set>
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/47926200/server/model/hot_room/request/hot_room.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/533995500/server/model/hot_room/request/hot_room.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/909391900/server/model/hot_room/request/hot_room.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/model/hot_room/request/hot_room.go" />
             </set>
           </value>
@@ -633,9 +601,6 @@
         <entry key="HotRoomService">
           <value>
             <set>
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/47926200/server/service/hot_room/hot_room.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/533995500/server/service/hot_room/hot_room.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/909391900/server/service/hot_room/hot_room.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/service/hot_room/hot_room.go" />
             </set>
           </value>
@@ -1651,8 +1616,6 @@
           <value>
             <set>
               <option value="file://$PROJECT_DIR$/C/server/models/user.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/307968800/server/model/users/user.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/714517400/server/model/users/user.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/model/users/user.go" />
             </set>
           </value>
@@ -1660,8 +1623,6 @@
         <entry key="UserApi">
           <value>
             <set>
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/307968800/server/api/v1/users/user.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/714517400/server/api/v1/users/user.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/api/v1/users/user.go" />
             </set>
           </value>
@@ -1708,8 +1669,6 @@
         <entry key="UserRouter">
           <value>
             <set>
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/307968800/server/router/users/user.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/714517400/server/router/users/user.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/router/system/sys_user.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/router/users/user.go" />
             </set>
@@ -1718,8 +1677,6 @@
         <entry key="UserSearch">
           <value>
             <set>
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/307968800/server/model/users/request/user.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/714517400/server/model/users/request/user.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/model/users/request/user.go" />
             </set>
           </value>
@@ -1727,8 +1684,6 @@
         <entry key="UserService">
           <value>
             <set>
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/307968800/server/service/users/user.go" />
-              <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/714517400/server/service/users/user.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/service/system/sys_user.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/service/users/user.go" />
             </set>
@@ -2500,546 +2455,6 @@
                 <list>
                   <option value="userClient" />
                   <option value="UnimplementedUserServer" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/307968800/server/api/v1/users/user.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754049890210" />
-              <option name="schema">
-                <list>
-                  <option value="UserApi" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/307968800/server/model/users/request/user.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754049890211" />
-              <option name="schema">
-                <list>
-                  <option value="UserSearch" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/307968800/server/model/users/user.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754049890210" />
-              <option name="schema">
-                <list>
-                  <option value="User" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/307968800/server/router/users/user.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754049890208" />
-              <option name="schema">
-                <list>
-                  <option value="UserRouter" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/307968800/server/service/users/user.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754049890211" />
-              <option name="schema">
-                <list>
-                  <option value="UserService" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/47926200/server/api/v1/hot_room/hot_room.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754362860330" />
-              <option name="schema">
-                <list>
-                  <option value="HotRoomApi" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/47926200/server/model/hot_room/hot_room.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754362860330" />
-              <option name="schema">
-                <list>
-                  <option value="HotRoom" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/47926200/server/model/hot_room/request/hot_room.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754362860342" />
-              <option name="schema">
-                <list>
-                  <option value="HotRoomSearch" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/47926200/server/router/hot_room/hot_room.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754362860331" />
-              <option name="schema">
-                <list>
-                  <option value="HotRoomRouter" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/47926200/server/service/hot_room/hot_room.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754362860334" />
-              <option name="schema">
-                <list>
-                  <option value="HotRoomService" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/533995500/server/api/v1/hot_room/hot_room.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754363528321" />
-              <option name="schema">
-                <list>
-                  <option value="HotRoomApi" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/533995500/server/model/hot_room/hot_room.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754363528311" />
-              <option name="schema">
-                <list>
-                  <option value="HotRoom" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/533995500/server/model/hot_room/request/hot_room.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754363528312" />
-              <option name="schema">
-                <list>
-                  <option value="HotRoomSearch" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/533995500/server/router/hot_room/hot_room.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754363528324" />
-              <option name="schema">
-                <list>
-                  <option value="HotRoomRouter" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/533995500/server/service/hot_room/hot_room.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754363528319" />
-              <option name="schema">
-                <list>
-                  <option value="HotRoomService" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/602561600/server/api/v1/carouse/carousel_image.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1753971359612" />
-              <option name="schema">
-                <list>
-                  <option value="CarouselImageApi" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/602561600/server/model/carouse/carousel_image.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1753971359610" />
-              <option name="schema">
-                <list>
-                  <option value="CarouselImage" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/602561600/server/model/carouse/request/carousel_image.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1753971359621" />
-              <option name="schema">
-                <list>
-                  <option value="CarouselImageSearch" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/602561600/server/router/carouse/carousel_image.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1753971359622" />
-              <option name="schema">
-                <list>
-                  <option value="CarouselImageRouter" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/602561600/server/service/carouse/carousel_image.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1753971359611" />
-              <option name="schema">
-                <list>
-                  <option value="CarouselImageService" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/672911100/server/api/v1/carouse/carousel_image.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1753972012142" />
-              <option name="schema">
-                <list>
-                  <option value="CarouselImageApi" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/672911100/server/model/carouse/carousel_image.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1753972012137" />
-              <option name="schema">
-                <list>
-                  <option value="CarouselImage" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/672911100/server/model/carouse/request/carousel_image.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1753972012144" />
-              <option name="schema">
-                <list>
-                  <option value="CarouselImageSearch" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/672911100/server/router/carouse/carousel_image.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1753972012139" />
-              <option name="schema">
-                <list>
-                  <option value="CarouselImageRouter" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/672911100/server/service/carouse/carousel_image.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1753972012135" />
-              <option name="schema">
-                <list>
-                  <option value="CarouselImageService" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/714517400/server/api/v1/users/user.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754050476761" />
-              <option name="schema">
-                <list>
-                  <option value="UserApi" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/714517400/server/model/users/request/user.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754050018763" />
-              <option name="schema">
-                <list>
-                  <option value="UserSearch" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/714517400/server/model/users/user.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754050018764" />
-              <option name="schema">
-                <list>
-                  <option value="User" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/714517400/server/router/users/user.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754051669993" />
-              <option name="schema">
-                <list>
-                  <option value="UserRouter" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/714517400/server/service/users/user.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754050018763" />
-              <option name="schema">
-                <list>
-                  <option value="UserService" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/803727100/server/api/v1/carouse/carousel_image.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754360543810" />
-              <option name="schema">
-                <list>
-                  <option value="CarouselImageApi" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/803727100/server/model/carouse/carousel_image.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754360543811" />
-              <option name="schema">
-                <list>
-                  <option value="CarouselImage" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/803727100/server/model/carouse/request/carousel_image.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754360543806" />
-              <option name="schema">
-                <list>
-                  <option value="CarouselImageSearch" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/803727100/server/router/carouse/carousel_image.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754360543806" />
-              <option name="schema">
-                <list>
-                  <option value="CarouselImageRouter" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/803727100/server/service/carouse/carousel_image.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754360543808" />
-              <option name="schema">
-                <list>
-                  <option value="CarouselImageService" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/881564200/server/api/v1/carouse/carousel_image.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754361216344" />
-              <option name="schema">
-                <list>
-                  <option value="CarouselImageApi" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/881564200/server/model/carouse/carousel_image.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754361216346" />
-              <option name="schema">
-                <list>
-                  <option value="CarouselImage" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/881564200/server/model/carouse/request/carousel_image.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754361216345" />
-              <option name="schema">
-                <list>
-                  <option value="CarouselImageSearch" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/881564200/server/router/carouse/carousel_image.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754361216347" />
-              <option name="schema">
-                <list>
-                  <option value="CarouselImageRouter" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/881564200/server/service/carouse/carousel_image.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754361216346" />
-              <option name="schema">
-                <list>
-                  <option value="CarouselImageService" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/909391900/server/api/v1/hot_room/hot_room.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754363819307" />
-              <option name="schema">
-                <list>
-                  <option value="HotRoomApi" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/909391900/server/model/hot_room/hot_room.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754363819307" />
-              <option name="schema">
-                <list>
-                  <option value="HotRoom" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/909391900/server/model/hot_room/request/hot_room.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754363819306" />
-              <option name="schema">
-                <list>
-                  <option value="HotRoomSearch" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/909391900/server/router/hot_room/hot_room.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754363819309" />
-              <option name="schema">
-                <list>
-                  <option value="HotRoomRouter" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/gin-vue-admin/rm_file/909391900/server/service/hot_room/hot_room.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1754363819306" />
-              <option name="schema">
-                <list>
-                  <option value="HotRoomService" />
                 </list>
               </option>
             </ScannedPath>
@@ -7783,6 +7198,6 @@
         <entry key="zap_core" value="ZapCore" />
       </map>
     </option>
-    <option name="lastTimeChecked" value="1754442296006" />
+    <option name="lastTimeChecked" value="1754528825537" />
   </component>
 </project>
