@@ -37,3 +37,11 @@ func RedisExpire(key string) {
 func RedisDel(key string) {
 	RedisClient.Del(context.Background(), key)
 }
+
+func Set(key string, code string) error {
+	err := RedisClient.Set(context.Background(), key, code, time.Hour*24*30).Err()
+	if err != nil {
+		return err
+	}
+	return nil
+}
