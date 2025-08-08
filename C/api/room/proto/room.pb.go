@@ -109,6 +109,166 @@ func (x *StreamResp) GetGreet() string {
 	return ""
 }
 
+type SendGiftsReq struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SendUserId    int64                  `protobuf:"varint,1,opt,name=SendUserId,proto3" json:"SendUserId,omitempty"`
+	ReceiveUserId int64                  `protobuf:"varint,2,opt,name=ReceiveUserId,proto3" json:"ReceiveUserId,omitempty"`
+	RoomId        int64                  `protobuf:"varint,3,opt,name=RoomId,proto3" json:"RoomId,omitempty"`
+	GiftId        int64                  `protobuf:"varint,4,opt,name=GiftId,proto3" json:"GiftId,omitempty"`
+	SendCount     int64                  `protobuf:"varint,5,opt,name=SendCount,proto3" json:"SendCount,omitempty"`
+	SendType      string                 `protobuf:"bytes,6,opt,name=SendType,proto3" json:"SendType,omitempty"`
+	Message       string                 `protobuf:"bytes,7,opt,name=Message,proto3" json:"Message,omitempty"`
+	Status        string                 `protobuf:"bytes,8,opt,name=Status,proto3" json:"Status,omitempty"`
+	ClientIp      string                 `protobuf:"bytes,9,opt,name=ClientIp,proto3" json:"ClientIp,omitempty"`
+	SendTime      string                 `protobuf:"bytes,10,opt,name=SendTime,proto3" json:"SendTime,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SendGiftsReq) Reset() {
+	*x = SendGiftsReq{}
+	mi := &file_room_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SendGiftsReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SendGiftsReq) ProtoMessage() {}
+
+func (x *SendGiftsReq) ProtoReflect() protoreflect.Message {
+	mi := &file_room_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SendGiftsReq.ProtoReflect.Descriptor instead.
+func (*SendGiftsReq) Descriptor() ([]byte, []int) {
+	return file_room_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *SendGiftsReq) GetSendUserId() int64 {
+	if x != nil {
+		return x.SendUserId
+	}
+	return 0
+}
+
+func (x *SendGiftsReq) GetReceiveUserId() int64 {
+	if x != nil {
+		return x.ReceiveUserId
+	}
+	return 0
+}
+
+func (x *SendGiftsReq) GetRoomId() int64 {
+	if x != nil {
+		return x.RoomId
+	}
+	return 0
+}
+
+func (x *SendGiftsReq) GetGiftId() int64 {
+	if x != nil {
+		return x.GiftId
+	}
+	return 0
+}
+
+func (x *SendGiftsReq) GetSendCount() int64 {
+	if x != nil {
+		return x.SendCount
+	}
+	return 0
+}
+
+func (x *SendGiftsReq) GetSendType() string {
+	if x != nil {
+		return x.SendType
+	}
+	return ""
+}
+
+func (x *SendGiftsReq) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *SendGiftsReq) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *SendGiftsReq) GetClientIp() string {
+	if x != nil {
+		return x.ClientIp
+	}
+	return ""
+}
+
+func (x *SendGiftsReq) GetSendTime() string {
+	if x != nil {
+		return x.SendTime
+	}
+	return ""
+}
+
+type SendGiftsResp struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Greet         string                 `protobuf:"bytes,1,opt,name=greet,proto3" json:"greet,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SendGiftsResp) Reset() {
+	*x = SendGiftsResp{}
+	mi := &file_room_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SendGiftsResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SendGiftsResp) ProtoMessage() {}
+
+func (x *SendGiftsResp) ProtoReflect() protoreflect.Message {
+	mi := &file_room_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SendGiftsResp.ProtoReflect.Descriptor instead.
+func (*SendGiftsResp) Descriptor() ([]byte, []int) {
+	return file_room_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *SendGiftsResp) GetGreet() string {
+	if x != nil {
+		return x.Greet
+	}
+	return ""
+}
+
 // 创建房间
 type CreateRoomStreamReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -2059,6 +2219,34 @@ const file_room_proto_rawDesc = "" +
 	"\x04name\x18\x01 \x01(\tR\x04name\"\"\n" +
 	"\n" +
 	"StreamResp\x12\x14\n" +
+	"\x05greet\x18\x01 \x01(\tR\x05greet\"\xa8\x02\n" +
+	"\fSendGiftsReq\x12\x1e\n" +
+	"\n" +
+	"SendUserId\x18\x01 \x01(\x03R\n" +
+	"SendUserId\x12$\n" +
+	"\rReceiveUserId\x18\x02 \x01(\x03R\rReceiveUserId\x12\x16\n" +
+	"\x06RoomId\x18\x03 \x01(\x03R\x06RoomId\x12\x16\n" +
+	"\x06GiftId\x18\x04 \x01(\x03R\x06GiftId\x12\x1c\n" +
+	"\tSendCount\x18\x05 \x01(\x03R\tSendCount\x12\x1a\n" +
+	"\bSendType\x18\x06 \x01(\tR\bSendType\x12\x18\n" +
+	"\aMessage\x18\a \x01(\tR\aMessage\x12\x16\n" +
+	"\x06Status\x18\b \x01(\tR\x06Status\x12\x1a\n" +
+	"\bClientIp\x18\t \x01(\tR\bClientIp\x12\x1a\n" +
+	"\bSendTime\x18\n" +
+	" \x01(\tR\bSendTime\"%\n" +
+	"\rSendGiftsResp\x12\x14\n" +
+	"\x05greet\x18\x01 \x01(\tR\x05greet2h\n" +
+	"\x04Room\x12*\n" +
+	"\x05greet\x12\x0f.room.StreamReq\x1a\x10.room.StreamResp\x124\n" +
+	"\tSendGifts\x12\x12.room.SendGiftsReq\x1a\x13.room.SendGiftsRespB\x03Z\x01/b\x06proto3"
+const file_room_proto_rawDesc = "" +
+	"\n" +
+	"\n" +
+	"room.proto\x12\x04room\"\x1f\n" +
+	"\tStreamReq\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\"\"\n" +
+	"\n" +
+	"StreamResp\x12\x14\n" +
 	"\x05greet\x18\x01 \x01(\tR\x05greet\"\xb0\x01\n" +
 	"\x13CreateRoomStreamReq\x12\x1b\n" +
 	"\troom_name\x18\x01 \x01(\tR\broomName\x12\x17\n" +
@@ -2241,8 +2429,13 @@ func file_room_proto_rawDescGZIP() []byte {
 	return file_room_proto_rawDescData
 }
 
+var file_room_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_room_proto_msgTypes = make([]protoimpl.MessageInfo, 31)
 var file_room_proto_goTypes = []any{
+	(*StreamReq)(nil),     // 0: room.StreamReq
+	(*StreamResp)(nil),    // 1: room.StreamResp
+	(*SendGiftsReq)(nil),  // 2: room.SendGiftsReq
+	(*SendGiftsResp)(nil), // 3: room.SendGiftsResp
 	(*StreamReq)(nil),                // 0: room.StreamReq
 	(*StreamResp)(nil),               // 1: room.StreamResp
 	(*CreateRoomStreamReq)(nil),      // 2: room.CreateRoomStreamReq
@@ -2276,6 +2469,15 @@ var file_room_proto_goTypes = []any{
 	(*MicApplication)(nil),           // 30: room.MicApplication
 }
 var file_room_proto_depIdxs = []int32{
+	0, // 0: room.Room.greet:input_type -> room.StreamReq
+	2, // 1: room.Room.SendGifts:input_type -> room.SendGiftsReq
+	1, // 2: room.Room.greet:output_type -> room.StreamResp
+	3, // 3: room.Room.SendGifts:output_type -> room.SendGiftsResp
+	2, // [2:4] is the sub-list for method output_type
+	0, // [0:2] is the sub-list for method input_type
+	0, // [0:0] is the sub-list for extension type_name
+	0, // [0:0] is the sub-list for extension extendee
+	0, // [0:0] is the sub-list for field type_name
 	6,  // 0: room.GetRecommendRoomsResp.rooms:type_name -> room.RoomInfo
 	6,  // 1: room.GetRoomsByCategoryResp.rooms:type_name -> room.RoomInfo
 	6,  // 2: room.SearchRoomsResp.rooms:type_name -> room.RoomInfo
@@ -2329,6 +2531,7 @@ func file_room_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_room_proto_rawDesc), len(file_room_proto_rawDesc)),
 			NumEnums:      0,
+			NumMessages:   4,
 			NumMessages:   31,
 			NumExtensions: 0,
 			NumServices:   1,

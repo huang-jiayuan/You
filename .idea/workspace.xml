@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8879827a-ff20-41a2-8856-6cc8c9d126bb" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/C/api/pkg/cors.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/api/request/chat.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/api/room/room.exe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/api/room/room_api" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/migrations/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/migrations/create_mic_application_table.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/migrations/create_room_member_table.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/migrations/create_room_mic_table.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/migrations/create_room_table.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/migrations/create_user_room_table.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/migrations/create_user_table.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/migrations/run_all_migrations.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/models/chat_errors.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/models/chat_session.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/models/message.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/models/user_follow.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/models/user_online_status.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/pkg/realname.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/room/room.exe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/room/room_server" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/room_server" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/api/v1/hot_room/enter.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/api/v1/hot_room/host_room.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/api/v1/room_type/enter.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/api/v1/violation/enter.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/api/v1/violation/mute.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/model/hot_room/host_room.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/model/hot_room/request/host_room.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/model/violation/mute.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/model/violation/request/mute.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/KICK_FROM_MIC_IMPLEMENTATION.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/model/room_member.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/model/room_mic.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/test/room_mic_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/router/hot_room/enter.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/router/hot_room/host_room.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/router/room_type/enter.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/router/violation/enter.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/router/violation/mute.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/service/hot_room/enter.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/service/hot_room/host_room.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/service/room_type/enter.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/service/violation/enter.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/service/violation/mute.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/web/public/logo1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/web/src/api/hot_room/hostRoom.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/web/src/api/violation/mute.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/web/src/view/hot_room/hostRoom/hostRoom.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/web/src/view/hot_room/hostRoom/hostRoomForm.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/web/src/view/violation/mute/mute.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/web/src/view/violation/mute/muteForm.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/GOHCache.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/GOHCache.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/go.mod" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/go.sum" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/request/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/request/room.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/request/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/request/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/room/handler/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/handler/room.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/room/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/room/proto/room.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/proto/room.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/room/proto/room.proto" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/proto/room.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/room/proto/room_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/proto/room_grpc.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/room/router/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/router/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/user/handler/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/user/handler/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/user/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/user/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/user/proto/user.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/user/proto/user.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/user/proto/user.proto" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/user/proto/user.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/user/proto/user_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/user/proto/user_grpc.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/user/router/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/user/router/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/models/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/models/room.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/pkg/demo.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/pkg/demo.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/room/basic/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/room/basic/config/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/room/handler/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/room/handler/room.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/room/proto/room.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/room/proto/room.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/room/proto/room.proto" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/room/proto/room.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/room/proto/room_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/room/proto/room_grpc.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/user/handler/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/user/handler/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/user/proto/user.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/user/proto/user.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/user/proto/user.proto" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/user/proto/user.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/user/proto/user_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/user/proto/user_grpc.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/api/v1/enter.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/api/v1/enter.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/initialize/gorm_biz.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/initialize/gorm_biz.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/initialize/router_biz.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/initialize/router_biz.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/api/enter.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/api/enter.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/api/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/api/room.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/model/request/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/model/request/room.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/router/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/router/room.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/service/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/service/room.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/router/enter.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/router/enter.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/service/enter.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/service/enter.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/web/src/pathInfo.json" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/web/src/pathInfo.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/web/src/view/carouse/carouselImage/carouselImage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/web/src/view/carouse/carouselImage/carouselImage.vue" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" url="file://$PROJECT_DIR$/../../../go" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="30dEdRtubfva7fZEn77OU1lenyN" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultGoTemplateProperty": "Go File",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.GoLinterPluginOnboarding": "true",
+    "RunOnceActivity.GoLinterPluginStorageMigration": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "git-widget-placeholder": "正在合并 zy",
+    "go.import.settings.migrated": "true",
+    "go.sdk.automatically.set": "true",
+    "last_opened_file_path": "C:/Users/31905",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-gosdk-3b128438d3f6-4b567d62c776-org.jetbrains.plugins.go.sharedIndexes.bundled-GO-251.26094.127" />
+        <option value="bundled-js-predefined-d6986cc7102b-b26f3e71634d-JavaScript-GO-251.26094.127" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="8879827a-ff20-41a2-8856-6cc8c9d126bb" name="更改" comment="" />
+      <created>1753949137748</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1753949137748</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VgoProject">
+    <settings-migrated>true</settings-migrated>
+  </component>
+</project>

@@ -189,6 +189,24 @@ message MuteMicUserReq {
   string reason = 6;
 }
 
+//刷礼物
+message SendGiftsReq {
+  int64 SendUserId =1;
+  int64 ReceiveUserId = 2;
+  int64 RoomId = 3;
+  int64 GiftId = 4;
+  int64 SendCount = 5;
+  string SendType = 6;
+  string Message = 7;
+  string Status = 8;
+  string ClientIp =9;
+  string SendTime =10;
+}
+
+message SendGiftsResp {
+  string greet = 1;
+}
+
 message MuteMicUserResp {
   bool success = 1;
   string message = 2;
@@ -226,6 +244,9 @@ message MicApplication {
   int32 status = 6;
 }
 service Room {
+  rpc Stream(StreamReq) returns (StreamResp);
+  rpc SendGifts(SendGiftsReq) returns (SendGiftsResp);//刷礼物
+
   rpc greet(StreamReq) returns (StreamResp);
   rpc JoinRoom(JoinRoomStreamReq) returns (JoinRoomStreamResp);
   rpc CloseRoom(CloseRoomStreamReq) returns (CloseRoomStreamResp);
@@ -234,7 +255,7 @@ service Room {
   rpc GetRecommendRooms(GetRecommendRoomsReq) returns (GetRecommendRoomsResp);
   rpc GetRoomsByCategory(GetRoomsByCategoryReq) returns (GetRoomsByCategoryResp);
   rpc SearchRooms(SearchRoomsReq) returns (SearchRoomsResp);
-  
+
   // 麦位管理相关RPC方法
   rpc ApplyMic(ApplyMicReq) returns (ApplyMicResp);
   rpc HandleMicApplication(HandleMicApplicationReq) returns (HandleMicApplicationResp);
