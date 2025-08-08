@@ -4,7 +4,29 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e6dcdeab-cc10-4c87-ba0d-d4ecd3c13885" name="更改" comment="" />
+    <list default="true" id="901b8522-4459-4df4-bb30-a35448a83a2e" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/GOHCache.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/GOHCache.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/You.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/You.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/thriftCompilerAssist.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/thriftCompilerAssist.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/request/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/request/room.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/room/handler/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/handler/room.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/room/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/room/proto/room.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/proto/room.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/room/proto/room.proto" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/proto/room.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/room/proto/room_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/proto/room_grpc.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/room/router/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/router/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/models/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/models/room.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/room/handler/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/room/handler/room.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/room/proto/room.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/room/proto/room.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/room/proto/room.proto" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/room/proto/room.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/room/proto/room_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/room/proto/room_grpc.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/web/src/pathInfo.json" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/web/src/pathInfo.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/web/src/view/violation/mute/mute.vue" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/web/src/view/violation/mute/mute.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/web/src/view/violation/mute/muteForm.vue" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/web/src/view/violation/mute/muteForm.vue" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -27,9 +49,10 @@
   }
 }]]></component>
   <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
   "associatedIndex": 8
 }]]></component>
-  <component name="ProjectId" id="30wVUcJZ5RlQlaErZZ9rv8kdwFg" />
+  <component name="ProjectId" id="30xgIxnLeNN50Ib79TVdaw17GQH" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -38,9 +61,11 @@
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
     "RunOnceActivity.go.formatter.settings.were.checked": "true",
     "RunOnceActivity.go.migrated.go.modules.settings": "true",
     "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "git-widget-placeholder": "yg",
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
     "last_opened_file_path": "C:/Users/17380",
@@ -60,11 +85,11 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="默认任务">
-      <changelist id="e6dcdeab-cc10-4c87-ba0d-d4ecd3c13885" name="更改" comment="" />
-      <created>1754538641217</created>
+      <changelist id="901b8522-4459-4df4-bb30-a35448a83a2e" name="更改" comment="" />
+      <created>1754574561964</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1754538641217</updated>
+      <updated>1754574561964</updated>
     </task>
     <servers />
   </component>

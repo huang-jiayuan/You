@@ -4,14 +4,49 @@ package room;
 
 option go_package = "/";
 
-message StreamReq {
-  string name = 1;
+// 踢人请求
+message KickUserReq {
+  uint64 room_id = 1;      // 房间ID
+  uint64 user_id = 2;      // 被踢用户ID
+  uint64 operator_id = 3;
+  string reason = 4;       // 踢人原因
 }
 
-message StreamResp {
-  string greet = 1;
+message KickUserResp {
+  bool success = 1;
+  string message = 2;
 }
+
+// 禁言请求
+message MuteUserReq {
+  uint64 room_id = 1;      // 房间ID
+  uint64 user_id = 2;      // 被禁言用户ID
+  uint64 operator_id = 3;
+  int32 duration_type = 4; // 禁言时长 1-1小时，2-24小时，3-永久
+  string reason = 5;       // 禁言原因
+}
+
+message MuteUserResp {
+  bool success = 1;
+  string message = 2;
+}
+
+// 解除禁言请求
+message UnmuteUserReq {
+  uint64 room_id = 1;      // 房间ID
+  uint64 user_id = 2;      // 被解除禁言用户ID
+  uint64 operator_id = 3;  // 操作者ID
+}
+
+message UnmuteUserResp {
+  bool success = 1;
+  string message = 2;
+}
+
 
 service Room {
-  rpc greet(StreamReq) returns (StreamResp);
+  rpc KickUser(KickUserReq) returns (KickUserResp);
+  rpc MuteUser(MuteUserReq) returns (MuteUserResp);
+  rpc UnmuteUser(UnmuteUserReq) returns (UnmuteUserResp);
+
 }

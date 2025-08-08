@@ -4,14 +4,61 @@ package room;
 
 option go_package = "/";
 
-message StreamReq {
-  string name = 1;
+
+// 踢人请求
+message KickUserReq {
+  uint64 room_id = 1;      // 房间ID
+  uint64 user_id = 2;      // 被踢用户ID
+  uint64 operator_id = 3;  // 操作者ID
+  string reason = 4;       // 踢人原因
 }
 
-message StreamResp {
-  string greet = 1;
+// 踢人响应
+message KickUserResp {
+  bool success = 1;        // 操作是否成功
+  string message = 2;      // 响应消息
 }
 
+// 禁言请求
+message MuteUserReq {
+  uint64 room_id = 1;      // 房间ID
+  uint64 user_id = 2;      // 被禁言用户ID
+  uint64 operator_id = 3;  // 操作者ID
+  int32 duration_type = 4; // 禁言时长类型：1-1小时，2-24小时，3-永久
+  string reason = 5;       // 禁言原因
+}
+
+// 禁言响应
+message MuteUserResp {
+  bool success = 1;        // 操作是否成功
+  string message = 2;      // 响应消息
+}
+
+// 解除禁言请求
+message UnmuteUserReq {
+  uint64 room_id = 1;      // 房间ID
+  uint64 user_id = 2;      // 被解除禁言用户ID
+  uint64 operator_id = 3;  // 操作者ID
+}
+
+// 解除禁言响应
+message UnmuteUserResp {
+  bool success = 1;        // 操作是否成功
+  string message = 2;      // 响应消息
+}
+
+
+// 房间服务定义
 service Room {
-  rpc greet(StreamReq) returns (StreamResp);
+
+  // 踢人接口
+  rpc KickUser(KickUserReq) returns (KickUserResp);
+  
+  // 禁言接口
+  rpc MuteUser(MuteUserReq) returns (MuteUserResp);
+  
+  // 解除禁言接口
+  rpc UnmuteUser(UnmuteUserReq) returns (UnmuteUserResp);
+  
+
 }

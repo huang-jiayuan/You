@@ -264,9 +264,9 @@ const appStore = useAppStore()
 const showAllQuery = ref(false)
 
 // 自动化生成的字典（可能为空）以及字段
+const mutetypeOptions = ref([])
 const reasonOptions = ref([])
 const statuOptions = ref([])
-const mutetypeOptions = ref([])
 const formData = ref({
             userId: '',
             muteType: '',
@@ -422,9 +422,9 @@ getTableData()
 
 // 获取需要的字典 可能为空 按需保留
 const setOptions = async () =>{
+    mutetypeOptions.value = await getDictFunc('mutetype')
     reasonOptions.value = await getDictFunc('reason')
     statuOptions.value = await getDictFunc('statu')
-    mutetypeOptions.value = await getDictFunc('mutetype')
 }
 
 // 获取需要的字典 可能为空 按需保留
