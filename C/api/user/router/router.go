@@ -19,6 +19,9 @@ func Router(r *gin.Engine) {
 			user.POST("/improve/message", handler.ImproveUserMessage)
 			user.POST("/follow", handler.FollowUser)
 			user.POST("/unfollow", handler.UnFollowUser)
+			// 在Gin路由中添加WebSocket端点
+			user.GET("/ws", handler.HandleWebSocket)
+
 		}
 		// 需认证路由
 		authGroup := r.Group("/auth")

@@ -20,6 +20,7 @@ func Router(r *gin.Engine) {
 			room.POST("/searchRooms", handler.SearchRooms)
 			room.POST("/joinRoom", handler.JoinRoom)
 			room.POST("/closeRoom", handler.CloseRoom)
+			room.GET("/ws", handler.HandleWebSocket)
 
 			// 麦位管理相关路由
 			room.POST("/applyMic", handler.ApplyMic)
