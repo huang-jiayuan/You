@@ -1,29 +1,22 @@
 package router
 
 import (
-	"api/room/handler"
-	"github.com/gin-gonic/gin"
-)
-import (
 	"api/pkg"
 	"api/room/handler"
 	"github.com/gin-gonic/gin"
 )
 
 func Router(r *gin.Engine) {
-	api := r.Group("/api")
-	{
-		room := api.Group("/room")
-		{
-			room.POST("/sendgift", handler.SendGifts)
-		}
-	}
 
 	api := r.Group("/api")
 	{
 		room := api.Group("/room")
 		{
 			room.Use(pkg.JWTAuth("2211a"))
+			room.POST("/sendgift", handler.SendGifts)
+			room.POST("/kick", handler.KickUser)
+			room.POST("/mute", handler.MuteUser)
+			room.POST("/unmute", handler.UnmuteUser)
 			room.POST("/createroom", handler.CreateRoom)
 			room.POST("/updateroom", handler.UpdateRoom)
 			room.POST("/getRecommendRooms", handler.GetRecommendRooms)

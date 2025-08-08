@@ -98,4 +98,5 @@
   "/src/plugin/gift/view/giftInfo.vue": "GiftInfo",
   "/src/plugin/silence/form/mute.vue": "MuteForm",
   "/src/plugin/silence/view/mute.vue": "Mute"
+  "/src/plugin/gift/view/giftInfo.vue": "GiftInfo"
 }
