@@ -11,6 +11,219 @@ message StreamReq {
 message StreamResp {
   string greet = 1;
 }
+//创建房间
+message CreateRoomStreamReq {
+  string room_name =1;
+  int32 user_id =2;
+  int32 tag_id =3;
+  string content =4;
+  string idCard =5;
+  string realName =6;
+}
+
+message CreateRoomStreamResp {
+  int32 id =1;
+}
+//修改房间信息
+message UpdateRoomStreamReq {
+  string announcement =1;
+  int32  id =2;
+  string status =3;
+}
+
+message UpdateRoomStreamResp {
+  int32 id =1;
+}
+
+
+// 房间信息结构
+message RoomInfo {
+  int64 id = 1;
+  string room_name = 2;
+  uint64 user_id = 3;
+  string owner_nickname = 4;
+  string owner_avatar = 5;
+  string room_type = 6;
+  string status = 7;
+  string announcement = 8;
+  string created_at = 9;
+  string last_active_time = 10;
+  int32 member_count = 11;
+  string image = 12;
+  uint64 tag_id = 13;
+  string tag_name = 14;
+}
+
+// 推荐房间接口
+message GetRecommendRoomsReq {
+  int32 page = 1;
+  int32 page_size = 2;
+}
+
+message GetRecommendRoomsResp {
+  repeated RoomInfo rooms = 1;
+  int32 total = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+  int32 total_pages = 5;
+}
+
+// 分类浏览接口
+message GetRoomsByCategoryReq {
+  uint64 tag_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+}
+
+message GetRoomsByCategoryResp {
+  repeated RoomInfo rooms = 1;
+  int32 total = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+  int32 total_pages = 5;
+  string category_name = 6;
+}
+
+// 搜索房间接口
+message SearchRoomsReq {
+  string keyword = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+}
+
+message SearchRoomsResp {
+  repeated RoomInfo rooms = 1;
+  int32 total = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+  int32 total_pages = 5;
+  string keyword = 6;
+}
+// 关闭房间接口
+message CloseRoomStreamReq {
+  int64 room_id = 1;
+  uint64 user_id = 2;
+}
+
+message CloseRoomStreamResp {
+  bool success = 1;
+  string message = 2;
+  int64 room_id = 3;
+}
+
+//进入房间接口
+message JoinRoomStreamReq {
+  int64 room_id = 1;
+  uint64 user_id = 2;
+}
+
+message JoinRoomStreamResp {
+  bool success = 1;
+  string message = 2;
+  int32 current_member_count = 3;
+  RoomInfo room_info = 4;
+}
+
+// 麦位管理相关消息定义
+
+// 申请上麦请求
+message ApplyMicReq {
+  int64 room_id = 1;
+  uint64 user_id = 2;
+}
+
+message ApplyMicResp {
+  bool success = 1;
+  string message = 2;
+  int64 application_id = 3;
+}
+
+// 处理上麦申请请求
+message HandleMicApplicationReq {
+  int64 application_id = 1;
+  uint64 handler_id = 2;
+  int32 action = 3;  // 1-批准, 2-拒绝
+  string reason = 4; // 拒绝原因
+}
+
+message HandleMicApplicationResp {
+  bool success = 1;
+  string message = 2;
+  MicInfo mic_info = 3; // 批准时返回麦位信息
+}
+
+// 下麦请求
+message LeaveMicReq {
+  int64 room_id = 1;
+  uint64 user_id = 2;
+}
+
+message LeaveMicResp {
+  bool success = 1;
+  string message = 2;
+  int32 mic_position = 3;
+}
+
+// 踢人下麦请求
+message KickFromMicReq {
+  int64 room_id = 1;
+  uint64 operator_id = 2;
+  uint64 target_user_id = 3;
+  string reason = 4;
+}
+
+message KickFromMicResp {
+  bool success = 1;
+  string message = 2;
+  int32 mic_position = 3;
+}
+
+// 禁言/解禁请求
+message MuteMicUserReq {
+  int64 room_id = 1;
+  uint64 operator_id = 2;
+  uint64 target_user_id = 3;
+  int32 action = 4;      // 1-禁言, 2-解禁
+  int32 duration = 5;    // 禁言时长(分钟)
+  string reason = 6;
+}
+
+message MuteMicUserResp {
+  bool success = 1;
+  string message = 2;
+}
+
+// 获取麦位状态请求
+message GetMicStatusReq {
+  int64 room_id = 1;
+}
+
+message GetMicStatusResp {
+  repeated MicInfo mics = 1;
+  repeated MicApplication pending_applications = 2;
+}
+
+// 麦位信息
+message MicInfo {
+  int32 position = 1;
+  int32 status = 2;      // 0-空闲, 1-占用, 2-禁用
+  uint64 user_id = 3;
+  string user_nickname = 4;
+  string user_avatar = 5;
+  string occupy_time = 6;
+  bool is_locked = 7;
+  bool is_muted = 8;
+}
+
+// 麦位申请信息
+message MicApplication {
+  int64 id = 1;
+  uint64 user_id = 2;
+  string user_nickname = 3;
+  string user_avatar = 4;
+  string apply_time = 5;
+  int32 status = 6;
+}
 
 message SendGiftsReq {
   int64 SendUserId =1;
@@ -31,6 +244,21 @@ message SendGiftsResp {
 
 service Room {
   rpc greet(StreamReq) returns (StreamResp);
+  rpc JoinRoom(JoinRoomStreamReq) returns (JoinRoomStreamResp);
+  rpc CloseRoom(CloseRoomStreamReq) returns (CloseRoomStreamResp);
+  rpc UpdateRoom(UpdateRoomStreamReq) returns (UpdateRoomStreamResp);
+  rpc CreateRoom(CreateRoomStreamReq) returns (CreateRoomStreamResp);
+  rpc GetRecommendRooms(GetRecommendRoomsReq) returns (GetRecommendRoomsResp);
+  rpc GetRoomsByCategory(GetRoomsByCategoryReq) returns (GetRoomsByCategoryResp);
+  rpc SearchRooms(SearchRoomsReq) returns (SearchRoomsResp);
+
+  // 麦位管理相关RPC方法
+  rpc ApplyMic(ApplyMicReq) returns (ApplyMicResp);
+  rpc HandleMicApplication(HandleMicApplicationReq) returns (HandleMicApplicationResp);
+  rpc LeaveMic(LeaveMicReq) returns (LeaveMicResp);
+  rpc KickFromMic(KickFromMicReq) returns (KickFromMicResp);
+  rpc MuteMicUser(MuteMicUserReq) returns (MuteMicUserResp);
+  rpc GetMicStatus(GetMicStatusReq) returns (GetMicStatusResp);
   rpc SendGifts(SendGiftsReq) returns (SendGiftsResp);
 
 }

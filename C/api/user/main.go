@@ -9,6 +9,10 @@ import (
 func main() {
 	r := gin.Default()
 	pkg.InitMinio()
+
+	// 添加CORS中间件
+	r.Use(pkg.CORSMiddleware())
+
 	router.Router(r)
 	r.Run(":8081")
 }

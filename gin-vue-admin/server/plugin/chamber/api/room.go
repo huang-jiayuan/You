@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
     "github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
@@ -188,4 +189,100 @@ func (a *room) GetRoomPublic(c *gin.Context) {
     // 此接口不需要鉴权 示例为返回了一个固定的消息接口，一般本接口用于C端服务，需要自己实现业务逻辑
     serviceRoom.GetRoomPublic(ctx)
     response.OkWithDetailed(gin.H{"info": "不需要鉴权的房间表接口信息"}, "获取成功", c)
+}
+
+// KickFromMic 踢人下麦
+// @Tags Room
+// @Summary 踢人下麦
+// @Security ApiKeyAuth
+// @Accept application/json
+// @Produce application/json
+// @Param data body request.KickFromMic true "踢人下麦"
+// @Success 200 {object} response.Response{msg=string} "踢人成功"
+// @Router /room/kickFromMic [post]
+func (a *room) KickFromMic(c *gin.Context) {
+    // 创建业务用Context
+    ctx := c.Request.Context()
+
+    var req request.KickFromMic
+    err := c.ShouldBindJSON(&req)
+    if err != nil {
+        response.FailWithMessage(err.Error(), c)
+        return
+    }
+
+    // 获取操作者用户ID
+    operatorId := utils.GetUserID(c)
+    
+    micPosition, err := serviceRoom.KickFromMic(ctx, req.RoomId, uint64(operatorId), req.TargetUserId, req.Reason)
+    if err != nil {
+        global.GVA_LOG.Error("踢人下麦失败!", zap.Error(err))
+        response.FailWithMessage("踢人下麦失败:" + err.Error(), c)
+        return
+    }
+
+    global.GVA_LOG.Info("踢人下麦成功",
+        zap.Int64("roomId", req.RoomId),
+        zap.Uint("operatorId", operatorId),
+        zap.Uint64("targetUserId", req.TargetUserId),
+        zap.Int32("micPosition", micPosition),
+        zap.String("reason", req.Reason),
+    )
+
+    response.OkWithDetailed(gin.H{
+        "micPosition": micPosition,
+        "message": "踢人下麦成功",
+    }, "操作成功", c)
+}
+
+// MuteMicUser 禁言管理
+// @Tags Room
+// @Summary 禁言管理
+// @Security ApiKeyAuth
+// @Accept application/json
+// @Produce application/json
+// @Param data body request.MuteMicUser true "禁言管理"
+// @Success 200 {object} response.Response{msg=string} "操作成功"
+// @Router /room/muteMicUser [post]
+func (a *room) MuteMicUser(c *gin.Context) {
+    // 创建业务用Context
+    ctx := c.Request.Context()
+
+    var req request.MuteMicUser
+    err := c.ShouldBindJSON(&req)
+    if err != nil {
+        response.FailWithMessage(err.Error(), c)
+        return
+    }
+
+    // 获取操作者用户ID
+    operatorId := utils.GetUserID(c)
+    
+    err = serviceRoom.MuteMicUser(ctx, req.RoomId, uint64(operatorId), req.TargetUserId, req.Action, req.Duration, req.Reason)
+    if err != nil {
+        global.GVA_LOG.Error("禁言管理操作失败!", zap.Error(err))
+        response.FailWithMessage("禁言管理操作失败:" + err.Error(), c)
+        return
+    }
+
+    var actionText string
+    if req.Action == 1 {
+        actionText = "禁言"
+    } else {
+        actionText = "解禁"
+    }
+
+    global.GVA_LOG.Info("禁言管理操作成功",
+        zap.Int64("roomId", req.RoomId),
+        zap.Uint("operatorId", operatorId),
+        zap.Uint64("targetUserId", req.TargetUserId),
+        zap.Int32("action", req.Action),
+        zap.Int32("duration", req.Duration),
+        zap.String("reason", req.Reason),
+    )
+
+    response.OkWithDetailed(gin.H{
+        "action": actionText,
+        "message": fmt.Sprintf("%s操作成功", actionText),
+    }, "操作成功", c)
 }

@@ -1,995 +1,499 @@
+
 <template>
-  <div class="home-page">
-    <!-- 顶部轮播图 -->
-    <div class="carousel-section">
-      <div class="carousel-container" ref="carouselContainer">
-        <div 
-          class="carousel-wrapper"
-          :style="{ transform: `translateX(-${currentIndex * 100}%)` }"
-          @touchstart="handleTouchStart"
-          @touchmove="handleTouchMove"
-          @touchend="handleTouchEnd"
+  <div>
+    <div class="gva-search-box">
+      <el-form ref="elSearchFormRef" :inline="true" :model="searchInfo" class="demo-form-inline" @keyup.enter="onSubmit">
+      <el-form-item label="创建日期" prop="createdAtRange">
+      <template #label>
+        <span>
+          创建日期
+          <el-tooltip content="搜索范围是开始日期（包含）至结束日期（不包含）">
+            <el-icon><QuestionFilled /></el-icon>
+          </el-tooltip>
+        </span>
+      </template>
+
+      <el-date-picker
+            v-model="searchInfo.createdAtRange"
+            class="w-[380px]"
+            type="datetimerange"
+            range-separator="至"
+            start-placeholder="开始时间"
+            end-placeholder="结束时间"
+          />
+       </el-form-item>
+      
+            <el-form-item label="图片预览" prop="image">
+  <el-input v-model="searchInfo.image" placeholder="搜索条件" />
+</el-form-item>
+            
+            <el-form-item label="标题" prop="title">
+  <el-input v-model="searchInfo.title" placeholder="搜索条件" />
+</el-form-item>
+            
+            <el-form-item label="跳转链接" prop="url">
+  <el-input v-model="searchInfo.url" placeholder="搜索条件" />
+</el-form-item>
+            
+            <el-form-item label="排序序号" prop="orderId">
+  <el-input v-model.number="searchInfo.orderId" placeholder="搜索条件" />
+</el-form-item>
+            
+            <el-form-item label="状态" prop="status">
+  <el-select v-model="searchInfo.status" clearable filterable placeholder="请选择" @clear="()=>{searchInfo.status=undefined}">
+    <el-option v-for="(item,key) in statusOptions" :key="key" :label="item.label" :value="item.value" />
+  </el-select>
+</el-form-item>
+            
+
+        <template v-if="showAllQuery">
+          <!-- 将需要控制显示状态的查询条件添加到此范围内 -->
+        </template>
+
+        <el-form-item>
+          <el-button type="primary" icon="search" @click="onSubmit">查询</el-button>
+          <el-button icon="refresh" @click="onReset">重置</el-button>
+          <el-button link type="primary" icon="arrow-down" @click="showAllQuery=true" v-if="!showAllQuery">展开</el-button>
+          <el-button link type="primary" icon="arrow-up" @click="showAllQuery=false" v-else>收起</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+    <div class="gva-table-box">
+        <div class="gva-btn-list">
+            <el-button v-auth="btnAuth.add" type="primary" icon="plus" @click="openDialog()">新增</el-button>
+            <el-button v-auth="btnAuth.batchDelete" icon="delete" style="margin-left: 10px;" :disabled="!multipleSelection.length" @click="onDelete">删除</el-button>
+            <ExportTemplate v-auth="btnAuth.exportTemplate" template-id="carouse_CarouselImage" />
+            <ExportExcel v-auth="btnAuth.exportExcel" template-id="carouse_CarouselImage" filterDeleted/>
+            <ImportExcel v-auth="btnAuth.importExcel" template-id="carouse_CarouselImage" @on-success="getTableData" />
+        </div>
+        <el-table
+        ref="multipleTable"
+        style="width: 100%"
+        tooltip-effect="dark"
+        :data="tableData"
+        row-key="ID"
+        @selection-change="handleSelectionChange"
         >
-          <div 
-            v-for="(item, index) in carouselImages" 
-            :key="index"
-            class="carousel-slide"
-            @click="handleCarouselClick(item)"
-          >
-            <img :src="item.image" :alt="item.title" />
-            <div class="carousel-overlay">
-              <h3>{{ item.title }}</h3>
-            </div>
-          </div>
-        </div>
+        <el-table-column type="selection" width="55" />
         
-        <!-- 左右切换按钮 -->
-        <button class="carousel-btn prev" @click="prevSlide" v-if="carouselImages.length > 1">
-          <el-icon><ArrowLeft /></el-icon>
-        </button>
-        <button class="carousel-btn next" @click="nextSlide" v-if="carouselImages.length > 1">
-          <el-icon><ArrowRight /></el-icon>
-        </button>
+        <el-table-column sortable align="left" label="日期" prop="CreatedAt"width="180">
+            <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
+        </el-table-column>
         
-        <!-- 指示器 -->
-        <div class="carousel-indicators" v-if="carouselImages.length > 1">
-          <span 
-            v-for="(item, index) in carouselImages" 
-            :key="index"
-            :class="['indicator', { active: index === currentIndex }]"
-            @click="goToSlide(index)"
-          ></span>
+            <el-table-column align="left" label="图片预览" prop="image" width="120" />
+
+            <el-table-column align="left" label="标题" prop="title" width="120" />
+
+            <el-table-column align="left" label="跳转链接" prop="url" width="120" />
+
+            <el-table-column align="left" label="排序序号" prop="orderId" width="120" />
+
+            <el-table-column align="left" label="状态" prop="status" width="120">
+    <template #default="scope">
+    {{ filterDict(scope.row.status,statusOptions) }}
+    </template>
+</el-table-column>
+        <el-table-column align="left" label="操作" fixed="right" :min-width="appStore.operateMinWith">
+            <template #default="scope">
+            <el-button v-auth="btnAuth.info" type="primary" link class="table-button" @click="getDetails(scope.row)"><el-icon style="margin-right: 5px"><InfoFilled /></el-icon>查看</el-button>
+            <el-button v-auth="btnAuth.edit" type="primary" link icon="edit" class="table-button" @click="updateCarouselImageFunc(scope.row)">编辑</el-button>
+            <el-button  v-auth="btnAuth.delete" type="primary" link icon="delete" @click="deleteRow(scope.row)">删除</el-button>
+            </template>
+        </el-table-column>
+        </el-table>
+        <div class="gva-pagination">
+            <el-pagination
+            layout="total, sizes, prev, pager, next, jumper"
+            :current-page="page"
+            :page-size="pageSize"
+            :page-sizes="[10, 30, 50, 100]"
+            :total="total"
+            @current-change="handleCurrentChange"
+            @size-change="handleSizeChange"
+            />
         </div>
-      </div>
     </div>
+    <el-drawer destroy-on-close :size="appStore.drawerSize" v-model="dialogFormVisible" :show-close="false" :before-close="closeDialog">
+       <template #header>
+              <div class="flex justify-between items-center">
+                <span class="text-lg">{{type==='create'?'新增':'编辑'}}</span>
+                <div>
+                  <el-button :loading="btnLoading" type="primary" @click="enterDialog">确 定</el-button>
+                  <el-button @click="closeDialog">取 消</el-button>
+                </div>
+              </div>
+            </template>
 
-    <!-- 主标题 -->
-    <div class="main-header">
-      <h1 class="main-title">防诈骗指南</h1>
-      <div class="leaf-decoration">🍃</div>
-    </div>
+          <el-form :model="formData" label-position="top" ref="elFormRef" :rules="rule" label-width="80px">
+            <el-form-item label="图片预览:" prop="image">
+    <el-input v-model="formData.image" :clearable="true" placeholder="请输入图片预览" />
+</el-form-item>
+            <el-form-item label="标题:" prop="title">
+    <el-input v-model="formData.title" :clearable="true" placeholder="请输入标题" />
+</el-form-item>
+            <el-form-item label="跳转链接:" prop="url">
+    <el-input v-model="formData.url" :clearable="true" placeholder="请输入跳转链接" />
+</el-form-item>
+            <el-form-item label="排序序号:" prop="orderId">
+    <el-input v-model.number="formData.orderId" :clearable="true" placeholder="请输入排序序号" />
+</el-form-item>
+            <el-form-item label="状态:" prop="status">
+    <el-select v-model="formData.status" placeholder="请选择状态" style="width:100%" filterable :clearable="true">
+        <el-option v-for="(item,key) in statusOptions" :key="key" :label="item.label" :value="item.value" />
+    </el-select>
+</el-form-item>
+          </el-form>
+    </el-drawer>
 
-    <!-- 功能按钮区域 -->
-    <div class="feature-buttons">
-      <div class="feature-btn purple" @click="handleFeatureClick('match')">
-        <div class="btn-icon">💕</div>
-        <span>牵手速配</span>
-      </div>
-      <div class="feature-btn orange" @click="handleFeatureClick('auction')">
-        <div class="btn-icon">🔥</div>
-        <span>激情拍卖</span>
-      </div>
-      <div class="feature-btn pink" @click="handleFeatureClick('romance')">
-        <div class="btn-icon">🏠</div>
-        <span>浪漫满屋</span>
-      </div>
-    </div>
+    <el-drawer destroy-on-close :size="appStore.drawerSize" v-model="detailShow" :show-close="true" :before-close="closeDetailShow" title="查看">
+            <el-descriptions :column="1" border>
+                    <el-descriptions-item label="图片预览">
+    {{ detailFrom.image }}
+</el-descriptions-item>
+                    <el-descriptions-item label="标题">
+    {{ detailFrom.title }}
+</el-descriptions-item>
+                    <el-descriptions-item label="跳转链接">
+    {{ detailFrom.url }}
+</el-descriptions-item>
+                    <el-descriptions-item label="排序序号">
+    {{ detailFrom.orderId }}
+</el-descriptions-item>
+                    <el-descriptions-item label="状态">
+    {{ detailFrom.status }}
+</el-descriptions-item>
+            </el-descriptions>
+        </el-drawer>
 
-    <!-- 分类标签 -->
-    <div class="category-tabs">
-      <div 
-        v-for="(category, index) in categories" 
-        :key="index"
-        :class="['category-tab', { active: activeCategory === category.key }]"
-        @click="switchCategory(category.key)"
-      >
-        <span class="tab-icon">{{ category.icon }}</span>
-        <span class="tab-text">{{ category.name }}</span>
-      </div>
-    </div>
-
-    <!-- 内容列表 -->
-    <div class="content-list">
-      <div 
-        v-for="(item, index) in getCurrentContentList()" 
-        :key="index"
-        class="content-item"
-        @click="handleContentClick(item)"
-      >
-        <div class="content-image">
-          <img :src="item.image" :alt="item.title" />
-          <div v-if="item.isHot" class="hot-badge">🔥</div>
-          <div v-if="item.isNew" class="new-badge">NEW</div>
-        </div>
-        <div class="content-info">
-          <h3 class="content-title">{{ item.title }}</h3>
-          <div class="content-description">{{ item.description }}</div>
-          <div class="content-meta">
-            <span class="tag" :style="{ background: item.tagColor }">{{ item.tag }}</span>
-            <div class="stats">
-              <span class="views">👁 {{ item.views }}</span>
-              <span class="likes">❤ {{ item.likes }}</span>
-              <span v-if="item.rating" class="rating">⭐ {{ item.rating }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 底部导航 -->
-    <div class="bottom-nav">
-      <div class="nav-item active" @click="handleNavClick('home')">
-        <el-icon><House /></el-icon>
-        <span>首页</span>
-      </div>
-      <div class="nav-item" @click="handleNavClick('category')">
-        <el-icon><Grid /></el-icon>
-        <span>分类</span>
-      </div>
-      <div class="nav-item" @click="handleNavClick('profile')">
-        <el-icon><User /></el-icon>
-        <span>我的</span>
-      </div>
-      <div class="nav-item" @click="handleNavClick('more')">
-        <el-icon><More /></el-icon>
-        <span>更多</span>
-      </div>
-    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
-import { ElMessage } from 'element-plus'
-import { House, Grid, User, More, ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
-import { getCarouselImagePublic } from '@/api/carouse/carouselImage'
+import {
+  createCarouselImage,
+  deleteCarouselImage,
+  deleteCarouselImageByIds,
+  updateCarouselImage,
+  findCarouselImage,
+  getCarouselImageList
+} from '@/api/carouse/carouselImage'
+
+// 全量引入格式化工具 请按需保留
+import { getDictFunc, formatDate, formatBoolean, filterDict ,filterDataSource, returnArrImg, onDownloadFile } from '@/utils/format'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { ref, reactive } from 'vue'
+// 引入按钮权限标识
+import { useBtnAuth } from '@/utils/btnAuth'
+import { useAppStore } from "@/pinia"
+
+// 导出组件
+import ExportExcel from '@/components/exportExcel/exportExcel.vue'
+// 导入组件
+import ImportExcel from '@/components/exportExcel/importExcel.vue'
+// 导出模板组件
+import ExportTemplate from '@/components/exportExcel/exportTemplate.vue'
+
 
 defineOptions({
-  name: 'HomePage'
+    name: 'CarouselImage'
+})
+// 按钮权限实例化
+    const btnAuth = useBtnAuth()
+
+// 提交按钮loading
+const btnLoading = ref(false)
+const appStore = useAppStore()
+
+// 控制更多查询条件显示/隐藏状态
+const showAllQuery = ref(false)
+
+// 自动化生成的字典（可能为空）以及字段
+const statusOptions = ref([])
+const formData = ref({
+            image: '',
+            title: '',
+            url: '',
+            orderId: undefined,
+            status: '',
+        })
+
+
+
+// 验证规则
+const rule = reactive({
+               image : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               },
+               {
+                   whitespace: true,
+                   message: '不能只输入空格',
+                   trigger: ['input', 'blur'],
+              }
+              ],
+               title : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               },
+               {
+                   whitespace: true,
+                   message: '不能只输入空格',
+                   trigger: ['input', 'blur'],
+              }
+              ],
+               url : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               },
+               {
+                   whitespace: true,
+                   message: '不能只输入空格',
+                   trigger: ['input', 'blur'],
+              }
+              ],
+               orderId : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               },
+              ],
+               status : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               },
+               {
+                   whitespace: true,
+                   message: '不能只输入空格',
+                   trigger: ['input', 'blur'],
+              }
+              ],
 })
 
-// 轮播图数据
-const carouselImages = ref([
-  {
-    id: 1,
-    image: 'https://picsum.photos/400/200?random=1',
-    title: '防诈骗知识普及',
-    url: '/guide/1'
-  },
-  {
-    id: 2,
-    image: 'https://picsum.photos/400/200?random=2',
-    title: '网络安全防护',
-    url: '/guide/2'
-  },
-  {
-    id: 3,
-    image: 'https://picsum.photos/400/200?random=3',
-    title: '金融诈骗识别',
-    url: '/guide/3'
-  },
-  {
-    id: 4,
-    image: 'https://picsum.photos/400/200?random=4',
-    title: '电信诈骗预防',
-    url: '/guide/4'
-  },
-  {
-    id: 5,
-    image: 'https://picsum.photos/400/200?random=5',
-    title: '网购安全指南',
-    url: '/guide/5'
-  }
-])
+const elFormRef = ref()
+const elSearchFormRef = ref()
 
-// 分类数据
-const categories = ref([
-  { key: 'selected', name: '精选', icon: '⭐' },
-  { key: 'hot', name: '热门', icon: '🔥' },
-  { key: 'entertainment', name: '娱乐', icon: '🎮' },
-  { key: 'lifestyle', name: '生活', icon: '🏠' }
-])
+// =========== 表格控制部分 ===========
+const page = ref(1)
+const total = ref(0)
+const pageSize = ref(10)
+const tableData = ref([])
+const searchInfo = ref({})
+// 重置
+const onReset = () => {
+  searchInfo.value = {}
+  getTableData()
+}
 
-// 当前激活的分类
-const activeCategory = ref('selected')
+// 搜索
+const onSubmit = () => {
+  elSearchFormRef.value?.validate(async(valid) => {
+    if (!valid) return
+    page.value = 1
+    getTableData()
+  })
+}
 
-// 内容数据
-const selectedContentList = ref([
-  {
-    id: 1,
-    image: 'https://picsum.photos/80/80?random=4',
-    title: '[Home] 许愿新头像馆',
-    description: '精美头像，个性定制',
-    tag: '女生头像',
-    tagColor: '#e91e63',
-    views: '1.0万',
-    likes: '520',
-    url: '/content/1'
-  },
-  {
-    id: 2,
-    image: 'https://picsum.photos/80/80?random=5',
-    title: '[无忧] 超高颜值恋爱头像',
-    description: '甜蜜恋爱风格头像',
-    tag: '恋爱头像',
-    tagColor: '#f368e0',
-    views: '8.5千',
-    likes: '365',
-    url: '/content/2'
-  },
-  {
-    id: 3,
-    image: 'https://picsum.photos/80/80?random=6',
-    title: '[IPO] 恋爱头像',
-    description: '浪漫情侣专属',
-    tag: '情侣头像',
-    tagColor: '#ff6348',
-    views: '6.2千',
-    likes: '298',
-    url: '/content/3'
-  },
-  {
-    id: 4,
-    image: 'https://picsum.photos/80/80?random=7',
-    title: '[江南] 男生春梦高端娱乐厅',
-    description: '高端娱乐体验',
-    tag: '娱乐休闲',
-    tagColor: '#2ed573',
-    views: '4.8千',
-    likes: '156',
-    url: '/content/4'
-  }
-])
+// 分页
+const handleSizeChange = (val) => {
+  pageSize.value = val
+  getTableData()
+}
 
-const hotContentList = ref([
-  {
-    id: 1,
-    image: 'https://picsum.photos/80/80?random=10',
-    title: '[热门] 今日最火话题',
-    description: '全网都在讨论的热点内容',
-    tag: '热门话题',
-    tagColor: '#ff4757',
-    views: '15.2万',
-    likes: '8.9千',
-    rating: '4.8',
-    isHot: true,
-    url: '/content/hot1'
-  },
-  {
-    id: 2,
-    image: 'https://picsum.photos/80/80?random=11',
-    title: '[爆款] 网红推荐好物',
-    description: '明星同款，限时优惠',
-    tag: '好物推荐',
-    tagColor: '#ff6b6b',
-    views: '12.8万',
-    likes: '6.7千',
-    rating: '4.9',
-    isHot: true,
-    url: '/content/hot2'
-  },
-  {
-    id: 3,
-    image: 'https://picsum.photos/80/80?random=12',
-    title: '[火爆] 热门游戏攻略',
-    description: '最新游戏通关秘籍',
-    tag: '游戏攻略',
-    tagColor: '#ff9ff3',
-    views: '9.5万',
-    likes: '4.2千',
-    rating: '4.7',
-    url: '/content/hot3'
-  },
-  {
-    id: 4,
-    image: 'https://picsum.photos/80/80?random=13',
-    title: '[热议] 社会热点分析',
-    description: '深度解读当下热点',
-    tag: '社会话题',
-    tagColor: '#ffa502',
-    views: '7.8万',
-    likes: '3.1千',
-    url: '/content/hot4'
-  }
-])
+// 修改页面容量
+const handleCurrentChange = (val) => {
+  page.value = val
+  getTableData()
+}
 
-const entertainmentContentList = ref([
-  {
-    id: 1,
-    image: 'https://picsum.photos/80/80?random=14',
-    title: '[娱乐] 最新电影推荐',
-    description: '院线热映，口碑佳作',
-    tag: '电影推荐',
-    tagColor: '#3742fa',
-    views: '5.6万',
-    likes: '2.8千',
-    rating: '4.6',
-    isNew: true,
-    url: '/content/ent1'
-  },
-  {
-    id: 2,
-    image: 'https://picsum.photos/80/80?random=15',
-    title: '[综艺] 爆笑综艺合集',
-    description: '欢声笑语，解压必备',
-    tag: '综艺节目',
-    tagColor: '#ff3838',
-    views: '4.2万',
-    likes: '1.9千',
-    rating: '4.5',
-    url: '/content/ent2'
-  },
-  {
-    id: 3,
-    image: 'https://picsum.photos/80/80?random=16',
-    title: '[音乐] 热门歌曲榜单',
-    description: '流行金曲，循环播放',
-    tag: '流行音乐',
-    tagColor: '#ff6b35',
-    views: '3.8万',
-    likes: '1.5千',
-    url: '/content/ent3'
-  },
-  {
-    id: 4,
-    image: 'https://picsum.photos/80/80?random=17',
-    title: '[直播] 网红主播推荐',
-    description: '颜值与才华并存',
-    tag: '直播娱乐',
-    tagColor: '#7bed9f',
-    views: '2.9万',
-    likes: '1.2千',
-    isHot: true,
-    url: '/content/ent4'
-  }
-])
-
-const lifestyleContentList = ref([
-  {
-    id: 1,
-    image: 'https://picsum.photos/80/80?random=18',
-    title: '[美食] 家常菜制作教程',
-    description: '简单易学，营养美味',
-    tag: '美食制作',
-    tagColor: '#ff7675',
-    views: '3.2万',
-    likes: '1.8千',
-    rating: '4.7',
-    url: '/content/life1'
-  },
-  {
-    id: 2,
-    image: 'https://picsum.photos/80/80?random=19',
-    title: '[健康] 养生保健知识',
-    description: '科学养生，健康生活',
-    tag: '健康养生',
-    tagColor: '#00b894',
-    views: '2.8万',
-    likes: '1.4千',
-    url: '/content/life2'
-  },
-  {
-    id: 3,
-    image: 'https://picsum.photos/80/80?random=20',
-    title: '[家居] 装修设计灵感',
-    description: '温馨家居，品质生活',
-    tag: '家居装修',
-    tagColor: '#6c5ce7',
-    views: '2.1万',
-    likes: '980',
-    isNew: true,
-    url: '/content/life3'
-  },
-  {
-    id: 4,
-    image: 'https://picsum.photos/80/80?random=21',
-    title: '[旅行] 周末出游攻略',
-    description: '放松心情，拥抱自然',
-    tag: '旅行攻略',
-    tagColor: '#fd79a8',
-    views: '1.9万',
-    likes: '750',
-    url: '/content/life4'
-  }
-])
-
-// 轮播图控制
-const currentIndex = ref(0)
-const carouselContainer = ref(null)
-let autoPlayTimer = null
-
-// 触摸滑动相关
-let startX = 0
-let startY = 0
-let isDragging = false
-let startTime = 0
-
-// 轮播图方法
-const nextSlide = () => {
-  if (carouselImages.value.length > 0) {
-    currentIndex.value = (currentIndex.value + 1) % carouselImages.value.length
+// 查询
+const getTableData = async() => {
+  const table = await getCarouselImageList({ page: page.value, pageSize: pageSize.value, ...searchInfo.value })
+  if (table.code === 0) {
+    tableData.value = table.data.list
+    total.value = table.data.total
+    page.value = table.data.page
+    pageSize.value = table.data.pageSize
   }
 }
 
-const prevSlide = () => {
-  if (carouselImages.value.length > 0) {
-    currentIndex.value = currentIndex.value === 0 
-      ? carouselImages.value.length - 1 
-      : currentIndex.value - 1
-  }
+getTableData()
+
+// ============== 表格控制部分结束 ===============
+
+// 获取需要的字典 可能为空 按需保留
+const setOptions = async () =>{
+    statusOptions.value = await getDictFunc('status')
 }
 
-const goToSlide = (index) => {
-  currentIndex.value = index
-  resetAutoPlay()
+// 获取需要的字典 可能为空 按需保留
+setOptions()
+
+
+// 多选数据
+const multipleSelection = ref([])
+// 多选
+const handleSelectionChange = (val) => {
+    multipleSelection.value = val
 }
 
-const startAutoPlay = () => {
-  if (carouselImages.value.length > 1) {
-    autoPlayTimer = setInterval(() => {
-      nextSlide()
-    }, 4000)
-  }
-}
-
-const stopAutoPlay = () => {
-  if (autoPlayTimer) {
-    clearInterval(autoPlayTimer)
-    autoPlayTimer = null
-  }
-}
-
-const resetAutoPlay = () => {
-  stopAutoPlay()
-  startAutoPlay()
-}
-
-// 触摸事件处理
-const handleTouchStart = (e) => {
-  startX = e.touches[0].clientX
-  startY = e.touches[0].clientY
-  startTime = Date.now()
-  isDragging = true
-  stopAutoPlay()
-}
-
-const handleTouchMove = (e) => {
-  if (!isDragging) return
-  
-  const currentX = e.touches[0].clientX
-  const currentY = e.touches[0].clientY
-  const diffX = startX - currentX
-  const diffY = startY - currentY
-  
-  // 如果是水平滑动，阻止默认行为
-  if (Math.abs(diffX) > Math.abs(diffY)) {
-    e.preventDefault()
-  }
-}
-
-const handleTouchEnd = (e) => {
-  if (!isDragging) return
-  
-  const endX = e.changedTouches[0].clientX
-  const endY = e.changedTouches[0].clientY
-  const diffX = startX - endX
-  const diffY = startY - endY
-  const diffTime = Date.now() - startTime
-  
-  // 判断是否为有效的水平滑动
-  if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50 && diffTime < 300) {
-    if (diffX > 0) {
-      // 向左滑动，显示下一张
-      nextSlide()
-    } else {
-      // 向右滑动，显示上一张
-      prevSlide()
+// 删除行
+const deleteRow = (row) => {
+    ElMessageBox.confirm('确定要删除吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+    }).then(() => {
+            deleteCarouselImageFunc(row)
+        })
     }
-  }
-  
-  isDragging = false
-  resetAutoPlay()
-}
 
-// 事件处理函数
-const handleCarouselClick = (item) => {
-  ElMessage.success(`点击了轮播图: ${item.title}`)
-}
-
-const handleFeatureClick = (type) => {
-  const messages = {
-    match: '进入牵手速配',
-    auction: '打开激情拍卖',
-    romance: '进入浪漫满屋'
-  }
-  ElMessage.success(messages[type])
-}
-
-const handleContentClick = (item) => {
-  ElMessage.success(`查看内容: ${item.title}`)
-}
-
-const handleNavClick = (nav) => {
-  const messages = {
-    home: '首页',
-    category: '分类',
-    profile: '我的',
-    more: '更多'
-  }
-  ElMessage.success(`切换到: ${messages[nav]}`)
-}
-
-const switchCategory = (categoryKey) => {
-  activeCategory.value = categoryKey
-}
-
-const getCurrentContentList = () => {
-  switch (activeCategory.value) {
-    case 'hot':
-      return hotContentList.value
-    case 'selected':
-      return selectedContentList.value
-    case 'entertainment':
-      return entertainmentContentList.value
-    case 'lifestyle':
-      return lifestyleContentList.value
-    default:
-      return selectedContentList.value
-  }
-}
-
-// 加载轮播图数据
-const loadCarouselImages = async () => {
-  try {
-    const response = await getCarouselImagePublic()
-    if (response.code === 0 && response.data && response.data.length > 0) {
-      carouselImages.value = response.data
+// 多选删除
+const onDelete = async() => {
+  ElMessageBox.confirm('确定要删除吗?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(async() => {
+      const IDs = []
+      if (multipleSelection.value.length === 0) {
+        ElMessage({
+          type: 'warning',
+          message: '请选择要删除的数据'
+        })
+        return
+      }
+      multipleSelection.value &&
+        multipleSelection.value.map(item => {
+          IDs.push(item.ID)
+        })
+      const res = await deleteCarouselImageByIds({ IDs })
+      if (res.code === 0) {
+        ElMessage({
+          type: 'success',
+          message: '删除成功'
+        })
+        if (tableData.value.length === IDs.length && page.value > 1) {
+          page.value--
+        }
+        getTableData()
+      }
+      })
     }
-  } catch (error) {
-    console.error('加载轮播图失败:', error)
-    // 使用默认数据
+
+// 行为控制标记（弹窗内部需要增还是改）
+const type = ref('')
+
+// 更新行
+const updateCarouselImageFunc = async(row) => {
+    const res = await findCarouselImage({ ID: row.ID })
+    type.value = 'update'
+    if (res.code === 0) {
+        formData.value = res.data
+        dialogFormVisible.value = true
+    }
+}
+
+
+// 删除行
+const deleteCarouselImageFunc = async (row) => {
+    const res = await deleteCarouselImage({ ID: row.ID })
+    if (res.code === 0) {
+        ElMessage({
+                type: 'success',
+                message: '删除成功'
+            })
+            if (tableData.value.length === 1 && page.value > 1) {
+            page.value--
+        }
+        getTableData()
+    }
+}
+
+// 弹窗控制标记
+const dialogFormVisible = ref(false)
+
+// 打开弹窗
+const openDialog = () => {
+    type.value = 'create'
+    dialogFormVisible.value = true
+}
+
+// 关闭弹窗
+const closeDialog = () => {
+    dialogFormVisible.value = false
+    formData.value = {
+        image: '',
+        title: '',
+        url: '',
+        orderId: undefined,
+        status: '',
+        }
+}
+// 弹窗确定
+const enterDialog = async () => {
+     btnLoading.value = true
+     elFormRef.value?.validate( async (valid) => {
+             if (!valid) return btnLoading.value = false
+              let res
+              switch (type.value) {
+                case 'create':
+                  res = await createCarouselImage(formData.value)
+                  break
+                case 'update':
+                  res = await updateCarouselImage(formData.value)
+                  break
+                default:
+                  res = await createCarouselImage(formData.value)
+                  break
+              }
+              btnLoading.value = false
+              if (res.code === 0) {
+                ElMessage({
+                  type: 'success',
+                  message: '创建/更改成功'
+                })
+                closeDialog()
+                getTableData()
+              }
+      })
+}
+
+const detailFrom = ref({})
+
+// 查看详情控制标记
+const detailShow = ref(false)
+
+
+// 打开详情弹窗
+const openDetailShow = () => {
+  detailShow.value = true
+}
+
+
+// 打开详情
+const getDetails = async (row) => {
+  // 打开弹窗
+  const res = await findCarouselImage({ ID: row.ID })
+  if (res.code === 0) {
+    detailFrom.value = res.data
+    openDetailShow()
   }
 }
 
-// 生命周期
-onMounted(() => {
-  loadCarouselImages()
-  startAutoPlay()
-})
 
-onUnmounted(() => {
-  stopAutoPlay()
-})
+// 关闭详情弹窗
+const closeDetailShow = () => {
+  detailShow.value = false
+  detailFrom.value = {}
+}
+
+
 </script>
 
-<style scoped>
-.home-page {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  padding-bottom: 70px;
-}
+<style>
 
-/* 轮播图样式 */
-.carousel-section {
-  position: relative;
-  width: 100%;
-  height: 200px;
-  overflow: hidden;
-  border-radius: 0 0 20px 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-}
-
-.carousel-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.carousel-wrapper {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.3s ease-in-out;
-  touch-action: pan-y;
-}
-
-.carousel-slide {
-  flex: 0 0 100%;
-  position: relative;
-  cursor: pointer;
-}
-
-.carousel-slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.carousel-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
-  color: white;
-  padding: 20px;
-}
-
-.carousel-overlay h3 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-.carousel-indicators {
-  position: absolute;
-  bottom: 15px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 8px;
-  z-index: 10;
-}
-
-.indicator {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.5);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.indicator.active {
-  background: white;
-  transform: scale(1.2);
-}
-
-/* 轮播图按钮 */
-.carousel-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.9);
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 10;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.carousel-btn:hover {
-  background: white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transform: translateY(-50%) scale(1.1);
-}
-
-.carousel-btn.prev {
-  left: 15px;
-}
-
-.carousel-btn.next {
-  right: 15px;
-}
-
-.carousel-btn .el-icon {
-  font-size: 18px;
-  color: #333;
-}
-
-/* 主标题 */
-.main-header {
-  text-align: center;
-  padding: 20px;
-  position: relative;
-}
-
-.main-title {
-  font-size: 28px;
-  font-weight: bold;
-  color: white;
-  margin: 0;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.leaf-decoration {
-  position: absolute;
-  top: 10px;
-  right: 20px;
-  font-size: 24px;
-  transform: rotate(15deg);
-}
-
-/* 功能按钮区域 */
-.feature-buttons {
-  display: flex;
-  justify-content: space-between;
-  gap: 15px;
-  margin: 0 20px 30px;
-}
-
-.feature-btn {
-  flex: 1;
-  background: white;
-  border-radius: 15px;
-  padding: 20px 10px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  position: relative;
-  overflow: hidden;
-}
-
-.feature-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  transition: all 0.3s ease;
-}
-
-.feature-btn.purple::before {
-  background: linear-gradient(90deg, #667eea, #764ba2);
-}
-
-.feature-btn.orange::before {
-  background: linear-gradient(90deg, #f093fb, #f5576c);
-}
-
-.feature-btn.pink::before {
-  background: linear-gradient(90deg, #4facfe, #00f2fe);
-}
-
-.feature-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-.btn-icon {
-  font-size: 24px;
-  margin-bottom: 8px;
-}
-
-.feature-btn span {
-  display: block;
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
-}
-
-/* 分类标签 */
-.category-tabs {
-  display: flex;
-  justify-content: space-around;
-  margin: 0 20px 25px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 25px;
-  padding: 5px;
-}
-
-.category-tab {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 12px 8px;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.category-tab.active {
-  background: white;
-  color: #333;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.tab-icon {
-  font-size: 20px;
-  margin-bottom: 4px;
-}
-
-.tab-text {
-  font-size: 12px;
-  font-weight: 500;
-}
-
-/* 内容列表 */
-.content-list {
-  background: white;
-  border-radius: 20px 20px 0 0;
-  padding: 20px;
-  margin: 0 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-}
-
-.content-item {
-  display: flex;
-  align-items: center;
-  padding: 15px;
-  margin-bottom: 15px;
-  background: #f8f9fa;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: 1px solid #e9ecef;
-}
-
-.content-item:last-child {
-  margin-bottom: 0;
-}
-
-.content-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  border-color: #dee2e6;
-}
-
-.content-image {
-  position: relative;
-  margin-right: 15px;
-  flex-shrink: 0;
-}
-
-.content-image img {
-  width: 60px;
-  height: 60px;
-  border-radius: 8px;
-  object-fit: cover;
-}
-
-.hot-badge, .new-badge {
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  font-size: 10px;
-  padding: 2px 6px;
-  border-radius: 10px;
-  font-weight: bold;
-}
-
-.hot-badge {
-  background: #ff4757;
-  color: white;
-}
-
-.new-badge {
-  background: #2ed573;
-  color: white;
-}
-
-.content-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.content-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
-  margin: 0 0 8px 0;
-  line-height: 1.3;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.content-description {
-  font-size: 13px;
-  color: #666;
-  margin-bottom: 10px;
-  line-height: 1.4;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.content-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.tag {
-  font-size: 11px;
-  color: white;
-  padding: 3px 8px;
-  border-radius: 12px;
-  font-weight: 500;
-}
-
-.stats {
-  display: flex;
-  gap: 8px;
-  font-size: 11px;
-  color: #999;
-}
-
-/* 底部导航 */
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: white;
-  display: flex;
-  justify-content: space-around;
-  padding: 10px 0;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-}
-
-.nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 5px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  color: #999;
-}
-
-.nav-item.active {
-  color: #667eea;
-}
-
-.nav-item span {
-  font-size: 12px;
-  margin-top: 2px;
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .feature-buttons {
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .category-tabs {
-    flex-wrap: wrap;
-    gap: 5px;
-  }
-  
-  .category-tab {
-    min-width: 70px;
-  }
-  
-  .content-item {
-    flex-direction: column;
-    text-align: center;
-  }
-  
-  .content-image {
-    margin-right: 0;
-    margin-bottom: 10px;
-  }
-  
-  .content-title,
-  .content-description {
-    white-space: normal;
-  }
-}
-
-/* 动画效果 */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.content-item {
-  animation: fadeInUp 0.6s ease forwards;
-}
-
-.content-item:nth-child(1) { animation-delay: 0.1s; }
-.content-item:nth-child(2) { animation-delay: 0.2s; }
-.content-item:nth-child(3) { animation-delay: 0.3s; }
-.content-item:nth-child(4) { animation-delay: 0.4s; }
 </style>
