@@ -40,25 +40,22 @@ message UnmuteUserReq {
   uint64 user_id = 2;      // 被解除禁言用户ID
   uint64 operator_id = 3;  // 操作者ID
 }
-
 // 解除禁言响应
 message UnmuteUserResp {
   bool success = 1;        // 操作是否成功
   string message = 2;      // 响应消息
 }
 
-
-// 房间服务定义
 service Room {
 
   // 踢人接口
   rpc KickUser(KickUserReq) returns (KickUserResp);
-  
+
   // 禁言接口
   rpc MuteUser(MuteUserReq) returns (MuteUserResp);
-  
+
   // 解除禁言接口
   rpc UnmuteUser(UnmuteUserReq) returns (UnmuteUserResp);
-  
+
 
 }

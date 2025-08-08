@@ -361,3 +361,77 @@ func Logout(c *gin.Context) {
 
 	c.JSON(200, gin.H{"success": true, "message": "登出成功"})
 }
+
+func FollowUser(c *gin.Context) {
+	var req request.FollowUser
+	err := c.ShouldBind(&req)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 1000,
+			"msg":  "请求失败！无法找到获取的资源",
+			"data": err.Error(),
+		})
+		return
+	}
+	conn, err := grpc.NewClient("127.0.0.1:8889", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		log.Fatalf("did not connect: %v", err)
+	}
+	defer conn.Close()
+	c1 := __.NewUserClient(conn)
+	userId := c.GetUint("userId")
+	user, err := c1.FollowUser(c, &__.FollowUserRequest{
+		UserId:     int64(userId),
+		FollowedId: req.FollowedId,
+	})
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 1001,
+			"msg":  "请求失败！服务器内部错误",
+			"data": err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": 0,
+		"msg":  "服务器响应正常",
+		"data": user,
+	})
+}
+
+func UnFollowUser(c *gin.Context) {
+	var req request.UnFollowUser
+	err := c.ShouldBind(&req)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 1000,
+			"msg":  "请求失败！无法找到获取的资源",
+			"data": err.Error(),
+		})
+		return
+	}
+	conn, err := grpc.NewClient("127.0.0.1:8889", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		log.Fatalf("did not connect: %v", err)
+	}
+	defer conn.Close()
+	c1 := __.NewUserClient(conn)
+	userId := c.GetUint("userId")
+	user, err := c1.UnFollowUser(c, &__.UnFollowUserRequest{
+		UserId:     int64(userId),
+		FollowedId: req.FollowedId,
+	})
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 1001,
+			"msg":  "请求失败！服务器内部错误",
+			"data": err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": 0,
+		"msg":  "服务器响应正常",
+		"data": user,
+	})
+}

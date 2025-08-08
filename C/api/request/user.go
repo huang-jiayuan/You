@@ -27,3 +27,11 @@ type ImproveUserMessage struct {
 	VoiceTag    string `json:"voice_tag" form:"voice_tag"`
 	InterestTag string `json:"interest_tag" form:"interest_tag"`
 }
+
+type FollowUser struct {
+	FollowedId int64 `json:"followed_id" binding:"required"`
+}
+
+type UnFollowUser struct {
+	FollowedId int64 `json:"followed_id" binding:"required"`
+}

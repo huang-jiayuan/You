@@ -5,27 +5,73 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="901b8522-4459-4df4-bb30-a35448a83a2e" name="更改" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/api/pkg/cors.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/api/request/chat.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/api/room/room.exe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/api/room/room_api" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/migrations/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/migrations/create_mic_application_table.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/migrations/create_room_member_table.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/migrations/create_room_mic_table.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/migrations/create_room_table.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/migrations/create_user_room_table.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/migrations/create_user_table.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/migrations/run_all_migrations.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/models/chat_errors.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/models/chat_session.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/models/message.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/models/user_follow.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/models/user_online_status.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/pkg/realname.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/room/room.exe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/room/room_server" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/room_server" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/KICK_FROM_MIC_IMPLEMENTATION.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/model/room_member.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/model/room_mic.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/test/room_mic_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/GOHCache.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/GOHCache.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/You.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/You.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/thriftCompilerAssist.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/thriftCompilerAssist.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/thriftCompilerAssist.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/go.mod" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/go.sum" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/C/api/request/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/request/room.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/request/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/request/user.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/C/api/room/handler/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/handler/room.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/C/api/room/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/C/api/room/proto/room.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/proto/room.pb.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/C/api/room/proto/room.proto" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/proto/room.proto" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/C/api/room/proto/room_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/proto/room_grpc.pb.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/C/api/room/router/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/router/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/user/handler/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/user/handler/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/user/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/user/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/user/proto/user.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/user/proto/user.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/user/proto/user.proto" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/user/proto/user.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/user/proto/user_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/user/proto/user_grpc.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/user/router/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/user/router/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/go.sum" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/C/server/models/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/models/room.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/pkg/demo.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/pkg/demo.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/room/basic/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/room/basic/config/config.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/C/server/room/handler/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/room/handler/room.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/C/server/room/proto/room.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/room/proto/room.pb.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/C/server/room/proto/room.proto" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/room/proto/room.proto" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/C/server/room/proto/room_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/room/proto/room_grpc.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gin-vue-admin/web/src/pathInfo.json" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/web/src/pathInfo.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gin-vue-admin/web/src/view/violation/mute/mute.vue" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/web/src/view/violation/mute/mute.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gin-vue-admin/web/src/view/violation/mute/muteForm.vue" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/web/src/view/violation/mute/muteForm.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/user/handler/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/user/handler/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/user/proto/user.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/user/proto/user.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/user/proto/user.proto" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/user/proto/user.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/user/proto/user_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/user/proto/user_grpc.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/api/enter.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/api/enter.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/api/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/api/room.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/model/request/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/model/request/room.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/router/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/router/room.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/service/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/service/room.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,22 +82,22 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "YG-A1"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;YG-A1&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/huang-jiayuan/You.git",
-    "accountId": "df69715c-a255-48e9-957f-6be18fd073c9"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/huang-jiayuan/You.git&quot;,
+    &quot;accountId&quot;: &quot;df69715c-a255-48e9-957f-6be18fd073c9&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 8
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="30xgIxnLeNN50Ib79TVdaw17GQH" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -65,7 +111,7 @@
     "RunOnceActivity.go.formatter.settings.were.checked": "true",
     "RunOnceActivity.go.migrated.go.modules.settings": "true",
     "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
-    "git-widget-placeholder": "yg",
+    "git-widget-placeholder": "正在合并 yg",
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
     "last_opened_file_path": "C:/Users/17380",
