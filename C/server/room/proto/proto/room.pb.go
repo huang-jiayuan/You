@@ -4,7 +4,7 @@
 // 	protoc        v5.26.1
 // source: room.proto
 
-package __
+package proto
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -2227,7 +2227,7 @@ const file_room_proto_rawDesc = "" +
 	"\bLeaveMic\x12\x11.room.LeaveMicReq\x1a\x12.room.LeaveMicResp\x12:\n" +
 	"\vKickFromMic\x12\x14.room.KickFromMicReq\x1a\x15.room.KickFromMicResp\x12:\n" +
 	"\vMuteMicUser\x12\x14.room.MuteMicUserReq\x1a\x15.room.MuteMicUserResp\x12=\n" +
-	"\fGetMicStatus\x12\x15.room.GetMicStatusReq\x1a\x16.room.GetMicStatusRespB\x03Z\x01/b\x06proto3"
+	"\fGetMicStatus\x12\x15.room.GetMicStatusReq\x1a\x16.room.GetMicStatusRespB\tZ\a./protob\x06proto3"
 
 var (
 	file_room_proto_rawDescOnce sync.Once

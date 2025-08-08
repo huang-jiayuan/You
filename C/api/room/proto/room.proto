@@ -111,6 +111,7 @@ message CloseRoomStreamResp {
   int64 room_id = 3;
 }
 
+
 //进入房间接口
 message JoinRoomStreamReq {
   int64 room_id = 1;
@@ -124,9 +125,7 @@ message JoinRoomStreamResp {
   RoomInfo room_info = 4;
 }
 
-// 麦位管理相关消息定义
-
-// 申请上麦请求
+// 申请上麦
 message ApplyMicReq {
   int64 room_id = 1;
   uint64 user_id = 2;
@@ -138,12 +137,13 @@ message ApplyMicResp {
   int64 application_id = 3;
 }
 
-// 处理上麦申请请求
+// 处理上麦申请
 message HandleMicApplicationReq {
   int64 application_id = 1;
   uint64 handler_id = 2;
   int32 action = 3;  // 1-批准, 2-拒绝
   string reason = 4; // 拒绝原因
+
 }
 
 message HandleMicApplicationResp {
@@ -183,8 +183,8 @@ message MuteMicUserReq {
   int64 room_id = 1;
   uint64 operator_id = 2;
   uint64 target_user_id = 3;
-  int32 action = 4;      // 1-禁言, 2-解禁
-  int32 duration = 5;    // 禁言时长(分钟)
+  int32 action = 4;
+  int32 duration = 5;
   string reason = 6;
 }
 
@@ -206,7 +206,7 @@ message GetMicStatusResp {
 // 麦位信息
 message MicInfo {
   int32 position = 1;
-  int32 status = 2;      // 0-空闲, 1-占用, 2-禁用
+  int32 status = 2;
   uint64 user_id = 3;
   string user_nickname = 4;
   string user_avatar = 5;
@@ -224,7 +224,6 @@ message MicApplication {
   string apply_time = 5;
   int32 status = 6;
 }
-
 service Room {
   rpc greet(StreamReq) returns (StreamResp);
   rpc JoinRoom(JoinRoomStreamReq) returns (JoinRoomStreamResp);
@@ -234,8 +233,6 @@ service Room {
   rpc GetRecommendRooms(GetRecommendRoomsReq) returns (GetRecommendRoomsResp);
   rpc GetRoomsByCategory(GetRoomsByCategoryReq) returns (GetRoomsByCategoryResp);
   rpc SearchRooms(SearchRoomsReq) returns (SearchRoomsResp);
-  
-  // 麦位管理相关RPC方法
   rpc ApplyMic(ApplyMicReq) returns (ApplyMicResp);
   rpc HandleMicApplication(HandleMicApplicationReq) returns (HandleMicApplicationResp);
   rpc LeaveMic(LeaveMicReq) returns (LeaveMicResp);

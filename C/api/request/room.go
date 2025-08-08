@@ -37,11 +37,28 @@ type CloseRoom struct {
 	RoomId int64 `json:"room_id" form:"room_id" binding:"required"`
 }
 
-// 麦位管理相关请求结构
 type ApplyMic struct {
 	RoomId int64 `json:"room_id" form:"room_id" binding:"required"`
 }
 
 type LeaveMic struct {
 	RoomId int64 `json:"room_id" form:"room_id" binding:"required"`
+}
+type HandleMicApplication struct {
+	ApplicationId int64  `json:"application_id" binding:"required"`
+	HandlerId     uint64 `json:"handler_id" binding:"required"`
+	Action        int32  `json:"action" binding:"required,oneof=1 2"`
+	Reason        string `json:"reason"`
+}
+type KickFromMic struct {
+	RoomId       int64  `json:"room_id" form:"room_id" binding:"required"`
+	TargetUserId uint64 `json:"target_user_id" form:"target_user_id" binding:"required"`
+	Reason       string `json:"reason" form:"reason"`
+}
+type MuteMicUser struct {
+	RoomId       int64  `json:"room_id" form:"room_id" binding:"required"`
+	TargetUserId uint64 `json:"target_user_id" form:"target_user_id" binding:"required"`
+	Action       int32  `json:"action" form:"action" binding:"required,oneof=1 2"`
+	Duration     int32  `json:"duration" form:"duration"`
+	Reason       string `json:"reason" form:"reason"`
 }

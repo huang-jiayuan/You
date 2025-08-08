@@ -20,11 +20,12 @@ func Router(r *gin.Engine) {
 			room.POST("/searchRooms", handler.SearchRooms)
 			room.POST("/joinRoom", handler.JoinRoom)
 			room.POST("/closeRoom", handler.CloseRoom)
-
-			// 麦位管理相关路由
 			room.POST("/applyMic", handler.ApplyMic)
 			room.POST("/leaveMic", handler.LeaveMic)
 
+			room.POST("/handleMicApplication", handler.HandleMicApplication)
+			room.POST("/kickFromMic", handler.KickFromMic)
+			room.POST("/muteMicUser", handler.MuteMicUser)
 		}
 	}
 }

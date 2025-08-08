@@ -366,7 +366,7 @@ func ApplyMic(c *gin.Context) {
 		log.Fatalf("did not connect: %v", err)
 	}
 	defer conn.Close()
-	
+
 	c1 := __.NewRoomClient(conn)
 	result, err := c1.ApplyMic(c, &__.ApplyMicReq{
 		RoomId: req.RoomId,
@@ -422,7 +422,7 @@ func LeaveMic(c *gin.Context) {
 		log.Fatalf("did not connect: %v", err)
 	}
 	defer conn.Close()
-	
+
 	c1 := __.NewRoomClient(conn)
 	result, err := c1.LeaveMic(c, &__.LeaveMicReq{
 		RoomId: req.RoomId,
@@ -453,6 +453,220 @@ func LeaveMic(c *gin.Context) {
 		"data": gin.H{
 			"mic_position": result.MicPosition,
 		},
+	})
+	return
+}
+
+func HandleMicApplication(c *gin.Context) {
+	var req request.HandleMicApplication
+	if err := c.ShouldBind(&req); err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 10000,
+			"msg":  "验证失败",
+			"data": err.Error(),
+		})
+		return
+	}
+
+	conn, err := grpc.NewClient("127.0.0.1:8888", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		log.Fatalf("did not connect: %v", err)
+	}
+	defer conn.Close()
+	c1 := __.NewRoomClient(conn)
+	create, err := c1.HandleMicApplication(c, &__.HandleMicApplicationReq{
+		ApplicationId: req.ApplicationId,
+		HandlerId:     req.HandlerId,
+		Action:        req.Action,
+		Reason:        req.Reason,
+	})
+
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 10000,
+			"msg":  "处理申请失败",
+			"data": err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": 200,
+		"msg":  "处理申请成功",
+		"data": create,
+	})
+	return
+}
+
+func KickFromMic(c *gin.Context) {
+	var req request.KickFromMic
+	if err := c.ShouldBind(&req); err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 10000,
+			"msg":  "验证失败",
+			"data": err.Error(),
+		})
+		return
+	}
+	
+	// 获取JWT中的用户ID作为操作者ID
+	userId := c.GetUint("userId")
+	if userId == 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 10000,
+			"msg":  "用户未登录或token无效",
+			"data": nil,
+		})
+		return
+	}
+	
+	// 验证被踢用户ID不能为0
+	if req.TargetUserId == 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 10000,
+			"msg":  "被踢用户ID不能为空",
+			"data": nil,
+		})
+		return
+	}
+	
+	// 不能踢自己
+	if uint64(userId) == req.TargetUserId {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 10000,
+			"msg":  "不能踢自己下麦",
+			"data": nil,
+		})
+		return
+	}
+	
+	fmt.Printf("踢人下麦 - 操作者ID: %d, 房间ID: %d, 被踢用户ID: %d, 原因: %s\n", 
+		userId, req.RoomId, req.TargetUserId, req.Reason)
+	
+	conn, err := grpc.NewClient("127.0.0.1:8888", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		log.Fatalf("did not connect: %v", err)
+	}
+	defer conn.Close()
+	
+	c1 := __.NewRoomClient(conn)
+	result, err := c1.KickFromMic(c, &__.KickFromMicReq{
+		RoomId:       req.RoomId,
+		OperatorId:   uint64(userId),
+		TargetUserId: req.TargetUserId,
+		Reason:       req.Reason,
+	})
+
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 10000,
+			"msg":  "踢人下麦失败",
+			"data": err.Error(),
+		})
+		return
+	}
+	
+	if !result.Success {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 10000,
+			"msg":  result.Message,
+			"data": nil,
+		})
+		return
+	}
+	
+	c.JSON(http.StatusOK, gin.H{
+		"code": 200,
+		"msg":  result.Message,
+		"data": gin.H{
+			"mic_position": result.MicPosition,
+		},
+	})
+	return
+}
+
+func MuteMicUser(c *gin.Context) {
+	var req request.MuteMicUser
+	if err := c.ShouldBind(&req); err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 10000,
+			"msg":  "验证失败",
+			"data": err.Error(),
+		})
+		return
+	}
+	
+	// 获取JWT中的用户ID作为操作者ID
+	userId := c.GetUint("userId")
+	if userId == 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 10000,
+			"msg":  "用户未登录或token无效",
+			"data": nil,
+		})
+		return
+	}
+	
+	// 验证被操作用户ID不能为0
+	if req.TargetUserId == 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 10000,
+			"msg":  "目标用户ID不能为空",
+			"data": nil,
+		})
+		return
+	}
+	
+	// 不能操作自己
+	if uint64(userId) == req.TargetUserId {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 10000,
+			"msg":  "不能对自己进行禁言操作",
+			"data": nil,
+		})
+		return
+	}
+	
+	fmt.Printf("禁言管理 - 操作者ID: %d, 房间ID: %d, 目标用户ID: %d, 动作: %d, 时长: %d分钟, 原因: %s\n", 
+		userId, req.RoomId, req.TargetUserId, req.Action, req.Duration, req.Reason)
+	
+	conn, err := grpc.NewClient("127.0.0.1:8888", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		log.Fatalf("did not connect: %v", err)
+	}
+	defer conn.Close()
+	
+	c1 := __.NewRoomClient(conn)
+	result, err := c1.MuteMicUser(c, &__.MuteMicUserReq{
+		RoomId:       req.RoomId,
+		OperatorId:   uint64(userId),
+		TargetUserId: req.TargetUserId,
+		Action:       req.Action,
+		Duration:     req.Duration,
+		Reason:       req.Reason,
+	})
+
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 10000,
+			"msg":  "禁言/解禁失败",
+			"data": err.Error(),
+		})
+		return
+	}
+	
+	if !result.Success {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 10000,
+			"msg":  result.Message,
+			"data": nil,
+		})
+		return
+	}
+	
+	c.JSON(http.StatusOK, gin.H{
+		"code": 200,
+		"msg":  result.Message,
+		"data": nil,
 	})
 	return
 }
