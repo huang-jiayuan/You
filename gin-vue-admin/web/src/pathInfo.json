@@ -84,6 +84,10 @@
   "/src/plugin/chamber/view/room.vue": "Room",
   "/src/plugin/chamber/view/roomTagDict.vue": "RoomTagDict",
   "/src/plugin/email/view/index.vue": "Email",
-  "/src/plugin/silence/form/mute.vue": "MuteForm",
-  "/src/plugin/silence/view/mute.vue": "Mute"
+  "/src/plugin/gift/form/giftInfo.vue": "GiftInfoForm",
+  "/src/plugin/gift/form/giftSendRecord.vue": "GiftSendRecordForm",
+  "/src/plugin/gift/form/userGiftBackpack.vue": "UserGiftBackpackForm",
+  "/src/plugin/gift/view/giftInfo.vue": "GiftInfo",
+  "/src/plugin/gift/view/giftSendRecord.vue": "GiftSendRecord",
+  "/src/plugin/gift/view/userGiftBackpack.vue": "UserGiftBackpack"
 }

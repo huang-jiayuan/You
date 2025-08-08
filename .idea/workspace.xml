@@ -4,11 +4,46 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8879827a-ff20-41a2-8856-6cc8c9d126bb" name="更改" comment="" />
+    <list default="true" id="8879827a-ff20-41a2-8856-6cc8c9d126bb" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/C/server/models/gift.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/C/server/models/gift_send_record.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gin-vue-admin/web/public/img.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/GOHCache.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/GOHCache.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/request/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/request/room.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/room/handler/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/handler/room.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/room/proto/room.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/proto/room.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/room/proto/room.proto" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/proto/room.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/room/proto/room_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/proto/room_grpc.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/api/room/router/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/router/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/models/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/models/room.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/models/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/models/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/room/basic/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/room/basic/config/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/room/basic/global/global.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/room/basic/global/global.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/room/handler/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/room/handler/room.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/room/proto/room.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/room/proto/room.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/room/proto/room.proto" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/room/proto/room.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C/server/room/proto/room_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/room/proto/room_grpc.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/api/enter.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/api/enter.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/gen/gen.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/gen/gen.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/initialize/gorm.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/initialize/gorm.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/initialize/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/initialize/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/router/enter.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/router/enter.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/service/enter.go" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/server/plugin/gift/service/enter.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/web/src/core/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/web/src/core/config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/web/src/pathInfo.json" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/web/src/pathInfo.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
   </component>
   <component name="GOROOT" url="file://$PROJECT_DIR$/../../../go" />
   <component name="Git.Settings">
@@ -18,12 +53,16 @@
   &quot;associatedIndex&quot;: 6
 }</component>
   <component name="ProjectId" id="30dEdRtubfva7fZEn77OU1lenyN" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.GoLinterPluginOnboarding&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.GoLinterPluginStorageMigration&quot;: &quot;true&quot;,

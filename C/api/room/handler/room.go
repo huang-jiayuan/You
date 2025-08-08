@@ -43,3 +43,46 @@ func Stream(c *gin.Context) {
 	})
 	return
 }
+
+func SendGifts(c *gin.Context) {
+	var req request.SendGifts
+	if err := c.ShouldBind(&req); err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 10000,
+			"msg":  "未接收参数",
+			"data": nil,
+		})
+		return
+	}
+	client, err := grpc.NewClient("127.0.0.1:8888", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		log.Fatalf("did not connect: %v", err)
+	}
+	defer client.Close()
+	c1 := __.NewRoomClient(client)
+	gifts, err := c1.SendGifts(c, &__.SendGiftsReq{
+		SendUserId:    req.SendUserId,
+		ReceiveUserId: req.ReceiveUserId,
+		RoomId:        req.RoomId,
+		GiftId:        req.GiftId,
+		SendCount:     req.SendCount,
+		SendType:      req.SendType,
+		Message:       req.Message,
+		Status:        req.Status,
+		ClientIp:      req.ClientIp,
+		SendTime:      req.SendTime,
+	})
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 10000,
+			"msg":  "刷礼记录失败",
+			"data": nil,
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": 200,
+		"msg":  "刷礼记录成",
+		"data": gifts,
+	})
+}
