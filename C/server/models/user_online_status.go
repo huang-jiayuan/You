@@ -7,20 +7,20 @@ import (
 
 // UserOnlineStatus 用户在线状态表结构体
 type UserOnlineStatus struct {
-	Id                 uint64    `gorm:"column:id;type:bigint UNSIGNED;comment:状态记录ID;primaryKey;" json:"id"`                                    // 状态记录ID
-	UserId             uint64    `gorm:"column:user_id;type:bigint UNSIGNED;comment:用户ID;not null;uniqueIndex;" json:"user_id"`                  // 用户ID
-	IsOnline           bool      `gorm:"column:is_online;type:tinyint(1);comment:是否在线;not null;default:0;index;" json:"is_online"`              // 是否在线
-	LastActiveTime     time.Time `gorm:"column:last_active_time;type:datetime(3);comment:最后活跃时间;not null;index;" json:"last_active_time"`       // 最后活跃时间
-	WebSocketSessionId *string   `gorm:"column:websocket_session_id;type:varchar(64);comment:WebSocket会话ID;" json:"websocket_session_id"`       // WebSocket会话ID
-	DeviceType         string    `gorm:"column:device_type;type:varchar(20);comment:设备类型(web,mobile,desktop);default:'web';" json:"device_type"` // 设备类型
-	IpAddress          string    `gorm:"column:ip_address;type:varchar(45);comment:IP地址;" json:"ip_address"`                                      // IP地址
-	UserAgent          string    `gorm:"column:user_agent;type:varchar(500);comment:用户代理;" json:"user_agent"`                                    // 用户代理
-	CreatedAt          time.Time `gorm:"column:created_at;type:datetime(3);" json:"created_at"`
-	UpdatedAt          time.Time `gorm:"column:updated_at;type:datetime(3);" json:"updated_at"`
+	Id                 uint64     `gorm:"column:id;type:bigint UNSIGNED;comment:状态记录ID;primaryKey;" json:"id"`                                    // 状态记录ID
+	UserId             uint64     `gorm:"column:user_id;type:bigint UNSIGNED;comment:用户ID;not null;uniqueIndex;" json:"user_id"`                    // 用户ID
+	IsOnline           bool       `gorm:"column:is_online;type:tinyint(1);comment:是否在线;not null;default:0;index;" json:"is_online"`               // 是否在线
+	LastActiveTime     time.Time  `gorm:"column:last_active_time;type:datetime(3);comment:最后活跃时间;not null;index;" json:"last_active_time"`      // 最后活跃时间
+	WebSocketSessionId *string    `gorm:"column:websocket_session_id;type:varchar(64);comment:WebSocket会话ID;" json:"websocket_session_id"`          // WebSocket会话ID
+	DeviceType         string     `gorm:"column:device_type;type:varchar(20);comment:设备类型(web,mobile,desktop);default:'web';" json:"device_type"` // 设备类型
+	IpAddress          string     `gorm:"column:ip_address;type:varchar(45);comment:IP地址;" json:"ip_address"`                                       // IP地址
+	UserAgent          string     `gorm:"column:user_agent;type:varchar(500);comment:用户代理;" json:"user_agent"`                                    // 用户代理
+	CreatedAt          time.Time  `gorm:"column:created_at;type:datetime(3);" json:"created_at"`
+	UpdatedAt          time.Time  `gorm:"column:updated_at;type:datetime(3);" json:"updated_at"`
 	DeletedAt          *time.Time `gorm:"column:deleted_at;type:datetime(3);default:null;" json:"deleted_at"`
-	CreatedBy          uint64    `gorm:"column:created_by;type:bigint UNSIGNED;comment:创建者;" json:"created_by"` // 创建者
-	UpdatedBy          uint64    `gorm:"column:updated_by;type:bigint UNSIGNED;comment:更新者;" json:"updated_by"` // 更新者
-	DeletedBy          uint64    `gorm:"column:deleted_by;type:bigint UNSIGNED;comment:删除者;" json:"deleted_by"` // 删除者
+	CreatedBy          uint64     `gorm:"column:created_by;type:bigint UNSIGNED;comment:创建者;" json:"created_by"` // 创建者
+	UpdatedBy          uint64     `gorm:"column:updated_by;type:bigint UNSIGNED;comment:更新者;" json:"updated_by"` // 更新者
+	DeletedBy          uint64     `gorm:"column:deleted_by;type:bigint UNSIGNED;comment:删除者;" json:"deleted_by"` // 删除者
 }
 
 // TableName 自定义表名
@@ -41,7 +41,7 @@ func (u *UserOnlineStatus) SetUserOnline(userId uint64, sessionId, deviceType, i
 		UserAgent:          userAgent,
 		UpdatedAt:          now,
 	}
-	
+
 	// 使用 ON DUPLICATE KEY UPDATE 或者先查询再更新
 	var existingStatus UserOnlineStatus
 	err := global.DB.Where("user_id = ?", userId).First(&existingStatus).Error
@@ -52,13 +52,13 @@ func (u *UserOnlineStatus) SetUserOnline(userId uint64, sessionId, deviceType, i
 	} else {
 		// 记录存在，更新记录
 		return global.DB.Model(&existingStatus).Updates(map[string]interface{}{
-			"is_online":              true,
-			"last_active_time":       now,
-			"websocket_session_id":   &sessionId,
-			"device_type":            deviceType,
-			"ip_address":             ipAddress,
-			"user_agent":             userAgent,
-			"updated_at":             now,
+			"is_online":            true,
+			"last_active_time":     now,
+			"websocket_session_id": &sessionId,
+			"device_type":          deviceType,
+			"ip_address":           ipAddress,
+			"user_agent":           userAgent,
+			"updated_at":           now,
 		}).Error
 	}
 }
@@ -67,10 +67,10 @@ func (u *UserOnlineStatus) SetUserOnline(userId uint64, sessionId, deviceType, i
 func (u *UserOnlineStatus) SetUserOffline(userId uint64) error {
 	now := time.Now()
 	return global.DB.Model(u).Where("user_id = ?", userId).Updates(map[string]interface{}{
-		"is_online":              false,
-		"last_active_time":       now,
-		"websocket_session_id":   nil,
-		"updated_at":             now,
+		"is_online":            false,
+		"last_active_time":     now,
+		"websocket_session_id": nil,
+		"updated_at":           now,
 	}).Error
 }
 
@@ -155,9 +155,9 @@ func (u *UserOnlineStatus) IsDesktopDevice() bool {
 func (u *UserOnlineStatus) BatchSetOffline(userIds []uint64) error {
 	now := time.Now()
 	return global.DB.Model(u).Where("user_id IN ?", userIds).Updates(map[string]interface{}{
-		"is_online":              false,
-		"last_active_time":       now,
-		"websocket_session_id":   nil,
-		"updated_at":             now,
+		"is_online":            false,
+		"last_active_time":     now,
+		"websocket_session_id": nil,
+		"updated_at":           now,
 	}).Error
 }

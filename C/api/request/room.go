@@ -1,7 +1,27 @@
 package request
 
-// 示例
-type Streams struct {
+// KickUser 踢出用户
+type KickUser struct {
+	RoomID     uint64 `json:"room_id" binding:"required"` // 房间ID
+	UserID     uint64 `json:"user_id" binding:"required"` // 被踢用户ID
+	OperatorID uint64 `json:"operator_id" binding:"required"`
+	Reason     string `json:"reason"` // 原因
+}
+
+// MuteUser 禁言
+type MuteUser struct {
+	RoomID       uint64 `json:"room_id" binding:"required"` // 房间ID
+	UserID       uint64 `json:"user_id" binding:"required"` // 被禁言用户ID
+	OperatorID   uint64 `json:"operator_id" binding:"required"`
+	DurationType int32  `json:"duration_type" binding:"required"` // 禁言时长1小时，2-24小时，3-永久
+	Reason       string `json:"reason"`                           // 禁言原因
+}
+
+// UnmuteUser 解除禁言
+type UnmuteUser struct {
+	RoomID     uint64 `json:"room_id" binding:"required"` // 房间ID
+	UserID     uint64 `json:"user_id" binding:"required"` // 被解除禁言用户ID
+	OperatorID uint64 `json:"operator_id" binding:"required"`
 }
 type CreateRoom struct {
 	RoomName string `json:"room_name" form:"room_name"`
@@ -61,4 +81,17 @@ type MuteMicUser struct {
 	Action       int32  `json:"action" form:"action" binding:"required,oneof=1 2"`
 	Duration     int32  `json:"duration" form:"duration"`
 	Reason       string `json:"reason" form:"reason"`
+}
+
+type SendGifts struct {
+	SendUserId    int64  `json:"send_user_id" gorm:"send_user_id" binding:"required"`
+	ReceiveUserId int64  `json:"receive_user_id" gorm:"receive_user_id" binding:"required"`
+	RoomId        int64  `json:"room_id" gorm:"room_id" binding:"required"`
+	GiftId        int64  `json:"gift_id" gorm:"gift_id" binding:"required"`
+	SendCount     int64  `json:"send_count" gorm:"send_count" binding:"required"`
+	SendType      string `json:"send_type" gorm:"send_type" binding:"required"`
+	Message       string `json:"message" gorm:"message" binding:"required"`
+	Status        string `json:"status" gorm:"status" binding:"required"`
+	ClientIp      string `json:"client_ip" gorm:"client_ip" binding:"required"`
+	SendTime      string `json:"send_time" gorm:"send_time" binding:"required"`
 }

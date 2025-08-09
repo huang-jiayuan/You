@@ -12,52 +12,16 @@
           </el-tooltip>
         </span>
       </template>
-
-      <el-date-picker
-            v-model="searchInfo.createdAtRange"
-            class="w-[380px]"
-            type="datetimerange"
-            range-separator="至"
-            start-placeholder="开始时间"
-            end-placeholder="结束时间"
-          />
+         <el-date-picker
+                  v-model="searchInfo.createdAtRange"
+                  class="w-[380px]"
+                  type="datetimerange"
+                  range-separator="至"
+                  start-placeholder="开始时间"
+                  end-placeholder="结束时间"
+                />
        </el-form-item>
       
-            <el-form-item label="被禁言用户ID" prop="userId">
-  <el-input v-model="searchInfo.userId" placeholder="搜索条件" />
-</el-form-item>
-            
-            <el-form-item label="禁言范围" prop="muteType">
-  <el-select v-model="searchInfo.muteType" clearable filterable placeholder="请选择" @clear="()=>{searchInfo.muteType=undefined}">
-    <el-option v-for="(item,key) in mutetypeOptions" :key="key" :label="item.label" :value="item.value" />
-  </el-select>
-</el-form-item>
-            
-            <el-form-item label="禁言原因" prop="reason">
-  <el-select v-model="searchInfo.reason" clearable filterable placeholder="请选择" @clear="()=>{searchInfo.reason=undefined}">
-    <el-option v-for="(item,key) in reasonOptions" :key="key" :label="item.label" :value="item.value" />
-  </el-select>
-</el-form-item>
-            
-            <el-form-item label="操作人ID" prop="operatorId">
-  <el-input v-model.number="searchInfo.operatorId" placeholder="搜索条件" />
-</el-form-item>
-            
-            <el-form-item label="禁言状态" prop="status">
-  <el-select v-model="searchInfo.status" clearable filterable placeholder="请选择" @clear="()=>{searchInfo.status=undefined}">
-    <el-option v-for="(item,key) in statuOptions" :key="key" :label="item.label" :value="item.value" />
-  </el-select>
-</el-form-item>
-            
-            <el-form-item label="禁言天数" prop="muteDay">
-  <el-input v-model="searchInfo.muteDay" placeholder="搜索条件" />
-</el-form-item>
-            
-            <el-form-item label="处理结果" prop="muteResult">
-  <el-input v-model="searchInfo.muteResult" placeholder="搜索条件" />
-</el-form-item>
-            
-
         <template v-if="showAllQuery">
           <!-- 将需要控制显示状态的查询条件添加到此范围内 -->
         </template>
@@ -74,9 +38,9 @@
         <div class="gva-btn-list">
             <el-button v-auth="btnAuth.add" type="primary" icon="plus" @click="openDialog()">新增</el-button>
             <el-button v-auth="btnAuth.batchDelete" icon="delete" style="margin-left: 10px;" :disabled="!multipleSelection.length" @click="onDelete">删除</el-button>
-            <ExportTemplate v-auth="btnAuth.exportTemplate" template-id="violation_Mute" />
-            <ExportExcel v-auth="btnAuth.exportExcel" template-id="violation_Mute" filterDeleted/>
-            <ImportExcel v-auth="btnAuth.importExcel" template-id="violation_Mute" @on-success="getTableData" />
+            <ExportTemplate v-auth="btnAuth.exportTemplate" template-id="gift_GiftSendRecord" />
+            <ExportExcel v-auth="btnAuth.exportExcel" template-id="gift_GiftSendRecord" filterDeleted/>
+            <ImportExcel v-auth="btnAuth.importExcel" template-id="gift_GiftSendRecord" @on-success="getTableData" />
         </div>
         <el-table
         ref="multipleTable"
@@ -92,39 +56,41 @@
             <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
         </el-table-column>
         
-            <el-table-column align="left" label="被禁言用户ID" prop="userId" width="120" />
+            <el-table-column align="left" label="赠送者用户ID，关联 user.id" prop="sendUserId" width="120" />
 
-            <el-table-column align="left" label="禁言范围" prop="muteType" width="120">
+            <el-table-column align="left" label="接收者用户ID，关联 user.id" prop="receiveUserId" width="120" />
+
+            <el-table-column align="left" label="房间ID(NULL-私聊)" prop="roomId" width="120" />
+
+            <el-table-column align="left" label="礼物ID" prop="giftId" width="120" />
+
+            <el-table-column align="left" label="赠送数量" prop="sendCount" width="120" />
+
+            <el-table-column align="left" label="总消耗(虚拟币)" prop="totalPrice" width="120" />
+
+            <el-table-column align="left" label="总消耗(钻石)" prop="totalDiamond" width="120" />
+
+            <el-table-column align="left" label="赠送方式(1-背包,2-直接购买)" prop="sendType" width="120">
     <template #default="scope">
-    {{ filterDict(scope.row.muteType,mutetypeOptions) }}
+    {{ filterDict(scope.row.sendType,sendtypeOptions) }}
     </template>
 </el-table-column>
-            <el-table-column align="left" label="禁言开始时间" prop="startTime" width="180">
-   <template #default="scope">{{ formatDate(scope.row.startTime) }}</template>
+            <el-table-column align="left" label="赠送附言" prop="message" width="120" />
+
+            <el-table-column align="left" label="赠送时间" prop="sendTime" width="180">
+   <template #default="scope">{{ formatDate(scope.row.sendTime) }}</template>
 </el-table-column>
-            <el-table-column align="left" label="禁言结束时间" prop="endTime" width="180">
-   <template #default="scope">{{ formatDate(scope.row.endTime) }}</template>
-</el-table-column>
-            <el-table-column align="left" label="禁言原因" prop="reason" width="120">
+            <el-table-column align="left" label="状态(0-失败,1-成功,2-已撤回)" prop="status" width="120">
     <template #default="scope">
-    {{ filterDict(scope.row.reason,reasonOptions) }}
+    {{ filterDict(scope.row.status,giftstatueOptions) }}
     </template>
 </el-table-column>
-            <el-table-column align="left" label="操作人ID" prop="operatorId" width="120" />
+            <el-table-column align="left" label="赠送者IP" prop="clientIp" width="120" />
 
-            <el-table-column align="left" label="禁言状态" prop="status" width="120">
-    <template #default="scope">
-    {{ filterDict(scope.row.status,statuOptions) }}
-    </template>
-</el-table-column>
-            <el-table-column align="left" label="禁言天数" prop="muteDay" width="120" />
-
-            <el-table-column align="left" label="处理结果" prop="muteResult" width="120" />
-
-        <el-table-column align="left" label="操作" fixed="right" :min-width="appStore.operateMinWith">
+        <el-table-column align="left" label="操作" fixed="right" min-width="240">
             <template #default="scope">
             <el-button v-auth="btnAuth.info" type="primary" link class="table-button" @click="getDetails(scope.row)"><el-icon style="margin-right: 5px"><InfoFilled /></el-icon>查看</el-button>
-            <el-button v-auth="btnAuth.edit" type="primary" link icon="edit" class="table-button" @click="updateMuteFunc(scope.row)">编辑</el-button>
+            <el-button v-auth="btnAuth.edit" type="primary" link icon="edit" class="table-button" @click="updateGiftSendRecordFunc(scope.row)">编辑</el-button>
             <el-button  v-auth="btnAuth.delete" type="primary" link icon="delete" @click="deleteRow(scope.row)">删除</el-button>
             </template>
         </el-table-column>
@@ -141,7 +107,7 @@
             />
         </div>
     </div>
-    <el-drawer destroy-on-close :size="appStore.drawerSize" v-model="dialogFormVisible" :show-close="false" :before-close="closeDialog">
+    <el-drawer destroy-on-close size="800" v-model="dialogFormVisible" :show-close="false" :before-close="closeDialog">
        <template #header>
               <div class="flex justify-between items-center">
                 <span class="text-lg">{{type==='create'?'新增':'编辑'}}</span>
@@ -153,70 +119,86 @@
             </template>
 
           <el-form :model="formData" label-position="top" ref="elFormRef" :rules="rule" label-width="80px">
-            <el-form-item label="被禁言用户ID:" prop="userId">
-    <el-input v-model="formData.userId" :clearable="true" placeholder="请输入被禁言用户ID" />
+             <el-form-item label="赠送者用户ID，关联 user.id:" prop="sendUserId">
+    <el-input v-model.number="formData.sendUserId" :clearable="true" placeholder="请输入赠送者用户ID，关联 user.id" />
 </el-form-item>
-            <el-form-item label="禁言范围:" prop="muteType">
-    <el-select v-model="formData.muteType" placeholder="请选择禁言范围" style="width:100%" filterable :clearable="true">
-        <el-option v-for="(item,key) in mutetypeOptions" :key="key" :label="item.label" :value="item.value" />
+             <el-form-item label="接收者用户ID，关联 user.id:" prop="receiveUserId">
+    <el-input v-model.number="formData.receiveUserId" :clearable="true" placeholder="请输入接收者用户ID，关联 user.id" />
+</el-form-item>
+             <el-form-item label="房间ID(NULL-私聊):" prop="roomId">
+    <el-input v-model.number="formData.roomId" :clearable="true" placeholder="请输入房间ID(NULL-私聊)" />
+</el-form-item>
+             <el-form-item label="礼物ID:" prop="giftId">
+    <el-input v-model.number="formData.giftId" :clearable="true" placeholder="请输入礼物ID" />
+</el-form-item>
+             <el-form-item label="赠送数量:" prop="sendCount">
+    <el-input v-model.number="formData.sendCount" :clearable="true" placeholder="请输入赠送数量" />
+</el-form-item>
+             <el-form-item label="总消耗(虚拟币):" prop="totalPrice">
+    <el-input-number v-model="formData.totalPrice" style="width:100%" :precision="2" :clearable="true" />
+</el-form-item>
+             <el-form-item label="总消耗(钻石):" prop="totalDiamond">
+    <el-input v-model.number="formData.totalDiamond" :clearable="true" placeholder="请输入总消耗(钻石)" />
+</el-form-item>
+             <el-form-item label="赠送方式(1-背包,2-直接购买):" prop="sendType">
+    <el-select v-model="formData.sendType" placeholder="请选择赠送方式(1-背包,2-直接购买)" style="width:100%" filterable :clearable="true">
+        <el-option v-for="(item,key) in sendtypeOptions" :key="key" :label="item.label" :value="item.value" />
     </el-select>
 </el-form-item>
-            <el-form-item label="禁言开始时间:" prop="startTime">
-    <el-date-picker v-model="formData.startTime" type="date" style="width:100%" placeholder="选择日期" :clearable="true" />
+             <el-form-item label="赠送附言:" prop="message">
+    <el-input v-model="formData.message" :clearable="true" placeholder="请输入赠送附言" />
 </el-form-item>
-            <el-form-item label="禁言结束时间:" prop="endTime">
-    <el-date-picker v-model="formData.endTime" type="date" style="width:100%" placeholder="选择日期" :clearable="true" />
+             <el-form-item label="赠送时间:" prop="sendTime">
+    <el-date-picker v-model="formData.sendTime" type="date" style="width:100%" placeholder="选择日期" :clearable="true" />
 </el-form-item>
-            <el-form-item label="禁言原因:" prop="reason">
-    <el-select v-model="formData.reason" placeholder="请选择禁言原因" style="width:100%" filterable :clearable="true">
-        <el-option v-for="(item,key) in reasonOptions" :key="key" :label="item.label" :value="item.value" />
+             <el-form-item label="状态(0-失败,1-成功,2-已撤回):" prop="status">
+    <el-select v-model="formData.status" placeholder="请选择状态(0-失败,1-成功,2-已撤回)" style="width:100%" filterable :clearable="true">
+        <el-option v-for="(item,key) in giftstatueOptions" :key="key" :label="item.label" :value="item.value" />
     </el-select>
 </el-form-item>
-            <el-form-item label="操作人ID:" prop="operatorId">
-    <el-input v-model.number="formData.operatorId" :clearable="true" placeholder="请输入操作人ID" />
-</el-form-item>
-            <el-form-item label="禁言状态:" prop="status">
-    <el-select v-model="formData.status" placeholder="请选择禁言状态" style="width:100%" filterable :clearable="true">
-        <el-option v-for="(item,key) in statuOptions" :key="key" :label="item.label" :value="item.value" />
-    </el-select>
-</el-form-item>
-            <el-form-item label="禁言天数:" prop="muteDay">
-    <el-input v-model="formData.muteDay" :clearable="true" placeholder="请输入禁言天数" />
-</el-form-item>
-            <el-form-item label="处理结果:" prop="muteResult">
-    <el-input v-model="formData.muteResult" :clearable="true" placeholder="请输入处理结果" />
+             <el-form-item label="赠送者IP:" prop="clientIp">
+    <el-input v-model="formData.clientIp" :clearable="true" placeholder="请输入赠送者IP" />
 </el-form-item>
           </el-form>
     </el-drawer>
 
-    <el-drawer destroy-on-close :size="appStore.drawerSize" v-model="detailShow" :show-close="true" :before-close="closeDetailShow" title="查看">
+    <el-drawer destroy-on-close size="800" v-model="detailShow" :show-close="true" :before-close="closeDetailShow" title="查看">
             <el-descriptions :column="1" border>
-                    <el-descriptions-item label="被禁言用户ID">
-    {{ detailFrom.userId }}
+                 <el-descriptions-item label="赠送者用户ID，关联 user.id">
+    {{ detailFrom.sendUserId }}
 </el-descriptions-item>
-                    <el-descriptions-item label="禁言范围">
-    {{ detailFrom.muteType }}
+                 <el-descriptions-item label="接收者用户ID，关联 user.id">
+    {{ detailFrom.receiveUserId }}
 </el-descriptions-item>
-                    <el-descriptions-item label="禁言开始时间">
-    {{ detailFrom.startTime }}
+                 <el-descriptions-item label="房间ID(NULL-私聊)">
+    {{ detailFrom.roomId }}
 </el-descriptions-item>
-                    <el-descriptions-item label="禁言结束时间">
-    {{ detailFrom.endTime }}
+                 <el-descriptions-item label="礼物ID">
+    {{ detailFrom.giftId }}
 </el-descriptions-item>
-                    <el-descriptions-item label="禁言原因">
-    {{ detailFrom.reason }}
+                 <el-descriptions-item label="赠送数量">
+    {{ detailFrom.sendCount }}
 </el-descriptions-item>
-                    <el-descriptions-item label="操作人ID">
-    {{ detailFrom.operatorId }}
+                 <el-descriptions-item label="总消耗(虚拟币)">
+    {{ detailFrom.totalPrice }}
 </el-descriptions-item>
-                    <el-descriptions-item label="禁言状态">
+                 <el-descriptions-item label="总消耗(钻石)">
+    {{ detailFrom.totalDiamond }}
+</el-descriptions-item>
+                 <el-descriptions-item label="赠送方式(1-背包,2-直接购买)">
+    {{ detailFrom.sendType }}
+</el-descriptions-item>
+                 <el-descriptions-item label="赠送附言">
+    {{ detailFrom.message }}
+</el-descriptions-item>
+                 <el-descriptions-item label="赠送时间">
+    {{ detailFrom.sendTime }}
+</el-descriptions-item>
+                 <el-descriptions-item label="状态(0-失败,1-成功,2-已撤回)">
     {{ detailFrom.status }}
 </el-descriptions-item>
-                    <el-descriptions-item label="禁言天数">
-    {{ detailFrom.muteDay }}
-</el-descriptions-item>
-                    <el-descriptions-item label="处理结果">
-    {{ detailFrom.muteResult }}
+                 <el-descriptions-item label="赠送者IP">
+    {{ detailFrom.clientIp }}
 </el-descriptions-item>
             </el-descriptions>
         </el-drawer>
@@ -226,13 +208,13 @@
 
 <script setup>
 import {
-  createMute,
-  deleteMute,
-  deleteMuteByIds,
-  updateMute,
-  findMute,
-  getMuteList
-} from '@/api/violation/mute'
+  createGiftSendRecord,
+  deleteGiftSendRecord,
+  deleteGiftSendRecordByIds,
+  updateGiftSendRecord,
+  findGiftSendRecord,
+  getGiftSendRecordList
+} from '@/plugin/gift/api/giftSendRecord'
 
 // 全量引入格式化工具 请按需保留
 import { getDictFunc, formatDate, formatBoolean, filterDict ,filterDataSource, returnArrImg, onDownloadFile } from '@/utils/format'
@@ -240,7 +222,6 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { ref, reactive } from 'vue'
 // 引入按钮权限标识
 import { useBtnAuth } from '@/utils/btnAuth'
-import { useAppStore } from "@/pinia"
 
 // 导出组件
 import ExportExcel from '@/components/exportExcel/exportExcel.vue'
@@ -251,112 +232,82 @@ import ExportTemplate from '@/components/exportExcel/exportTemplate.vue'
 
 
 defineOptions({
-    name: 'Mute'
+    name: 'GiftSendRecord'
 })
 // 按钮权限实例化
     const btnAuth = useBtnAuth()
 
 // 提交按钮loading
 const btnLoading = ref(false)
-const appStore = useAppStore()
 
 // 控制更多查询条件显示/隐藏状态
 const showAllQuery = ref(false)
 
 // 自动化生成的字典（可能为空）以及字段
-const mutetypeOptions = ref([])
-const reasonOptions = ref([])
-const statuOptions = ref([])
+const sendtypeOptions = ref([])
+const giftstatueOptions = ref([])
 const formData = ref({
-            userId: '',
-            muteType: '',
-            startTime: new Date(),
-            endTime: new Date(),
-            reason: '',
-            operatorId: undefined,
+            sendUserId: undefined,
+            receiveUserId: undefined,
+            roomId: undefined,
+            giftId: undefined,
+            sendCount: undefined,
+            totalPrice: 0,
+            totalDiamond: undefined,
+            sendType: '',
+            message: '',
+            sendTime: new Date(),
             status: '',
-            muteDay: '',
-            muteResult: '',
+            clientIp: '',
         })
 
 
 
 // 验证规则
 const rule = reactive({
-               userId : [{
-                   required: true,
-                   message: '',
-                   trigger: ['input','blur'],
-               },
-               {
-                   whitespace: true,
-                   message: '不能只输入空格',
-                   trigger: ['input', 'blur'],
-              }
-              ],
-               muteType : [{
-                   required: true,
-                   message: '',
-                   trigger: ['input','blur'],
-               },
-               {
-                   whitespace: true,
-                   message: '不能只输入空格',
-                   trigger: ['input', 'blur'],
-              }
-              ],
-               startTime : [{
+               sendUserId : [{
                    required: true,
                    message: '',
                    trigger: ['input','blur'],
                },
               ],
-               endTime : [{
+               receiveUserId : [{
                    required: true,
                    message: '',
                    trigger: ['input','blur'],
                },
               ],
-               reason : [{
-                   required: true,
-                   message: '',
-                   trigger: ['input','blur'],
-               },
-               {
-                   whitespace: true,
-                   message: '不能只输入空格',
-                   trigger: ['input', 'blur'],
-              }
-              ],
-               operatorId : [{
+               roomId : [{
                    required: true,
                    message: '',
                    trigger: ['input','blur'],
                },
               ],
-               status : [{
+               giftId : [{
                    required: true,
                    message: '',
                    trigger: ['input','blur'],
                },
-               {
-                   whitespace: true,
-                   message: '不能只输入空格',
-                   trigger: ['input', 'blur'],
-              }
               ],
-               muteDay : [{
+               sendCount : [{
                    required: true,
                    message: '',
                    trigger: ['input','blur'],
                },
-               {
-                   whitespace: true,
-                   message: '不能只输入空格',
-                   trigger: ['input', 'blur'],
-              }
               ],
-               muteResult : [{
+               totalPrice : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               },
+              ],
+               totalDiamond : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               },
+              ],
+               sendType : [{
                    required: true,
                    message: '',
                    trigger: ['input','blur'],
@@ -407,7 +358,7 @@ const handleCurrentChange = (val) => {
 
 // 查询
 const getTableData = async() => {
-  const table = await getMuteList({ page: page.value, pageSize: pageSize.value, ...searchInfo.value })
+  const table = await getGiftSendRecordList({ page: page.value, pageSize: pageSize.value, ...searchInfo.value })
   if (table.code === 0) {
     tableData.value = table.data.list
     total.value = table.data.total
@@ -422,9 +373,8 @@ getTableData()
 
 // 获取需要的字典 可能为空 按需保留
 const setOptions = async () =>{
-    mutetypeOptions.value = await getDictFunc('mutetype')
-    reasonOptions.value = await getDictFunc('reason')
-    statuOptions.value = await getDictFunc('statu')
+    sendtypeOptions.value = await getDictFunc('sendtype')
+    giftstatueOptions.value = await getDictFunc('giftstatue')
 }
 
 // 获取需要的字典 可能为空 按需保留
@@ -445,7 +395,7 @@ const deleteRow = (row) => {
         cancelButtonText: '取消',
         type: 'warning'
     }).then(() => {
-            deleteMuteFunc(row)
+            deleteGiftSendRecordFunc(row)
         })
     }
 
@@ -468,7 +418,7 @@ const onDelete = async() => {
         multipleSelection.value.map(item => {
           IDs.push(item.ID)
         })
-      const res = await deleteMuteByIds({ IDs })
+      const res = await deleteGiftSendRecordByIds({ IDs })
       if (res.code === 0) {
         ElMessage({
           type: 'success',
@@ -486,8 +436,8 @@ const onDelete = async() => {
 const type = ref('')
 
 // 更新行
-const updateMuteFunc = async(row) => {
-    const res = await findMute({ ID: row.ID })
+const updateGiftSendRecordFunc = async(row) => {
+    const res = await findGiftSendRecord({ ID: row.ID })
     type.value = 'update'
     if (res.code === 0) {
         formData.value = res.data
@@ -497,8 +447,8 @@ const updateMuteFunc = async(row) => {
 
 
 // 删除行
-const deleteMuteFunc = async (row) => {
-    const res = await deleteMute({ ID: row.ID })
+const deleteGiftSendRecordFunc = async (row) => {
+    const res = await deleteGiftSendRecord({ ID: row.ID })
     if (res.code === 0) {
         ElMessage({
                 type: 'success',
@@ -524,15 +474,18 @@ const openDialog = () => {
 const closeDialog = () => {
     dialogFormVisible.value = false
     formData.value = {
-        userId: '',
-        muteType: '',
-        startTime: new Date(),
-        endTime: new Date(),
-        reason: '',
-        operatorId: undefined,
+        sendUserId: undefined,
+        receiveUserId: undefined,
+        roomId: undefined,
+        giftId: undefined,
+        sendCount: undefined,
+        totalPrice: 0,
+        totalDiamond: undefined,
+        sendType: '',
+        message: '',
+        sendTime: new Date(),
         status: '',
-        muteDay: '',
-        muteResult: '',
+        clientIp: '',
         }
 }
 // 弹窗确定
@@ -543,13 +496,13 @@ const enterDialog = async () => {
               let res
               switch (type.value) {
                 case 'create':
-                  res = await createMute(formData.value)
+                  res = await createGiftSendRecord(formData.value)
                   break
                 case 'update':
-                  res = await updateMute(formData.value)
+                  res = await updateGiftSendRecord(formData.value)
                   break
                 default:
-                  res = await createMute(formData.value)
+                  res = await createGiftSendRecord(formData.value)
                   break
               }
               btnLoading.value = false
@@ -579,7 +532,7 @@ const openDetailShow = () => {
 // 打开详情
 const getDetails = async (row) => {
   // 打开弹窗
-  const res = await findMute({ ID: row.ID })
+  const res = await findGiftSendRecord({ ID: row.ID })
   if (res.code === 0) {
     detailFrom.value = res.data
     openDetailShow()

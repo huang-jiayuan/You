@@ -13,6 +13,10 @@ func Router(r *gin.Engine) {
 		room := api.Group("/room")
 		{
 			room.Use(pkg.JWTAuth("2211a"))
+			room.POST("/sendgift", handler.SendGifts)
+			room.POST("/kick", handler.KickUser)
+			room.POST("/mute", handler.MuteUser)
+			room.POST("/unmute", handler.UnmuteUser)
 			room.POST("/createroom", handler.CreateRoom)
 			room.POST("/updateroom", handler.UpdateRoom)
 			room.POST("/getRecommendRooms", handler.GetRecommendRooms)
@@ -20,6 +24,9 @@ func Router(r *gin.Engine) {
 			room.POST("/searchRooms", handler.SearchRooms)
 			room.POST("/joinRoom", handler.JoinRoom)
 			room.POST("/closeRoom", handler.CloseRoom)
+			room.GET("/ws", handler.HandleWebSocket)
+
+			// 麦位管理相关路由
 			room.POST("/applyMic", handler.ApplyMic)
 			room.POST("/leaveMic", handler.LeaveMic)
 

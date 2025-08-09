@@ -4,12 +4,17 @@ package room;
 
 option go_package = "/";
 
-message StreamReq {
-  string name = 1;
+// 踢人请求
+message KickUserReq {
+  uint64 room_id = 1;      // 房间ID
+  uint64 user_id = 2;      // 被踢用户ID
+  uint64 operator_id = 3;
+  string reason = 4;       // 踢人原因
 }
 
-message StreamResp {
-  string greet = 1;
+message KickUserResp {
+  bool success = 1;
+  string message = 2;
 }
 //创建房间
 message CreateRoomStreamReq {
@@ -224,8 +229,55 @@ message MicApplication {
   string apply_time = 5;
   int32 status = 6;
 }
+
+// 禁言请求
+message MuteUserReq {
+  uint64 room_id = 1;      // 房间ID
+  uint64 user_id = 2;      // 被禁言用户ID
+  uint64 operator_id = 3;
+  int32 duration_type = 4; // 禁言时长 1-1小时，2-24小时，3-永久
+  string reason = 5;       // 禁言原因
+}
+
+message MuteUserResp {
+  bool success = 1;
+  string message = 2;
+}
+
+// 解除禁言请求
+message UnmuteUserReq {
+  uint64 room_id = 1;      // 房间ID
+  uint64 user_id = 2;      // 被解除禁言用户ID
+  uint64 operator_id = 3;  // 操作者ID
+}
+
+message UnmuteUserResp {
+  bool success = 1;
+  string message = 2;
+}
+
+
+message SendGiftsReq {
+  int64 SendUserId =1;
+  int64 ReceiveUserId = 2;
+  int64 RoomId = 3;
+  int64 GiftId = 4;
+  int64 SendCount = 5;
+  string SendType = 6;
+  string Message = 7;
+  string Status = 8;
+  string ClientIp =9;
+  string SendTime =10;
+}
+
+message SendGiftsResp {
+  string greet = 1;
+}
+
 service Room {
-  rpc greet(StreamReq) returns (StreamResp);
+  rpc KickUser(KickUserReq) returns (KickUserResp);
+  rpc MuteUser(MuteUserReq) returns (MuteUserResp);
+  rpc UnmuteUser(UnmuteUserReq) returns (UnmuteUserResp);
   rpc JoinRoom(JoinRoomStreamReq) returns (JoinRoomStreamResp);
   rpc CloseRoom(CloseRoomStreamReq) returns (CloseRoomStreamResp);
   rpc UpdateRoom(UpdateRoomStreamReq) returns (UpdateRoomStreamResp);
@@ -233,10 +285,14 @@ service Room {
   rpc GetRecommendRooms(GetRecommendRoomsReq) returns (GetRecommendRoomsResp);
   rpc GetRoomsByCategory(GetRoomsByCategoryReq) returns (GetRoomsByCategoryResp);
   rpc SearchRooms(SearchRoomsReq) returns (SearchRoomsResp);
+
+  // 麦位管理相关RPC方法
   rpc ApplyMic(ApplyMicReq) returns (ApplyMicResp);
   rpc HandleMicApplication(HandleMicApplicationReq) returns (HandleMicApplicationResp);
   rpc LeaveMic(LeaveMicReq) returns (LeaveMicResp);
   rpc KickFromMic(KickFromMicReq) returns (KickFromMicResp);
   rpc MuteMicUser(MuteMicUserReq) returns (MuteMicUserResp);
   rpc GetMicStatus(GetMicStatusReq) returns (GetMicStatusResp);
+  rpc SendGifts(SendGiftsReq) returns (SendGiftsResp);
+
 }

@@ -4,8 +4,8 @@
 const greenText = (text) => `\x1b[32m${text}\x1b[0m`
 
 const config = {
-  appName: 'Gin-Vue-Admin',
-  appLogo: 'logo.png',
+  appName: 'You语聊',
+  appLogo: 'img.png',
   showViteLogo: true,
   logs: []
 }
