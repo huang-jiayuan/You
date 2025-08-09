@@ -13,6 +13,7 @@
         <entry key="AdminUser">
           <value>
             <set>
+              <option value="file://$PROJECT_DIR$/C/server/models/user_admi.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/model/admin_user.go" />
             </set>
           </value>
@@ -37,8 +38,11 @@
             <set>
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/api/v1/carouse/enter.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/api/v1/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/api/v1/hot_room/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/api/v1/room_type/enter.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/api/v1/system/enter.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/api/v1/users/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/api/v1/violation/enter.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/email/api/enter.go" />
             </set>
           </value>
@@ -368,6 +372,13 @@
             </set>
           </value>
         </entry>
+        <entry key="ChatSession">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/C/server/models/chat_session.go" />
+            </set>
+          </value>
+        </entry>
         <entry key="ClearDB">
           <value>
             <set>
@@ -610,6 +621,29 @@
             </set>
           </value>
         </entry>
+        <entry key="FollowUser">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/C/api/request/user.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="FollowUserRequest">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/C/api/user/proto/user.pb.go" />
+              <option value="file://$PROJECT_DIR$/C/server/user/proto/user.pb.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="FollowUserResponse">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/C/api/user/proto/user.pb.go" />
+              <option value="file://$PROJECT_DIR$/C/server/user/proto/user.pb.go" />
+            </set>
+          </value>
+        </entry>
         <entry key="GVA_MODEL">
           <value>
             <set>
@@ -638,6 +672,13 @@
             </set>
           </value>
         </entry>
+        <entry key="GetHistoryMessagesRequest">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/C/api/request/chat.go" />
+            </set>
+          </value>
+        </entry>
         <entry key="GetMicStatusReq">
           <value>
             <set>
@@ -658,6 +699,13 @@
           <value>
             <set>
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/mcp/get_nickname.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="GetOfflineMessagesRequest">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/C/api/request/chat.go" />
             </set>
           </value>
         </entry>
@@ -717,7 +765,6 @@
         <entry key="GiftInfo">
           <value>
             <set>
-              <option value="file://$PROJECT_DIR$/C/server/models/gift.go" />
               <option value="file://$PROJECT_DIR$/C/server/models/room.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/152043200/server/plugin/gift/model/gift_info.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/166824300/server/plugin/gift/model/gift_info.go" />
@@ -747,7 +794,6 @@
         <entry key="GiftSendRecord">
           <value>
             <set>
-              <option value="file://$PROJECT_DIR$/C/server/models/gift_send_record.go" />
               <option value="file://$PROJECT_DIR$/C/server/models/room.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/683340600/server/plugin/gift/model/gift_send_record.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/721081400/server/plugin/gift/model/gift_send_record.go" />
@@ -779,6 +825,41 @@
             <set>
               <option value="file://$PROJECT_DIR$/C/api/room/proto/room.pb.go" />
               <option value="file://$PROJECT_DIR$/C/server/room/proto/room.pb.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="HostRoom">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/model/hot_room/host_room.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="HostRoomApi">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/api/v1/hot_room/host_room.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="HostRoomRouter">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/router/hot_room/host_room.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="HostRoomSearch">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/model/hot_room/request/host_room.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="HostRoomService">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/service/hot_room/host_room.go" />
             </set>
           </value>
         </entry>
@@ -949,6 +1030,13 @@
             </set>
           </value>
         </entry>
+        <entry key="KickFromMic">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/model/request/room.go" />
+            </set>
+          </value>
+        </entry>
         <entry key="KickFromMicReq">
           <value>
             <set>
@@ -1061,6 +1149,13 @@
             </set>
           </value>
         </entry>
+        <entry key="MarkMessageAsReadRequest">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/C/api/request/chat.go" />
+            </set>
+          </value>
+        </entry>
         <entry key="MenuRouter">
           <value>
             <set>
@@ -1072,6 +1167,13 @@
           <value>
             <set>
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/service/system/sys_menu.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="Message">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/C/server/models/message.go" />
             </set>
           </value>
         </entry>
@@ -1138,10 +1240,26 @@
         <entry key="Mute">
           <value>
             <set>
+              <option value="file://$PROJECT_DIR$/C/server/models/user_admi.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/425040000/server/plugin/silence/model/mute.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/437989300/server/plugin/silence/model/mute.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/625445900/server/plugin/silence/model/mute.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/626603100/server/plugin/silence/model/mute.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/model/violation/mute.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="MuteApi">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/api/v1/violation/mute.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="MuteMicUser">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/model/request/room.go" />
             </set>
           </value>
         </entry>
@@ -1161,6 +1279,13 @@
             </set>
           </value>
         </entry>
+        <entry key="MuteRouter">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/router/violation/mute.go" />
+            </set>
+          </value>
+        </entry>
         <entry key="MuteSearch">
           <value>
             <set>
@@ -1168,6 +1293,14 @@
               <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/437989300/server/plugin/silence/model/request/mute.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/625445900/server/plugin/silence/model/request/mute.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/rm_file/626603100/server/plugin/silence/model/request/mute.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/model/violation/request/mute.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="MuteService">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/service/violation/mute.go" />
             </set>
           </value>
         </entry>
@@ -1347,6 +1480,13 @@
             </set>
           </value>
         </entry>
+        <entry key="RealNames">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/C/server/pkg/realname.go" />
+            </set>
+          </value>
+        </entry>
         <entry key="Redis">
           <value>
             <set>
@@ -1404,6 +1544,7 @@
           <value>
             <set>
               <option value="file://$PROJECT_DIR$/C/server/models/room.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/model/room_member.go" />
             </set>
           </value>
         </entry>
@@ -1418,6 +1559,7 @@
           <value>
             <set>
               <option value="file://$PROJECT_DIR$/C/server/models/room.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/model/room_mic.go" />
             </set>
           </value>
         </entry>
@@ -1467,8 +1609,11 @@
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/email/router/enter.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/router/carouse/enter.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/router/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/router/hot_room/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/router/room_type/enter.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/router/system/enter.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/router/users/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/router/violation/enter.go" />
             </set>
           </value>
         </entry>
@@ -1525,6 +1670,13 @@
             </set>
           </value>
         </entry>
+        <entry key="SendMessageRequest">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/C/api/request/chat.go" />
+            </set>
+          </value>
+        </entry>
         <entry key="SendSms">
           <value>
             <set>
@@ -1564,8 +1716,34 @@
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/email/service/enter.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/service/carouse/enter.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/service/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/service/hot_room/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/service/room_type/enter.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/service/system/enter.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/service/users/enter.go" />
+              <option value="file://$PROJECT_DIR$/gin-vue-admin/server/service/violation/enter.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="SetAdmin">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/C/api/request/room.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="SetAdminReq">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/C/api/room/proto/room.pb.go" />
+              <option value="file://$PROJECT_DIR$/C/server/room/proto/room.pb.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="SetAdminResp">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/C/api/room/proto/room.pb.go" />
+              <option value="file://$PROJECT_DIR$/C/server/room/proto/room.pb.go" />
             </set>
           </value>
         </entry>
@@ -1989,6 +2167,13 @@
             </set>
           </value>
         </entry>
+        <entry key="SystemMessageRequest">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/C/api/request/chat.go" />
+            </set>
+          </value>
+        </entry>
         <entry key="Table">
           <value>
             <set>
@@ -2001,6 +2186,36 @@
             <set>
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/config/oss_tencent.go" />
               <option value="file://$PROJECT_DIR$/gin-vue-admin/server/utils/upload/tencent_cos.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="TextCensorResponse">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/C/server/pkg/demo.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="UnFollowUser">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/C/api/request/user.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="UnFollowUserRequest">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/C/api/user/proto/user.pb.go" />
+              <option value="file://$PROJECT_DIR$/C/server/user/proto/user.pb.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="UnFollowUserResponse">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/C/api/user/proto/user.pb.go" />
+              <option value="file://$PROJECT_DIR$/C/server/user/proto/user.pb.go" />
             </set>
           </value>
         </entry>
@@ -2081,6 +2296,13 @@
             </set>
           </value>
         </entry>
+        <entry key="UserFollow">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/C/server/models/user_follow.go" />
+            </set>
+          </value>
+        </entry>
         <entry key="UserGiftBackpack">
           <value>
             <set>
@@ -2120,6 +2342,13 @@
             <set>
               <option value="file://$PROJECT_DIR$/C/api/user/proto/user.pb.go" />
               <option value="file://$PROJECT_DIR$/C/server/user/proto/user.pb.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="UserOnlineStatus">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/C/server/models/user_online_status.go" />
             </set>
           </value>
         </entry>
@@ -2683,6 +2912,13 @@
     </option>
     <option name="scannedPathMapping">
       <map>
+        <entry key="file://$PROJECT_DIR$/C/api/pkg/cors.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616360951" />
+            </ScannedPath>
+          </value>
+        </entry>
         <entry key="file://$PROJECT_DIR$/C/api/pkg/general.go">
           <value>
             <ScannedPath>
@@ -2710,10 +2946,26 @@
             </ScannedPath>
           </value>
         </entry>
+        <entry key="file://$PROJECT_DIR$/C/api/request/chat.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616360951" />
+              <option name="schema">
+                <list>
+                  <option value="SendMessageRequest" />
+                  <option value="SystemMessageRequest" />
+                  <option value="GetHistoryMessagesRequest" />
+                  <option value="MarkMessageAsReadRequest" />
+                  <option value="GetOfflineMessagesRequest" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
         <entry key="file://$PROJECT_DIR$/C/api/request/room.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754616669086" />
+              <option name="lastModified" value="1754709091582" />
               <option name="schema">
                 <list>
                   <option value="Streams" />
@@ -2727,6 +2979,7 @@
                   <option value="ApplyMic" />
                   <option value="LeaveMic" />
                   <option value="SendGifts" />
+                  <option value="SetAdmin" />
                 </list>
               </option>
             </ScannedPath>
@@ -2735,7 +2988,7 @@
         <entry key="file://$PROJECT_DIR$/C/api/request/user.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754529479751" />
+              <option name="lastModified" value="1754616360954" />
               <option name="schema">
                 <list>
                   <option value="Stream" />
@@ -2744,6 +2997,8 @@
                   <option value="UserPassword" />
                   <option value="UpdatePassword" />
                   <option value="ImproveUserMessage" />
+                  <option value="FollowUser" />
+                  <option value="UnFollowUser" />
                 </list>
               </option>
             </ScannedPath>
@@ -2752,27 +3007,25 @@
         <entry key="file://$PROJECT_DIR$/C/api/room/handler/room.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754616442438" />
+              <option name="lastModified" value="1754658904728" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/C/api/room/main.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1753943805018" />
+              <option name="lastModified" value="1754616360956" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/C/api/room/proto/room.pb.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754616729810" />
+              <option name="lastModified" value="1754657808525" />
               <option name="schema">
                 <list>
                   <option value="StreamReq" />
                   <option value="StreamResp" />
-                  <option value="SendGiftsReq" />
-                  <option value="SendGiftsResp" />
                   <option value="CreateRoomStreamReq" />
                   <option value="CreateRoomStreamResp" />
                   <option value="UpdateRoomStreamReq" />
@@ -2797,11 +3050,15 @@
                   <option value="KickFromMicReq" />
                   <option value="KickFromMicResp" />
                   <option value="MuteMicUserReq" />
+                  <option value="SendGiftsReq" />
+                  <option value="SendGiftsResp" />
                   <option value="MuteMicUserResp" />
                   <option value="GetMicStatusReq" />
                   <option value="GetMicStatusResp" />
                   <option value="MicInfo" />
                   <option value="MicApplication" />
+                  <option value="SetAdminReq" />
+                  <option value="SetAdminResp" />
                   <option value="x" />
                 </list>
               </option>
@@ -2811,7 +3068,7 @@
         <entry key="file://$PROJECT_DIR$/C/api/room/proto/room_grpc.pb.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754616821159" />
+              <option name="lastModified" value="1754657808536" />
               <option name="schema">
                 <list>
                   <option value="roomClient" />
@@ -2824,28 +3081,28 @@
         <entry key="file://$PROJECT_DIR$/C/api/room/router/router.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754616655262" />
+              <option name="lastModified" value="1754658110710" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/C/api/user/handler/user.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754529479751" />
+              <option name="lastModified" value="1754616361167" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/C/api/user/main.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754529479751" />
+              <option name="lastModified" value="1754616361168" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/C/api/user/proto/user.pb.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754529479755" />
+              <option name="lastModified" value="1754616361171" />
               <option name="schema">
                 <list>
                   <option value="StreamReq" />
@@ -2864,6 +3121,10 @@
                   <option value="UpdatePasswordResponse" />
                   <option value="ImproveUserMessageRequest" />
                   <option value="ImproveUserMessageResponse" />
+                  <option value="FollowUserRequest" />
+                  <option value="FollowUserResponse" />
+                  <option value="UnFollowUserRequest" />
+                  <option value="UnFollowUserResponse" />
                   <option value="x" />
                 </list>
               </option>
@@ -2873,7 +3134,7 @@
         <entry key="file://$PROJECT_DIR$/C/api/user/proto/user_grpc.pb.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754529479756" />
+              <option name="lastModified" value="1754616361171" />
               <option name="schema">
                 <list>
                   <option value="userClient" />
@@ -2886,29 +3147,36 @@
         <entry key="file://$PROJECT_DIR$/C/api/user/router/router.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754529479757" />
+              <option name="lastModified" value="1754616361172" />
             </ScannedPath>
           </value>
         </entry>
-        <entry key="file://$PROJECT_DIR$/C/server/models/gift.go">
+        <entry key="file://$PROJECT_DIR$/C/server/models/chat_errors.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754570506827" />
+              <option name="lastModified" value="1754616361183" />
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/C/server/models/chat_session.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616361183" />
               <option name="schema">
                 <list>
-                  <option value="GiftInfo" />
+                  <option value="ChatSession" />
                 </list>
               </option>
             </ScannedPath>
           </value>
         </entry>
-        <entry key="file://$PROJECT_DIR$/C/server/models/gift_send_record.go">
+        <entry key="file://$PROJECT_DIR$/C/server/models/message.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754570505928" />
+              <option name="lastModified" value="1754616361185" />
               <option name="schema">
                 <list>
-                  <option value="GiftSendRecord" />
+                  <option value="Message" />
                 </list>
               </option>
             </ScannedPath>
@@ -2917,7 +3185,7 @@
         <entry key="file://$PROJECT_DIR$/C/server/models/room.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754617237293" />
+              <option name="lastModified" value="1754705792355" />
               <option name="schema">
                 <list>
                   <option value="Room" />
@@ -2947,6 +3215,43 @@
             </ScannedPath>
           </value>
         </entry>
+        <entry key="file://$PROJECT_DIR$/C/server/models/user_admi.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754705792342" />
+              <option name="schema">
+                <list>
+                  <option value="AdminUser" />
+                  <option value="Mute" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/C/server/models/user_follow.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616361186" />
+              <option name="schema">
+                <list>
+                  <option value="UserFollow" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/C/server/models/user_online_status.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616361186" />
+              <option name="schema">
+                <list>
+                  <option value="UserOnlineStatus" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
         <entry key="file://$PROJECT_DIR$/C/server/pkg/Md5.go">
           <value>
             <ScannedPath>
@@ -2957,7 +3262,24 @@
         <entry key="file://$PROJECT_DIR$/C/server/pkg/demo.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1753968075263" />
+              <option name="lastModified" value="1754616361187" />
+              <option name="schema">
+                <list>
+                  <option value="TextCensorResponse" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/C/server/pkg/realname.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616361187" />
+              <option name="schema">
+                <list>
+                  <option value="RealNames" />
+                </list>
+              </option>
             </ScannedPath>
           </value>
         </entry>
@@ -2971,7 +3293,7 @@
         <entry key="file://$PROJECT_DIR$/C/server/room/basic/config/config.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754615972648" />
+              <option name="lastModified" value="1754616361187" />
               <option name="schema">
                 <list>
                   <option value="Config" />
@@ -3004,7 +3326,7 @@
         <entry key="file://$PROJECT_DIR$/C/server/room/handler/room.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754616471896" />
+              <option name="lastModified" value="1754657687232" />
               <option name="schema">
                 <list>
                   <option value="Server" />
@@ -3023,13 +3345,11 @@
         <entry key="file://$PROJECT_DIR$/C/server/room/proto/room.pb.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754617007627" />
+              <option name="lastModified" value="1754656567277" />
               <option name="schema">
                 <list>
                   <option value="StreamReq" />
                   <option value="StreamResp" />
-                  <option value="SendGiftsReq" />
-                  <option value="SendGiftsResp" />
                   <option value="CreateRoomStreamReq" />
                   <option value="CreateRoomStreamResp" />
                   <option value="UpdateRoomStreamReq" />
@@ -3054,11 +3374,15 @@
                   <option value="KickFromMicReq" />
                   <option value="KickFromMicResp" />
                   <option value="MuteMicUserReq" />
+                  <option value="SendGiftsReq" />
+                  <option value="SendGiftsResp" />
                   <option value="MuteMicUserResp" />
                   <option value="GetMicStatusReq" />
                   <option value="GetMicStatusResp" />
                   <option value="MicInfo" />
                   <option value="MicApplication" />
+                  <option value="SetAdminReq" />
+                  <option value="SetAdminResp" />
                   <option value="x" />
                 </list>
               </option>
@@ -3068,7 +3392,7 @@
         <entry key="file://$PROJECT_DIR$/C/server/room/proto/room_grpc.pb.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754616635536" />
+              <option name="lastModified" value="1754656567278" />
               <option name="schema">
                 <list>
                   <option value="roomClient" />
@@ -3114,7 +3438,7 @@
         <entry key="file://$PROJECT_DIR$/C/server/user/handler/user.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754529479762" />
+              <option name="lastModified" value="1754616361484" />
               <option name="schema">
                 <list>
                   <option value="Server" />
@@ -3133,7 +3457,7 @@
         <entry key="file://$PROJECT_DIR$/C/server/user/proto/user.pb.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754529479763" />
+              <option name="lastModified" value="1754616361485" />
               <option name="schema">
                 <list>
                   <option value="StreamReq" />
@@ -3152,6 +3476,10 @@
                   <option value="UpdatePasswordResponse" />
                   <option value="ImproveUserMessageRequest" />
                   <option value="ImproveUserMessageResponse" />
+                  <option value="FollowUserRequest" />
+                  <option value="FollowUserResponse" />
+                  <option value="UnFollowUserRequest" />
+                  <option value="UnFollowUserResponse" />
                   <option value="x" />
                 </list>
               </option>
@@ -3161,7 +3489,7 @@
         <entry key="file://$PROJECT_DIR$/C/server/user/proto/user_grpc.pb.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754529479764" />
+              <option name="lastModified" value="1754616361485" />
               <option name="schema">
                 <list>
                   <option value="userClient" />
@@ -4398,7 +4726,43 @@
         <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/api/v1/enter.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754529479768" />
+              <option name="lastModified" value="1754616361485" />
+              <option name="schema">
+                <list>
+                  <option value="ApiGroup" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/api/v1/hot_room/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616361489" />
+              <option name="schema">
+                <list>
+                  <option value="ApiGroup" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/api/v1/hot_room/host_room.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616361489" />
+              <option name="schema">
+                <list>
+                  <option value="HostRoomApi" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/api/v1/room_type/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616361491" />
               <option name="schema">
                 <list>
                   <option value="ApiGroup" />
@@ -4680,6 +5044,30 @@
               <option name="schema">
                 <list>
                   <option value="UserApi" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/api/v1/violation/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616361494" />
+              <option name="schema">
+                <list>
+                  <option value="ApiGroup" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/api/v1/violation/mute.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616361494" />
+              <option name="schema">
+                <list>
+                  <option value="MuteApi" />
                 </list>
               </option>
             </ScannedPath>
@@ -5127,7 +5515,7 @@
         <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/initialize/gorm_biz.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754529479774" />
+              <option name="lastModified" value="1754616361495" />
             </ScannedPath>
           </value>
         </entry>
@@ -5293,7 +5681,7 @@
         <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/initialize/router_biz.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754529479776" />
+              <option name="lastModified" value="1754616361496" />
             </ScannedPath>
           </value>
         </entry>
@@ -5520,6 +5908,30 @@
               <option name="schema">
                 <list>
                   <option value="Response" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/model/hot_room/host_room.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616361499" />
+              <option name="schema">
+                <list>
+                  <option value="HostRoom" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/model/hot_room/request/host_room.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616361499" />
+              <option name="schema">
+                <list>
+                  <option value="HostRoomSearch" />
                 </list>
               </option>
             </ScannedPath>
@@ -6071,6 +6483,30 @@
             </ScannedPath>
           </value>
         </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/model/violation/mute.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616361503" />
+              <option name="schema">
+                <list>
+                  <option value="Mute" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/model/violation/request/mute.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616361504" />
+              <option name="schema">
+                <list>
+                  <option value="MuteSearch" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
         <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/admin/api/admin_user.go">
           <value>
             <ScannedPath>
@@ -6412,7 +6848,7 @@
         <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/api/enter.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754054686196" />
+              <option name="lastModified" value="1754616361505" />
               <option name="schema">
                 <list>
                   <option value="api" />
@@ -6424,7 +6860,7 @@
         <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/api/room.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754013744141" />
+              <option name="lastModified" value="1754616361508" />
               <option name="schema">
                 <list>
                   <option value="room" />
@@ -6502,10 +6938,12 @@
         <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/model/request/room.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754013744140" />
+              <option name="lastModified" value="1754616361508" />
               <option name="schema">
                 <list>
                   <option value="RoomSearch" />
+                  <option value="KickFromMic" />
+                  <option value="MuteMicUser" />
                 </list>
               </option>
             </ScannedPath>
@@ -6530,6 +6968,30 @@
               <option name="schema">
                 <list>
                   <option value="Room" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/model/room_member.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616361511" />
+              <option name="schema">
+                <list>
+                  <option value="RoomMember" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/model/room_mic.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616361513" />
+              <option name="schema">
+                <list>
+                  <option value="RoomMic" />
                 </list>
               </option>
             </ScannedPath>
@@ -6581,7 +7043,7 @@
         <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/router/room.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754013744141" />
+              <option name="lastModified" value="1754616361513" />
               <option name="schema">
                 <list>
                   <option value="room" />
@@ -6617,7 +7079,7 @@
         <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/plugin/chamber/service/room.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754013744156" />
+              <option name="lastModified" value="1754616361514" />
               <option name="schema">
                 <list>
                   <option value="room" />
@@ -7524,7 +7986,43 @@
         <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/router/enter.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754529479791" />
+              <option name="lastModified" value="1754616361515" />
+              <option name="schema">
+                <list>
+                  <option value="RouterGroup" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/router/hot_room/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616361518" />
+              <option name="schema">
+                <list>
+                  <option value="RouterGroup" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/router/hot_room/host_room.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616361518" />
+              <option name="schema">
+                <list>
+                  <option value="HostRoomRouter" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/router/room_type/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616361521" />
               <option name="schema">
                 <list>
                   <option value="RouterGroup" />
@@ -7773,6 +8271,30 @@
             </ScannedPath>
           </value>
         </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/router/violation/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616361521" />
+              <option name="schema">
+                <list>
+                  <option value="RouterGroup" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/router/violation/mute.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616361521" />
+              <option name="schema">
+                <list>
+                  <option value="MuteRouter" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
         <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/service/carouse/carousel_image.go">
           <value>
             <ScannedPath>
@@ -7800,7 +8322,43 @@
         <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/service/enter.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1754529479797" />
+              <option name="lastModified" value="1754616361522" />
+              <option name="schema">
+                <list>
+                  <option value="ServiceGroup" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/service/hot_room/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616361525" />
+              <option name="schema">
+                <list>
+                  <option value="ServiceGroup" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/service/hot_room/host_room.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616361525" />
+              <option name="schema">
+                <list>
+                  <option value="HostRoomService" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/service/room_type/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616361528" />
               <option name="schema">
                 <list>
                   <option value="ServiceGroup" />
@@ -8222,6 +8780,30 @@
               <option name="schema">
                 <list>
                   <option value="UserService" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/service/violation/enter.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616361528" />
+              <option name="schema">
+                <list>
+                  <option value="ServiceGroup" />
+                </list>
+              </option>
+            </ScannedPath>
+          </value>
+        </entry>
+        <entry key="file://$PROJECT_DIR$/gin-vue-admin/server/service/violation/mute.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1754616361528" />
+              <option name="schema">
+                <list>
+                  <option value="MuteService" />
                 </list>
               </option>
             </ScannedPath>
@@ -9060,6 +9642,7 @@
         <entry key="casbin_service" value="CasbinService" />
         <entry key="change_password_req" value="ChangePasswordReq" />
         <entry key="change_user_info" value="ChangeUserInfo" />
+        <entry key="chat_session" value="ChatSession" />
         <entry key="clear_db" value="ClearDB" />
         <entry key="close_room" value="CloseRoom" />
         <entry key="close_room_stream_req" value="CloseRoomStreamReq" />
@@ -9097,12 +9680,17 @@
         <entry key="ensure_tables" value="ensureTables" />
         <entry key="excel" value="Excel" />
         <entry key="fields" value="fields" />
+        <entry key="follow_user" value="FollowUser" />
+        <entry key="follow_user_request" value="FollowUserRequest" />
+        <entry key="follow_user_response" value="FollowUserResponse" />
         <entry key="general_db" value="GeneralDB" />
         <entry key="get_authority_id" value="GetAuthorityId" />
         <entry key="get_by_id" value="GetById" />
+        <entry key="get_history_messages_request" value="GetHistoryMessagesRequest" />
         <entry key="get_mic_status_req" value="GetMicStatusReq" />
         <entry key="get_mic_status_resp" value="GetMicStatusResp" />
         <entry key="get_nickname" value="GetNickname" />
+        <entry key="get_offline_messages_request" value="GetOfflineMessagesRequest" />
         <entry key="get_recommend_rooms" value="GetRecommendRooms" />
         <entry key="get_recommend_rooms_req" value="GetRecommendRoomsReq" />
         <entry key="get_recommend_rooms_resp" value="GetRecommendRoomsResp" />
@@ -9110,13 +9698,18 @@
         <entry key="get_rooms_by_category_req" value="GetRoomsByCategoryReq" />
         <entry key="get_rooms_by_category_resp" value="GetRoomsByCategoryResp" />
         <entry key="get_user_list" value="GetUserList" />
-        <entry key="gift_info" value="GiftInfo" />
+        <entry key="gift_info" value="giftInfo" />
         <entry key="gift_info_search" value="GiftInfoSearch" />
-        <entry key="gift_send_record" value="GiftSendRecord" />
+        <entry key="gift_send_record" value="giftSendRecord" />
         <entry key="gift_send_record_search" value="GiftSendRecordSearch" />
         <entry key="gva_model" value="GVA_MODEL" />
         <entry key="handle_mic_application_req" value="HandleMicApplicationReq" />
         <entry key="handle_mic_application_resp" value="HandleMicApplicationResp" />
+        <entry key="host_room" value="HostRoom" />
+        <entry key="host_room_api" value="HostRoomApi" />
+        <entry key="host_room_router" value="HostRoomRouter" />
+        <entry key="host_room_search" value="HostRoomSearch" />
+        <entry key="host_room_service" value="HostRoomService" />
         <entry key="hua_wei_obs" value="HuaWeiObs" />
         <entry key="ids_req" value="IdsReq" />
         <entry key="import" value="Import" />
@@ -9149,6 +9742,7 @@
         <entry key="jwt_blacklist" value="JwtBlacklist" />
         <entry key="jwt_router" value="JwtRouter" />
         <entry key="jwt_service" value="JwtService" />
+        <entry key="kick_from_mic" value="KickFromMic" />
         <entry key="kick_from_mic_req" value="KickFromMicReq" />
         <entry key="kick_from_mic_resp" value="KickFromMicResp" />
         <entry key="leave_mic" value="LeaveMic" />
@@ -9164,9 +9758,11 @@
         <entry key="login_response" value="LoginResponse" />
         <entry key="logout_request" value="LogoutRequest" />
         <entry key="logout_response" value="LogoutResponse" />
+        <entry key="mark_message_as_read_request" value="MarkMessageAsReadRequest" />
         <entry key="mcp" value="MCP" />
         <entry key="menu_router" value="MenuRouter" />
         <entry key="menu_service" value="MenuService" />
+        <entry key="message" value="Message" />
         <entry key="meta" value="Meta" />
         <entry key="mic_application" value="MicApplication" />
         <entry key="mic_info" value="MicInfo" />
@@ -9177,9 +9773,13 @@
         <entry key="mssql" value="Mssql" />
         <entry key="mssql_init_handler" value="MssqlInitHandler" />
         <entry key="mute" value="mute" />
+        <entry key="mute_api" value="MuteApi" />
+        <entry key="mute_mic_user" value="MuteMicUser" />
         <entry key="mute_mic_user_req" value="MuteMicUserReq" />
         <entry key="mute_mic_user_resp" value="MuteMicUserResp" />
+        <entry key="mute_router" value="MuteRouter" />
         <entry key="mute_search" value="MuteSearch" />
+        <entry key="mute_service" value="MuteService" />
         <entry key="mysql" value="Mysql" />
         <entry key="mysql_init_handler" value="MysqlInitHandler" />
         <entry key="obs" value="Obs" />
@@ -9207,6 +9807,7 @@
         <entry key="policy_path_response" value="PolicyPathResponse" />
         <entry key="qiniu" value="Qiniu" />
         <entry key="ram" value="Ram" />
+        <entry key="real_names" value="RealNames" />
         <entry key="redis" value="Redis" />
         <entry key="redis_store" value="RedisStore" />
         <entry key="register" value="Register" />
@@ -9220,7 +9821,7 @@
         <entry key="room_message" value="RoomMessage" />
         <entry key="room_mic" value="RoomMic" />
         <entry key="room_search" value="RoomSearch" />
-        <entry key="room_tag_dict" value="RoomTagDict" />
+        <entry key="room_tag_dict" value="roomTagDict" />
         <entry key="room_tag_dict_search" value="RoomTagDictSearch" />
         <entry key="rooms" value="rooms" />
         <entry key="rooms_search" value="RoomsSearch" />
@@ -9233,12 +9834,16 @@
         <entry key="send_gifts" value="SendGifts" />
         <entry key="send_gifts_req" value="SendGiftsReq" />
         <entry key="send_gifts_resp" value="SendGiftsResp" />
+        <entry key="send_message_request" value="SendMessageRequest" />
         <entry key="send_sms" value="SendSms" />
         <entry key="send_sms_request" value="SendSmsRequest" />
         <entry key="send_sms_response" value="SendSmsResponse" />
         <entry key="server" value="Server" />
         <entry key="service" value="service" />
         <entry key="service_group" value="ServiceGroup" />
+        <entry key="set_admin" value="SetAdmin" />
+        <entry key="set_admin_req" value="SetAdminReq" />
+        <entry key="set_admin_resp" value="SetAdminResp" />
         <entry key="set_user_auth" value="SetUserAuth" />
         <entry key="set_user_authorities" value="SetUserAuthorities" />
         <entry key="specialized_db" value="SpecializedDB" />
@@ -9298,11 +9903,16 @@
         <entry key="system_api_api" value="SystemApiApi" />
         <entry key="system_config_service" value="SystemConfigService" />
         <entry key="system_events" value="SystemEvents" />
+        <entry key="system_message_request" value="SystemMessageRequest" />
         <entry key="table" value="Table" />
         <entry key="task" value="task" />
         <entry key="task_manager" value="taskManager" />
         <entry key="tencent_cos" value="TencentCOS" />
+        <entry key="text_censor_response" value="TextCensorResponse" />
         <entry key="timer" value="timer" />
+        <entry key="un_follow_user" value="UnFollowUser" />
+        <entry key="un_follow_user_request" value="UnFollowUserRequest" />
+        <entry key="un_follow_user_response" value="UnFollowUserResponse" />
         <entry key="unimplemented_room_server" value="UnimplementedRoomServer" />
         <entry key="unimplemented_user_server" value="UnimplementedUserServer" />
         <entry key="update_password" value="UpdatePassword" />
@@ -9314,11 +9924,13 @@
         <entry key="user" value="User" />
         <entry key="user_api" value="UserApi" />
         <entry key="user_client" value="userClient" />
-        <entry key="user_gift_backpack" value="UserGiftBackpack" />
+        <entry key="user_follow" value="UserFollow" />
+        <entry key="user_gift_backpack" value="userGiftBackpack" />
         <entry key="user_gift_backpack_search" value="UserGiftBackpackSearch" />
         <entry key="user_login" value="UserLogin" />
         <entry key="user_login_request" value="UserLoginRequest" />
         <entry key="user_login_response" value="UserLoginResponse" />
+        <entry key="user_online_status" value="UserOnlineStatus" />
         <entry key="user_password" value="UserPassword" />
         <entry key="user_password_request" value="UserPasswordRequest" />
         <entry key="user_password_response" value="UserPasswordResponse" />
@@ -9335,6 +9947,6 @@
         <entry key="zap_core" value="ZapCore" />
       </map>
     </option>
-    <option name="lastTimeChecked" value="1754571661043" />
+    <option name="lastTimeChecked" value="1754709004027" />
   </component>
 </project>

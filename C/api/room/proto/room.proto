@@ -111,6 +111,7 @@ message CloseRoomStreamResp {
   int64 room_id = 3;
 }
 
+
 //进入房间接口
 message JoinRoomStreamReq {
   int64 room_id = 1;
@@ -188,6 +189,24 @@ message MuteMicUserReq {
   string reason = 6;
 }
 
+//刷礼物
+message SendGiftsReq {
+  int64 SendUserId =1;
+  int64 ReceiveUserId = 2;
+  int64 RoomId = 3;
+  int64 GiftId = 4;
+  int64 SendCount = 5;
+  string SendType = 6;
+  string Message = 7;
+  string Status = 8;
+  string ClientIp =9;
+  string SendTime =10;
+}
+
+message SendGiftsResp {
+  string greet = 1;
+}
+
 message MuteMicUserResp {
   bool success = 1;
   string message = 2;
@@ -225,24 +244,26 @@ message MicApplication {
   int32 status = 6;
 }
 
-message SendGiftsReq {
-  int64 SendUserId =1;
-  int64 ReceiveUserId = 2;
-  int64 RoomId = 3;
-  int64 GiftId = 4;
-  int64 SendCount = 5;
-  string SendType = 6;
-  string Message = 7;
-  string Status = 8;
-  string ClientIp =9;
-  string SendTime =10;
+//设置房管管理房间
+message SetAdminReq {
+  int64 Id =1;
+  int64 UserId =2;
+  string Status =3;
+  string Reason =5;
+  string MuteDay =6;
+  string MuteResult =7;
+  string MuteType =8;
 }
 
-message SendGiftsResp {
-  string greet = 1;
+message SetAdminResp {
+  string Greet =1;
 }
 
 service Room {
+  rpc Stream(StreamReq) returns (StreamResp);
+  rpc SendGifts(SendGiftsReq) returns (SendGiftsResp);//刷礼物
+  rpc SetAdmin(SetAdminReq) returns (SetAdminResp);//设置房管管理房间
+
   rpc greet(StreamReq) returns (StreamResp);
   rpc JoinRoom(JoinRoomStreamReq) returns (JoinRoomStreamResp);
   rpc CloseRoom(CloseRoomStreamReq) returns (CloseRoomStreamResp);
@@ -259,6 +280,4 @@ service Room {
   rpc KickFromMic(KickFromMicReq) returns (KickFromMicResp);
   rpc MuteMicUser(MuteMicUserReq) returns (MuteMicUserResp);
   rpc GetMicStatus(GetMicStatusReq) returns (GetMicStatusResp);
-  rpc SendGifts(SendGiftsReq) returns (SendGiftsResp);
-
 }

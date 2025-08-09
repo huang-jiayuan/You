@@ -3,10 +3,8 @@ package handler
 import (
 	"context"
 	"fmt"
-	"server/models"
-	"server/room/basic/global"
-	"fmt"
 	"gorm.io/gorm"
+	"log"
 	"server/models"
 	"server/pkg"
 	"server/room/basic/global"
@@ -23,30 +21,49 @@ func (s *Server) Stream(_ context.Context, in *__.StreamReq) (*__.StreamResp, er
 	return &__.StreamResp{}, nil
 }
 
+// 刷礼物
 func (s *Server) SendGifts(_ context.Context, in *__.SendGiftsReq) (*__.SendGiftsResp, error) {
-	user := &models.User{}
-	_, err := user.FindUserById(in.SendUserId)
+	//查看房间存不存在
+	room := models.Room{}
+	err := global.DB.Where("id = ?", in.RoomId).First(&room).Error
 	if err != nil {
-		fmt.Println("未查询到当前送礼的用户")
+		fmt.Println("该房间不存在")
 		return nil, err
 	}
-	_, err = user.FindUserById(in.ReceiveUserId)
+	//查询用户存不存在
+	user := models.User{}
+	err = global.DB.Where("id =?", in.SendUserId).First(&user).Error
 	if err != nil {
-		fmt.Println("未查询到当前接受礼物的用户")
+		fmt.Println("赠送的用户不存在")
 		return nil, err
 	}
-	room := &models.Room{}
-	err = room.GetFindRoomById(in.RoomId)
+
+	//查询接受礼物的人
+	mic := models.RoomMic{}
+	err = global.DB.Where("user_id =?", in.ReceiveUserId).First(&mic).Error
 	if err != nil {
-		fmt.Println("未查询到该房间号")
+		fmt.Println("收礼物的用户不存在")
 		return nil, err
 	}
-	info := &models.GiftInfo{}
-	err = info.GetFindGiftById(in.GiftId)
+	//查看礼物存不存在
+	info := models.GiftInfo{}
+	err = global.DB.Where("gift_id =?", in.GiftId).First(&info).Error
 	if err != nil {
-		fmt.Println("未查询到当前的礼物")
+		fmt.Println("查询的礼物不存在")
 		return nil, err
 	}
+	//赠送的礼物数不可以小于等于O
+	if in.SendCount <= 0 {
+		fmt.Println("赠送礼物数量不可以小于等于0")
+		return nil, err
+	}
+	//判断用户的余额是否充足
+	giftprice := info.Price * float64(in.SendCount)
+	if user.Balance < giftprice {
+		fmt.Println("当前用户的余额不够请前往充值")
+		return nil, err
+	}
+
 	tx := global.DB.Begin()
 	if tx.Error != nil {
 		return nil, fmt.Errorf("failed to begin transaction: %w", tx.Error)
@@ -57,33 +74,97 @@ func (s *Server) SendGifts(_ context.Context, in *__.SendGiftsReq) (*__.SendGift
 			tx.Rollback()
 		}
 	}()
-	giftprice := info.Price * float64(in.SendCount)
-	if user.Balance < giftprice {
-		fmt.Println("用户余额不够购买此礼物")
+	//修改用户的余额
+	err = global.DB.Table("user").Where("id =?", in.SendUserId).Update("balance", user.Balance-giftprice).Error
+	if err != nil {
+		fmt.Println("用户余额扣减失败")
 		tx.Rollback()
 		return nil, err
 	}
-	record := &models.GiftSendRecord{
+	err = global.DB.Table("user").Where("id =?", in.SendUserId).Update("diamond", user.Diamond-int16(giftprice)).Error
+	if err != nil {
+		fmt.Println("用户扣减余额失败")
+		tx.Rollback()
+		return nil, err
+	}
+	//礼物记录表
+	record := models.GiftSendRecord{
 		SendUserId:    uint64(in.SendUserId),
 		ReceiveUserId: uint64(in.ReceiveUserId),
 		RoomId:        in.RoomId,
 		GiftId:        in.GiftId,
 		SendCount:     int32(in.SendCount),
-		TotalDiamond:  int32(giftprice),
 		TotalPrice:    giftprice,
+		TotalDiamond:  int32(giftprice),
 		SendType:      in.SendType,
 		Message:       in.Message,
+		SendTime:      time.Now(),
 		Status:        in.Status,
 		ClientIp:      in.ClientIp,
 	}
 	err = global.DB.Create(&record).Error
 	if err != nil {
+		fmt.Println("礼物记录失败")
 		tx.Rollback()
-		fmt.Println("刷礼物记录失败")
 		return nil, err
 	}
 	tx.Commit()
-	return &__.SendGiftsResp{Greet: "刷礼物成功"}, nil
+	return &__.SendGiftsResp{Greet: "刷新礼物记录表成功"}, nil
+}
+
+// 设置房管管理房间
+func (s *Server) SetAdmin(_ context.Context, in *__.SetAdminReq) (*__.SetAdminResp, error) {
+	admin := models.AdminUser{}
+	user := models.User{}
+	mute := models.Mute{}
+	err := global.DB.Where("id =?", in.Id).First(&admin).Error
+	if err != nil {
+		fmt.Println("并没该管理员，请确定管理员是否存在")
+		return nil, err
+	}
+	err = global.DB.Where("id =?", in.UserId).First(&user).Error
+	if err != nil {
+		fmt.Println("未查询到当前的用户")
+		return nil, err
+	}
+	if user.Status == "3" {
+		fmt.Println("用户已经被禁言处理")
+		return nil, err
+	}
+
+	var statusec string
+	if in.Status == "0" {
+		statusec = "0"
+	} else if in.Status == "1" {
+		statusec = "1"
+	} else if in.Status == "2" {
+		statusec = "2"
+	} else if in.Status == "3" {
+		statusec = "3"
+	}
+	err = global.DB.Table("user").Where("id=?", in.UserId).Update("status", statusec).Error
+	if err != nil {
+		log.Println("用户账号状态修改失败")
+		return nil, err
+	}
+	mute = models.Mute{
+		UserId:     in.UserId,
+		MuteType:   in.MuteType,
+		StartTime:  time.Now(),
+		EndTime:    time.Now(),
+		Reason:     in.Reason,
+		OperatorId: in.Id,
+		Status:     in.Status,
+		MuteDay:    in.MuteDay,
+		MuteResult: in.MuteResult,
+	}
+	err = global.DB.Create(&mute).Error
+	if err != nil {
+		fmt.Println("管理员管理账号失败")
+		return nil, err
+	}
+	return &__.SetAdminResp{Greet: "管理员操作成功"}, nil
+
 }
 
 func (s *Server) CreateRoom(_ context.Context, in *__.CreateRoomStreamReq) (*__.CreateRoomStreamResp, error) {

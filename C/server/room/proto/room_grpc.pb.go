@@ -19,6 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
+	Room_Stream_FullMethodName               = "/room.Room/Stream"
+	Room_SendGifts_FullMethodName            = "/room.Room/SendGifts"
+	Room_SetAdmin_FullMethodName             = "/room.Room/SetAdmin"
 	Room_Greet_FullMethodName                = "/room.Room/greet"
 	Room_JoinRoom_FullMethodName             = "/room.Room/JoinRoom"
 	Room_CloseRoom_FullMethodName            = "/room.Room/CloseRoom"
@@ -33,8 +36,6 @@ const (
 	Room_KickFromMic_FullMethodName          = "/room.Room/KickFromMic"
 	Room_MuteMicUser_FullMethodName          = "/room.Room/MuteMicUser"
 	Room_GetMicStatus_FullMethodName         = "/room.Room/GetMicStatus"
-	Room_Stream_FullMethodName    = "/room.Room/Stream"
-	Room_SendGifts_FullMethodName = "/room.Room/SendGifts"
 )
 
 // RoomClient is the client API for Room service.
@@ -43,6 +44,7 @@ const (
 type RoomClient interface {
 	Stream(ctx context.Context, in *StreamReq, opts ...grpc.CallOption) (*StreamResp, error)
 	SendGifts(ctx context.Context, in *SendGiftsReq, opts ...grpc.CallOption) (*SendGiftsResp, error)
+	SetAdmin(ctx context.Context, in *SetAdminReq, opts ...grpc.CallOption) (*SetAdminResp, error)
 	Greet(ctx context.Context, in *StreamReq, opts ...grpc.CallOption) (*StreamResp, error)
 	JoinRoom(ctx context.Context, in *JoinRoomStreamReq, opts ...grpc.CallOption) (*JoinRoomStreamResp, error)
 	CloseRoom(ctx context.Context, in *CloseRoomStreamReq, opts ...grpc.CallOption) (*CloseRoomStreamResp, error)
@@ -82,6 +84,26 @@ func (c *roomClient) SendGifts(ctx context.Context, in *SendGiftsReq, opts ...gr
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(SendGiftsResp)
 	err := c.cc.Invoke(ctx, Room_SendGifts_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *roomClient) SetAdmin(ctx context.Context, in *SetAdminReq, opts ...grpc.CallOption) (*SetAdminResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SetAdminResp)
+	err := c.cc.Invoke(ctx, Room_SetAdmin_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *roomClient) Greet(ctx context.Context, in *StreamReq, opts ...grpc.CallOption) (*StreamResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(StreamResp)
+	err := c.cc.Invoke(ctx, Room_Greet_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -224,6 +246,22 @@ func (c *roomClient) GetMicStatus(ctx context.Context, in *GetMicStatusReq, opts
 type RoomServer interface {
 	Stream(context.Context, *StreamReq) (*StreamResp, error)
 	SendGifts(context.Context, *SendGiftsReq) (*SendGiftsResp, error)
+	SetAdmin(context.Context, *SetAdminReq) (*SetAdminResp, error)
+	Greet(context.Context, *StreamReq) (*StreamResp, error)
+	JoinRoom(context.Context, *JoinRoomStreamReq) (*JoinRoomStreamResp, error)
+	CloseRoom(context.Context, *CloseRoomStreamReq) (*CloseRoomStreamResp, error)
+	UpdateRoom(context.Context, *UpdateRoomStreamReq) (*UpdateRoomStreamResp, error)
+	CreateRoom(context.Context, *CreateRoomStreamReq) (*CreateRoomStreamResp, error)
+	GetRecommendRooms(context.Context, *GetRecommendRoomsReq) (*GetRecommendRoomsResp, error)
+	GetRoomsByCategory(context.Context, *GetRoomsByCategoryReq) (*GetRoomsByCategoryResp, error)
+	SearchRooms(context.Context, *SearchRoomsReq) (*SearchRoomsResp, error)
+	// 麦位管理相关RPC方法
+	ApplyMic(context.Context, *ApplyMicReq) (*ApplyMicResp, error)
+	HandleMicApplication(context.Context, *HandleMicApplicationReq) (*HandleMicApplicationResp, error)
+	LeaveMic(context.Context, *LeaveMicReq) (*LeaveMicResp, error)
+	KickFromMic(context.Context, *KickFromMicReq) (*KickFromMicResp, error)
+	MuteMicUser(context.Context, *MuteMicUserReq) (*MuteMicUserResp, error)
+	GetMicStatus(context.Context, *GetMicStatusReq) (*GetMicStatusResp, error)
 	mustEmbedUnimplementedRoomServer()
 }
 
@@ -239,6 +277,12 @@ func (UnimplementedRoomServer) Stream(context.Context, *StreamReq) (*StreamResp,
 }
 func (UnimplementedRoomServer) SendGifts(context.Context, *SendGiftsReq) (*SendGiftsResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendGifts not implemented")
+}
+func (UnimplementedRoomServer) SetAdmin(context.Context, *SetAdminReq) (*SetAdminResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetAdmin not implemented")
+}
+func (UnimplementedRoomServer) Greet(context.Context, *StreamReq) (*StreamResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Greet not implemented")
 }
 func (UnimplementedRoomServer) JoinRoom(context.Context, *JoinRoomStreamReq) (*JoinRoomStreamResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method JoinRoom not implemented")
@@ -332,6 +376,42 @@ func _Room_SendGifts_Handler(srv interface{}, ctx context.Context, dec func(inte
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RoomServer).SendGifts(ctx, req.(*SendGiftsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Room_SetAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetAdminReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RoomServer).SetAdmin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Room_SetAdmin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RoomServer).SetAdmin(ctx, req.(*SetAdminReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Room_Greet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StreamReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RoomServer).Greet(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Room_Greet_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RoomServer).Greet(ctx, req.(*StreamReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -584,6 +664,14 @@ var Room_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SendGifts",
 			Handler:    _Room_SendGifts_Handler,
+		},
+		{
+			MethodName: "SetAdmin",
+			Handler:    _Room_SetAdmin_Handler,
+		},
+		{
+			MethodName: "greet",
+			Handler:    _Room_Greet_Handler,
 		},
 		{
 			MethodName: "JoinRoom",

@@ -460,6 +460,7 @@ func LeaveMic(c *gin.Context) {
 func SendGifts(c *gin.Context) {
 	var req request.SendGifts
 	if err := c.ShouldBind(&req); err != nil {
+		fmt.Println(err)
 		c.JSON(http.StatusOK, gin.H{
 			"code": 10000,
 			"msg":  "未接收参数",
@@ -495,7 +496,47 @@ func SendGifts(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"code": 200,
-		"msg":  "刷礼记录成",
+		"msg":  "刷礼记录成功",
 		"data": gifts,
+	})
+}
+
+func SetAdmin(c *gin.Context) {
+	var req request.SetAdmin
+	if err := c.ShouldBind(&req); err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 10000,
+			"msg":  "未接收参数",
+			"data": nil,
+		})
+		return
+	}
+	client, err := grpc.NewClient("127.0.0.1:8888", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		log.Fatalf("did not connect: %v", err)
+	}
+	defer client.Close()
+	c1 := __.NewRoomClient(client)
+	admin, err := c1.SetAdmin(c, &__.SetAdminReq{
+		Id:         req.Id,
+		UserId:     req.UserId,
+		Status:     req.Status,
+		Reason:     req.Reason,
+		MuteDay:    req.MuteDay,
+		MuteResult: req.MuteResult,
+		MuteType:   req.MuteType,
+	})
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 10000,
+			"msg":  "管理员管理失败",
+			"data": nil,
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": 200,
+		"msg":  "管理员管理成功",
+		"data": admin,
 	})
 }
