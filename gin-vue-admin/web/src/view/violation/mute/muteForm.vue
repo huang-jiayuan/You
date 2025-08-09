@@ -70,9 +70,9 @@ const router = useRouter()
 const btnLoading = ref(false)
 
 const type = ref('')
+const mutetypeOptions = ref([])
 const reasonOptions = ref([])
 const statuOptions = ref([])
-const mutetypeOptions = ref([])
 const formData = ref({
             userId: '',
             muteType: '',
@@ -147,9 +147,9 @@ const init = async () => {
     } else {
       type.value = 'create'
     }
+    mutetypeOptions.value = await getDictFunc('mutetype')
     reasonOptions.value = await getDictFunc('reason')
     statuOptions.value = await getDictFunc('statu')
-    mutetypeOptions.value = await getDictFunc('mutetype')
 }
 
 init()

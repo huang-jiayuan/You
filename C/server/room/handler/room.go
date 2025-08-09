@@ -7,8 +7,8 @@ import (
 	"log"
 	"server/models"
 	"server/pkg"
-	"server/room/basic/global"
 	__ "server/room/proto"
+	"server/user/basic/global"
 	"time"
 )
 
@@ -16,9 +16,158 @@ type Server struct {
 	__.UnimplementedRoomServer
 }
 
-// 示例
-func (s *Server) Stream(_ context.Context, in *__.StreamReq) (*__.StreamResp, error) {
-	return &__.StreamResp{}, nil
+// KickUser 踢出用户接口
+func (s *Server) KickUser(_ context.Context, req *__.KickUserReq) (*__.KickUserResp, error) {
+	// 验证参数不能为空
+	if req.RoomId == 0 || req.UserId == 0 || req.OperatorId == 0 {
+		return &__.KickUserResp{
+			Success: false,
+			Message: "参数不能为空",
+		}, nil
+	}
+
+	// 判断房主和踢出用户不是同一人
+	if req.OperatorId == req.UserId {
+		return &__.KickUserResp{
+			Success: false,
+			Message: "不能踢出自己",
+		}, nil
+	}
+
+	// 判断用户是否已经被踢且在冷却时间内
+	if models.IsUserKicked(req.RoomId, req.UserId) {
+		return &__.KickUserResp{
+			Success: false,
+			Message: "用户已被踢出，在冷却时间内",
+		}, nil
+	}
+
+	// 创建踢人记录
+	now := time.Now()
+	kickRecord := models.RoomKick{
+		RoomID:     req.RoomId,
+		UserID:     req.UserId,
+		OperatorID: req.OperatorId,
+		Reason:     req.Reason,
+		KickTime:   now,
+		ExpireTime: now.Add(10 * time.Minute), // 10分钟时间
+	}
+
+	// 创建踢出用户记录到数据库
+	if err := global.DB.Create(&kickRecord).Error; err != nil {
+		return &__.KickUserResp{
+			Success: false,
+			Message: "创建踢人记录失败: " + err.Error(),
+		}, nil
+	}
+
+	return &__.KickUserResp{
+		Success: true,
+		Message: "用户已踢出房间，10分钟内不能再次进入",
+	}, nil
+}
+
+// MuteUser 禁言接口
+func (s *Server) MuteUser(_ context.Context, req *__.MuteUserReq) (*__.MuteUserResp, error) {
+	// 验证参数是否为空
+	if req.RoomId == 0 || req.UserId == 0 || req.OperatorId == 0 {
+		return &__.MuteUserResp{
+			Success: false,
+			Message: "参数不能为空",
+		}, nil
+	}
+
+	// 检查房主和被踢用户不是同一人
+	if req.OperatorId == req.UserId {
+		return &__.MuteUserResp{
+			Success: false,
+			Message: "不能禁言自己",
+		}, nil
+	}
+
+	// 验证禁言时长类型
+	if req.DurationType < 1 || req.DurationType > 3 {
+		return &__.MuteUserResp{
+			Success: false,
+			Message: "禁言时长类型无效(1小时，2-24小时，3-永久)",
+		}, nil
+	}
+
+	// 创建禁言记录
+	now := time.Now()
+	muteRecord := models.RoomMute{
+		RoomID:       req.RoomId,
+		UserID:       req.UserId,
+		OperatorID:   req.OperatorId,
+		DurationType: req.DurationType,
+		Reason:       req.Reason,
+		MuteTime:     now,
+		ExpireTime:   models.GetMuteDuration(req.DurationType),
+		IsActive:     true,
+	}
+
+	if err := global.DB.Create(&muteRecord).Error; err != nil {
+		return &__.MuteUserResp{
+			Success: false,
+			Message: "创建禁言记录失败: " + err.Error(),
+		}, nil
+	}
+
+	var durationMsg string
+	switch req.DurationType {
+	case 1:
+		durationMsg = "1小时"
+	case 2:
+		durationMsg = "24小时"
+	case 3:
+		durationMsg = "永久"
+	}
+
+	return &__.MuteUserResp{
+		Success: true,
+		Message: "用户已被禁言" + durationMsg,
+	}, nil
+}
+
+// UnmuteUser 解除禁言接口
+func (s *Server) UnmuteUser(_ context.Context, req *__.UnmuteUserReq) (*__.UnmuteUserResp, error) {
+	// 验证参数不能为空
+	if req.RoomId == 0 || req.UserId == 0 || req.OperatorId == 0 {
+		return &__.UnmuteUserResp{
+			Success: false,
+			Message: "参数不能为空",
+		}, nil
+	}
+
+	// 判断房主和被踢用户不是同一人
+	if req.OperatorId == req.UserId {
+		return &__.UnmuteUserResp{
+			Success: false,
+			Message: "不能对自己禁言",
+		}, nil
+	}
+
+	// 判断用户是否被禁言
+	if !models.IsUserMuted(req.RoomId, req.UserId) {
+		return &__.UnmuteUserResp{
+			Success: false,
+			Message: "用户未被禁言",
+		}, nil
+	}
+
+	// 取消禁言记录
+	if err := global.DB.Model(&models.RoomMute{}).Where("room_id = ? and user_id = ? and is_active = ?",
+		req.RoomId, req.UserId, true).Update("is_active", false).Error; err != nil {
+		return &__.UnmuteUserResp{
+			Success: false,
+			Message: "解除禁言失败: " + err.Error(),
+		}, nil
+	}
+
+	return &__.UnmuteUserResp{
+		Success: true,
+		Message: "用户禁言已解除",
+	}, nil
 }
 
 // 刷礼物
@@ -802,6 +951,12 @@ func (s *Server) ApplyMic(ctx context.Context, req *__.ApplyMicReq) (*__.ApplyMi
 		}, nil
 	}
 
+	// 确保房间麦位已初始化
+	err = s.initializeRoomMics(req.RoomId)
+	if err != nil {
+		return nil, fmt.Errorf("初始化房间麦位失败: %v", err)
+	}
+
 	//检查麦位是否已满
 	var occupiedCount int64
 	err = global.DB.Model(&models.RoomMic{}).Where("room_id = ? AND status = 1", req.RoomId).Count(&occupiedCount).Error
@@ -838,19 +993,40 @@ func (s *Server) ApplyMic(ctx context.Context, req *__.ApplyMicReq) (*__.ApplyMi
 
 // 处理申请上麦功能
 func (s *Server) HandleMicApplication(ctx context.Context, req *__.HandleMicApplicationReq) (*__.HandleMicApplicationResp, error) {
+	// 调试：打印接收到的参数和请求对象
+	fmt.Printf("[DEBUG] HandleMicApplication called with ApplicationId: %d, HandlerId: %d, Action: %d\n", 
+		req.ApplicationId, req.HandlerId, req.Action)
+	fmt.Printf("[DEBUG] Request object: %+v\n", req)
+	
+	// 参数验证
+	if req.ApplicationId == 0 {
+		return &__.HandleMicApplicationResp{
+			Success: false,
+			Message: "ApplicationId不能为0",
+		}, nil
+	}
+	if req.HandlerId == 0 {
+		return &__.HandleMicApplicationResp{
+			Success: false,
+			Message: "HandlerId不能为0",
+		}, nil
+	}
+	if req.Action == 0 {
+		return &__.HandleMicApplicationResp{
+			Success: false,
+			Message: "Action不能为0，请使用1(批准)或2(拒绝)",
+		}, nil
+	}
+	
 	// 查询申请记录并验证状态
 	var application models.MicApplication
 	err := global.DB.Where("id = ?", req.ApplicationId).First(&application).Error
 	if err != nil {
-		if err == gorm.ErrRecordNotFound {
-			return &__.HandleMicApplicationResp{
-				Success: false,
-				Message: "申请记录不存在",
-			}, nil
-		}
-		return nil, fmt.Errorf("查询申请记录失败: %v", err)
+		return nil, fmt.Errorf("查询失败: %v", err)
 	}
-
+	if application.Id == 0 {
+		return nil, fmt.Errorf("申请记录不存在: %v", err)
+	}
 	// 验证申请状态
 	if application.Status != 0 {
 		return &__.HandleMicApplicationResp{
@@ -915,6 +1091,13 @@ func (s *Server) HandleMicApplication(ctx context.Context, req *__.HandleMicAppl
 	}()
 
 	if req.Action == 1 { // 批准申请
+		// 确保房间麦位已初始化
+		err = s.initializeRoomMics(application.RoomId)
+		if err != nil {
+			tx.Rollback()
+			return nil, fmt.Errorf("初始化房间麦位失败: %v", err)
+		}
+
 		// 检查用户是否已在麦位上
 		var existingMic models.RoomMic
 		err = tx.Where("room_id = ? AND user_id = ? AND status = 1", application.RoomId, application.UserId).First(&existingMic).Error
@@ -1040,7 +1223,7 @@ func (s *Server) LeaveMic(ctx context.Context, req *__.LeaveMicReq) (*__.LeaveMi
 		if err == gorm.ErrRecordNotFound {
 			return &__.LeaveMicResp{
 				Success: false,
-				Message: "用户不在麦位上",
+				Message: "用户不在麦位上 无法下麦",
 			}, nil
 		}
 		return nil, fmt.Errorf("查询麦位状态失败: %v", err)
@@ -1171,11 +1354,11 @@ func (s *Server) KickFromMic(ctx context.Context, req *__.KickFromMicReq) (*__.K
 	}, nil
 }
 
-// 自动解除过期禁言的辅助函数
+// 自动解除过期禁言
 func (s *Server) autoUnmuteExpiredUsers() error {
 	// 查询所有已过期的禁言用户
 	var expiredMutedMembers []models.RoomMember
-	//根据是否禁言 禁言结束时间
+	//根据是否禁言 禁言结束时间     要已禁言 结束时间不为空
 	err := global.DB.Where("is_muted = 1 AND mute_end_time IS NOT NULL AND mute_end_time <= ?", time.Now()).Find(&expiredMutedMembers).Error
 	if err != nil {
 		return fmt.Errorf("查询过期禁言用户失败: %v", err)
@@ -1199,7 +1382,6 @@ func (s *Server) autoUnmuteExpiredUsers() error {
 		}).Error
 		if err != nil {
 			tx.Rollback()
-			return fmt.Errorf("自动解除用户 %d 禁言失败: %v", member.UserId, err)
 		}
 		// 记录自动解禁日志
 		fmt.Printf("[AUTO_UNMUTE] 自动解除用户 %d 在房间 %d 的禁言，解禁时间: %s\n",
@@ -1214,12 +1396,54 @@ func (s *Server) autoUnmuteExpiredUsers() error {
 	return nil
 }
 
+// initializeRoomMics 初始化房间麦位（如果不存在）
+func (s *Server) initializeRoomMics(roomId int64) error {
+	// 检查是否已经初始化
+	var count int64
+	err := global.DB.Model(&models.RoomMic{}).Where("room_id = ?", roomId).Count(&count).Error
+	if err != nil {
+		return fmt.Errorf("查询麦位数量失败: %v", err)
+	}
+
+	if count == 0 {
+		// 初始化8个麦位
+		tx := global.DB.Begin()
+		defer func() {
+			if r := recover(); r != nil {
+				tx.Rollback()
+			}
+		}()
+
+		for i := 1; i <= 8; i++ {
+			mic := models.RoomMic{
+				RoomId:      roomId,
+				MicPosition: int8(i),
+				Status:      0, // 空闲
+				IsLocked:    0, // 未锁定
+			}
+			err = tx.Create(&mic).Error
+			if err != nil {
+				tx.Rollback()
+				return fmt.Errorf("初始化麦位 %d 失败: %v", i, err)
+			}
+		}
+
+		if err := tx.Commit().Error; err != nil {
+			return fmt.Errorf("提交麦位初始化失败: %v", err)
+		}
+
+		fmt.Printf("[INIT_MICS] 成功为房间 %d 初始化8个麦位\n", roomId)
+	}
+
+	return nil
+}
+
 // 禁言管理功能
 func (s *Server) MuteMicUser(ctx context.Context, req *__.MuteMicUserReq) (*__.MuteMicUserResp, error) {
 	// 先执行自动解禁过期用户
 	s.autoUnmuteExpiredUsers()
 
-	// 1. 验证房间存在性和状态
+	//  验证房间存不存在
 	var room models.Room
 	err := global.DB.Where("id = ? AND status = '0' AND closed_at IS NULL AND deleted_at IS NULL", req.RoomId).First(&room).Error
 	if err != nil {
@@ -1232,7 +1456,7 @@ func (s *Server) MuteMicUser(ctx context.Context, req *__.MuteMicUserReq) (*__.M
 		return nil, fmt.Errorf("查询房间失败: %v", err)
 	}
 
-	// 2. 验证操作者权限（房主或管理员）
+	// 先检查操作者在不在房间
 	var operatorMember models.RoomMember
 	err = global.DB.Where("user_id = ? AND room_id = ?", req.OperatorId, req.RoomId).First(&operatorMember).Error
 	if err != nil {
@@ -1243,14 +1467,14 @@ func (s *Server) MuteMicUser(ctx context.Context, req *__.MuteMicUserReq) (*__.M
 	}
 
 	// 检查权限：房主(role=2)或管理员(role=1)
-	if operatorMember.Role != 1 && operatorMember.Role != 2 {
+	if operatorMember.Role == 0 {
 		return &__.MuteMicUserResp{
 			Success: false,
 			Message: "权限不足，只有房主或管理员可以进行禁言操作",
 		}, nil
 	}
 
-	// 3. 查询目标用户的房间成员记录
+	//  查询目标用户的房间成员记录
 	var targetMember models.RoomMember
 	err = global.DB.Where("user_id = ? AND room_id = ?", req.TargetUserId, req.RoomId).First(&targetMember).Error
 	if err != nil {
@@ -1272,17 +1496,6 @@ func (s *Server) MuteMicUser(ctx context.Context, req *__.MuteMicUserReq) (*__.M
 		}
 	}
 
-	// 4. 验证目标用户在房间中（检查在线状态）
-	var userRoom models.UserRoom
-	err = global.DB.Where("user_id = ? AND room_id = ? AND is_online = 1", req.TargetUserId, req.RoomId).First(&userRoom).Error
-	if err != nil {
-		return &__.MuteMicUserResp{
-			Success: false,
-			Message: "目标用户不在房间中",
-		}, nil
-	}
-
-	// 5. 开始事务处理
 	tx := global.DB.Begin()
 	defer func() {
 		if r := recover(); r != nil {
@@ -1297,16 +1510,19 @@ func (s *Server) MuteMicUser(ctx context.Context, req *__.MuteMicUserReq) (*__.M
 	tx.Where("id = ?", req.TargetUserId).First(&targetUser)
 
 	if req.Action == 1 { // 禁言操作
-		// 6. 计算禁言结束时间
+		// 计算禁言结束时间和实际时长
 		var muteEndTime time.Time
+		var actualDuration int32
 		if req.Duration > 0 {
+			actualDuration = req.Duration
 			muteEndTime = time.Now().Add(time.Duration(req.Duration) * time.Minute)
 		} else {
-			// 如果没有指定时长，默认禁言30分钟
+			// 如果没有指定时长默认禁言30分钟
+			actualDuration = 30
 			muteEndTime = time.Now().Add(30 * time.Minute)
 		}
 
-		// 7. 更新RoomMember表的禁言状态和结束时间
+		//更新RoomMember表的禁言状态和结束时间
 		err = tx.Model(&targetMember).Updates(map[string]interface{}{
 			"is_muted":      1,
 			"mute_end_time": muteEndTime,
@@ -1316,21 +1532,12 @@ func (s *Server) MuteMicUser(ctx context.Context, req *__.MuteMicUserReq) (*__.M
 			return nil, fmt.Errorf("更新用户禁言状态失败: %v", err)
 		}
 
-		// 8. 如果被禁言用户在麦位上，标记相应状态（但不踢下麦位，只是标记为禁言状态）
-		var roomMic models.RoomMic
-		err = tx.Where("room_id = ? AND user_id = ? AND status = 1", req.RoomId, req.TargetUserId).First(&roomMic).Error
-		if err == nil {
-			// 用户在麦位上，记录日志表明用户在麦位上被禁言
-			fmt.Printf("[MUTE_MIC_USER] 用户 %s(ID:%d) 在麦位 %d 上被禁言\n",
-				targetUser.Nickname, req.TargetUserId, roomMic.MicPosition)
-		}
-
-		// 9. 记录操作日志
+		// 记录操作日志 - 使用实际时长而不是请求时长
 		logMessage := fmt.Sprintf("禁言操作 - 房间ID: %d, 操作者: %s(ID:%d), 目标用户: %s(ID:%d), 禁言时长: %d分钟, 结束时间: %s, 原因: %s, 时间: %s",
 			req.RoomId,
 			operatorUser.Nickname, req.OperatorId,
 			targetUser.Nickname, req.TargetUserId,
-			req.Duration,
+			actualDuration, // 修复：使用实际时长
 			muteEndTime.Format("2006-01-02 15:04:05"),
 			req.Reason,
 			time.Now().Format("2006-01-02 15:04:05"))
@@ -1348,7 +1555,7 @@ func (s *Server) MuteMicUser(ctx context.Context, req *__.MuteMicUserReq) (*__.M
 		}, nil
 
 	} else if req.Action == 2 { // 解禁操作
-		// 10. 检查用户是否被禁言
+		//  检查用户是否被禁言
 		if targetMember.IsMuted != 1 {
 			tx.Rollback()
 			return &__.MuteMicUserResp{
@@ -1357,7 +1564,7 @@ func (s *Server) MuteMicUser(ctx context.Context, req *__.MuteMicUserReq) (*__.M
 			}, nil
 		}
 
-		// 11. 更新RoomMember表，解除禁言状态
+		// 更新RoomMember表解除禁言状态
 		err = tx.Model(&targetMember).Updates(map[string]interface{}{
 			"is_muted":      0,
 			"mute_end_time": nil,
@@ -1367,7 +1574,7 @@ func (s *Server) MuteMicUser(ctx context.Context, req *__.MuteMicUserReq) (*__.M
 			return nil, fmt.Errorf("解除用户禁言状态失败: %v", err)
 		}
 
-		// 12. 记录解禁操作日志
+		// 记录解禁操作日志
 		logMessage := fmt.Sprintf("解禁操作 - 房间ID: %d, 操作者: %s(ID:%d), 目标用户: %s(ID:%d), 原因: %s, 时间: %s",
 			req.RoomId,
 			operatorUser.Nickname, req.OperatorId,
@@ -1391,120 +1598,7 @@ func (s *Server) MuteMicUser(ctx context.Context, req *__.MuteMicUserReq) (*__.M
 		tx.Rollback()
 		return &__.MuteMicUserResp{
 			Success: false,
-			Message: "无效的操作类型，请使用 1-禁言 或 2-解禁",
+			Message: "无效的操作类型",
 		}, nil
 	}
-}
-
-// GetMicStatus 获取麦位状态功能
-// Author [yourname](https://github.com/yourname)
-func (s *Server) GetMicStatus(ctx context.Context, req *__.GetMicStatusReq) (*__.GetMicStatusResp, error) {
-	// 1. 验证房间存在性和状态
-	var room models.Room
-	err := global.DB.Where("id = ? AND status = '0' AND closed_at IS NULL AND deleted_at IS NULL", req.RoomId).First(&room).Error
-	if err != nil {
-		if err == gorm.ErrRecordNotFound {
-			return nil, fmt.Errorf("房间不存在或已关闭")
-		}
-		return nil, fmt.Errorf("查询房间失败: %v", err)
-	}
-	// 3. 查询房间所有麦位的当前状态
-	var roomMics []models.RoomMic
-	err = global.DB.Where("room_id = ?", req.RoomId).Order("mic_position").Find(&roomMics).Error
-	if err != nil {
-		return nil, fmt.Errorf("查询麦位状态失败: %v", err)
-	}
-
-	// 4. 构建麦位信息，关联查询用户信息
-	var micInfos []*__.MicInfo
-	for _, mic := range roomMics {
-		micInfo := &__.MicInfo{
-			Position: int32(mic.MicPosition),
-			Status:   int32(mic.Status),
-			IsLocked: mic.IsLocked == 1,
-		}
-
-		// 如果麦位被占用，查询用户信息
-		if mic.Status == 1 && mic.UserId > 0 {
-			var user models.User
-			err = global.DB.Where("id = ?", mic.UserId).First(&user).Error
-			if err == nil {
-				micInfo.UserId = mic.UserId
-				micInfo.UserNickname = user.Nickname
-				micInfo.UserAvatar = user.Avatar
-				if !mic.OccupyTime.IsZero() {
-					micInfo.OccupyTime = mic.OccupyTime.Format("2006-01-02 15:04:05")
-				}
-
-				// 检查用户是否被禁言
-				var roomMember models.RoomMember
-				err = global.DB.Where("user_id = ? AND room_id = ?", mic.UserId, req.RoomId).First(&roomMember).Error
-				if err == nil && roomMember.IsMuted == 1 {
-					// 检查禁言是否已过期
-					if roomMember.MuteEndTime.IsZero() || time.Now().Before(roomMember.MuteEndTime) {
-						micInfo.IsMuted = true
-					} else {
-						// 禁言已过期，自动解除
-						global.DB.Model(&roomMember).Updates(map[string]interface{}{
-							"is_muted":      0,
-							"mute_end_time": nil,
-						})
-						micInfo.IsMuted = false
-					}
-				} else {
-					micInfo.IsMuted = false
-				}
-			}
-		}
-
-		micInfos = append(micInfos, micInfo)
-	}
-
-	// 5. 获取待审批的申请列表
-	var applications []models.MicApplication
-	err = global.DB.Where("room_id = ? AND status = 0", req.RoomId).Order("apply_time").Find(&applications).Error
-	if err != nil {
-		return nil, fmt.Errorf("查询申请列表失败: %v", err)
-	}
-
-	// 6. 构建申请信息，关联查询用户信息
-	var pendingApplications []*__.MicApplication
-	for _, app := range applications {
-		// 验证申请用户是否仍在房间中
-		var userRoom models.UserRoom
-		err = global.DB.Where("user_id = ? AND room_id = ? AND is_online = 1", app.UserId, req.RoomId).First(&userRoom).Error
-		if err != nil {
-			// 用户已离开房间，自动取消申请
-			global.DB.Model(&app).Updates(map[string]interface{}{
-				"status":      3, // 已取消
-				"handle_time": time.Now(),
-				"reason":      "用户已离开房间",
-			})
-			continue
-		}
-
-		// 查询申请用户信息
-		var user models.User
-		err = global.DB.Where("id = ?", app.UserId).First(&user).Error
-		if err != nil {
-			continue // 跳过无效用户
-		}
-
-		appInfo := &__.MicApplication{
-			Id:           app.Id,
-			UserId:       app.UserId,
-			UserNickname: user.Nickname,
-			UserAvatar:   user.Avatar,
-			ApplyTime:    app.ApplyTime.Format("2006-01-02 15:04:05"),
-			Status:       int32(app.Status),
-		}
-
-		pendingApplications = append(pendingApplications, appInfo)
-	}
-
-	// 7. 返回格式化的麦位和申请信息
-	return &__.GetMicStatusResp{
-		Mics:                micInfos,
-		PendingApplications: pendingApplications,
-	}, nil
 }

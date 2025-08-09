@@ -5,20 +5,92 @@ import (
 	"time"
 )
 
+// RoomKick 踢出用户记录表
+type RoomKick struct {
+	ID         uint64    `gorm:"primaryKey;autoIncrement" json:"id"`
+	RoomID     uint64    `gorm:"not null;index" json:"room_id"`
+	UserID     uint64    `gorm:"not null;index" json:"user_id"`
+	OperatorID uint64    `gorm:"not null" json:"operator_id"`
+	Reason     string    `gorm:"type:varchar(500)" json:"reason"`
+	KickTime   time.Time `gorm:"not null" json:"kick_time"`
+	ExpireTime time.Time `gorm:"not null;index" json:"expire_time"` // 10分钟后可重新进入
+	CreatedAt  time.Time `gorm:"autoCreateTime" json:"created_at"`
+	UpdatedAt  time.Time `gorm:"autoUpdateTime" json:"updated_at"`
+}
+
+// RoomMute 禁言记录
+type RoomMute struct {
+	ID           uint64     `gorm:"primaryKey;autoIncrement" json:"id"`
+	RoomID       uint64     `gorm:"not null;index" json:"room_id"`
+	UserID       uint64     `gorm:"not null;index" json:"user_id"`
+	OperatorID   uint64     `gorm:"not null" json:"operator_id"`
+	DurationType int32      `gorm:"not null" json:"duration_type"` // 1-1小时，2-24小时，3-永久
+	Reason       string     `gorm:"type:varchar(500)" json:"reason"`
+	MuteTime     time.Time  `gorm:"not null" json:"mute_time"`
+	ExpireTime   *time.Time `gorm:"index" json:"expire_time"` // 永久禁言时为null
+	IsActive     bool       `gorm:"not null;default:true;index" json:"is_active"`
+	CreatedAt    time.Time  `gorm:"autoCreateTime" json:"created_at"`
+	UpdatedAt    time.Time  `gorm:"autoUpdateTime" json:"updated_at"`
+}
+
+func (RoomKick) TableName() string {
+	return "room_kick"
+}
+
+func (RoomMute) TableName() string {
+	return "room_mute"
+}
+
+// IsUserKicked 检查用户是否被踢且在冷却时间内
+func IsUserKicked(roomID, userID uint64) bool {
+	var count int64
+	global.DB.Model(&RoomKick{}).Where("room_id = ? and user_id = ? and expire_time > ?",
+		roomID, userID, time.Now()).Count(&count)
+	return count > 0
+}
+
+// IsUserMuted 判断用户是否被禁言
+func IsUserMuted(roomID, userID uint64) bool {
+	var count int64
+	now := time.Now()
+
+	global.DB.Model(&RoomMute{}).Where("room_id = ? and user_id = ? and is_active = ? and (expire_time IS NULL OR expire_time > ?)",
+		roomID, userID, true, now).Count(&count)
+	return count > 0
+}
+
+// GetMuteDuration 根据类型获取禁言时长
+func GetMuteDuration(durationType int32) *time.Time {
+	now := time.Now()
+	switch durationType {
+	case 1: // 1小时
+		expireTime := now.Add(1 * time.Hour)
+		return &expireTime
+	case 2: // 24小时
+		expireTime := now.Add(24 * time.Hour)
+		return &expireTime
+	case 3: // 永久
+		return nil
+	default:
+		expireTime := now.Add(1 * time.Hour)
+		return &expireTime
+	}
+}
+
 // 房间基础信息表
 type Room struct {
-	Id             int64     `gorm:"column:id;type:bigint;comment:房间唯一ID;primaryKey;not null;" json:"id"`                             // 房间唯一ID
-	RoomName       string    `gorm:"column:room_name;type:varchar(50);comment:房间名称;not null;" json:"room_name"`                       // 房间名称
-	UserId         uint64    `gorm:"column:user_id;type:bigint UNSIGNED;comment:房主用户ID，关联 user.id;not null;" json:"user_id"`          // 房主用户ID，关联 user.id
-	RoomType       string    `gorm:"column:room_type;type:varchar(1);comment:房间类型(0-公开房,1-私密房);not null;default:0;" json:"room_type"` // 房间类型(0-公开房,1-私密房)
+	Id             int64     `gorm:"column:id;type:bigint;comment:房间唯一ID;primaryKey;not null;" json:"id"`                                      // 房间唯一ID
+	RoomName       string    `gorm:"column:room_name;type:varchar(50);comment:房间名称;not null;" json:"room_name"`                                // 房间名称
+	UserId         uint64    `gorm:"column:user_id;type:bigint UNSIGNED;comment:房主用户ID，关联 user.id;not null;" json:"user_id"`                 // 房主用户ID，关联 user.id
+	RoomType       string    `gorm:"column:room_type;type:varchar(1);comment:房间类型(0-公开房,1-私密房);not null;default:0;" json:"room_type"`    // 房间类型(0-公开房,1-私密房)
 	Status         string    `gorm:"column:status;type:varchar(1);comment:房间状态(0-正常,1-已解散,2-全局禁言);not null;default:0;" json:"status"` // 房间状态(0-正常,1-已解散,2-全局禁言)
-	Announcement   string    `gorm:"column:announcement;type:varchar(200);comment:房间公告;default:NULL;" json:"announcement"`            // 房间公告
+	Announcement   string    `gorm:"column:announcement;type:varchar(200);comment:房间公告;default:NULL;" json:"announcement"`                     // 房间公告
 	CreatedAt      time.Time `gorm:"column:created_at;type:datetime(3);default:NULL;" json:"created_at"`
-	ClosedAt       time.Time `gorm:"column:closed_at;type:datetime;comment:解散时间;default:NULL;" json:"closed_at"`                                       // 解散时间
+	ClosedAt       time.Time `gorm:"column:closed_at;type:datetime;comment:解散时间;default:NULL;" json:"closed_at"`                                         // 解散时间
 	LastActiveTime time.Time `gorm:"column:last_active_time;type:datetime;comment:最后活跃时间;not null;default:CURRENT_TIMESTAMP;" json:"last_active_time"` // 最后活跃时间
-	FkMemberRoom   int32     `gorm:"column:fk_member_room;type:int;comment:房间人数;not null;default:0;" json:"fk_member_room"`                            // 房间人数
-	Image          string    `gorm:"column:image;type:varchar(255);comment:房间封面图;default:NULL;" json:"image"`                                          // 房间封面图
-	TagId          uint64    `gorm:"column:tag_id;type:bigint UNSIGNED;comment:关联的标签ID（一个房间只能选一个）;not null;" json:"tag_id"`                            // 关联的标签ID（一个房间只能选一个）
+	FkMemberRoom   int32     `gorm:"column:fk_member_room;type:int;comment:房间人数;not null;default:0;" json:"fk_member_room"`                              // 房间人数
+	Image          string    `gorm:"column:image;type:varchar(255);comment:房间封面图;default:NULL;" json:"image"`                                           // 房间封面图
+	TagId          uint64    `gorm:"column:tag_id;type:bigint UNSIGNED;comment:关联的标签ID（一个房间只能选一个）;not null;" json:"tag_id"`                    // 关联的标签ID（一个房间只能选一个）
 	UpdatedAt      time.Time `gorm:"column:updated_at;type:datetime(3);default:NULL;" json:"updated_at"`
 	DeletedAt      time.Time `gorm:"column:deleted_at;type:datetime(3);default:NULL;" json:"deleted_at"`
 	CreatedBy      int64     `gorm:"column:created_by;type:bigint;comment:创建者;default:NULL;" json:"created_by"` // 创建者
@@ -33,6 +105,7 @@ func (r *Room) TableName() string {
 func (r *Room) GetFindRoomById(id int64) error {
 	return global.DB.Where("id=?", id).Find(&r).Error
 }
+
 
 // 房间标签表
 type RoomTagDict struct {
@@ -164,6 +237,12 @@ type GiftSendRecord struct {
 	RecordId      int64     `gorm:"column:record_id;type:bigint;comment:记录唯一ID;primaryKey;not null;" json:"record_id"`                       // 记录唯一ID
 	SendUserId    uint64    `gorm:"column:send_user_id;type:bigint UNSIGNED;comment:赠送者用户ID，关联 user.id;not null;" json:"send_user_id"`       // 赠送者用户ID，关联 user.id
 	ReceiveUserId uint64    `gorm:"column:receive_user_id;type:bigint UNSIGNED;comment:接收者用户ID，关联 user.id;not null;" json:"receive_user_id"` // 接收者用户ID，关联 user.id
+	CreatedAt     time.Time `gorm:"column:created_at;type:datetime(3);comment:开始时间;default:NULL;" json:"created_at"`                         // 开始时间
+	UpdatedAt     time.Time `gorm:"column:updated_at;type:datetime(3);comment:修改时间;default:NULL;" json:"updated_at"`                         // 修改时间
+	CreatedBy     int64     `gorm:"column:created_by;type:bigint;comment:创建者;default:NULL;" json:"created_by"`                               // 创建者
+	UpdatedBy     int64     `gorm:"column:updated_by;type:bigint;comment:修改者;default:NULL;" json:"updated_by"`                               // 修改者
+	DeletedBy     int64     `gorm:"column:deleted_by;type:bigint;comment:删除者;default:NULL;" json:"deleted_by"`                               // 删除者
+	DeletedAt     time.Time `gorm:"column:deleted_at;type:datetime;comment:删除时间;default:NULL;" json:"deleted_at"`                            // 删除时间
 	RoomId        int64     `gorm:"column:room_id;type:bigint;comment:房间ID(NULL-私聊);default:NULL;" json:"room_id"`                           // 房间ID(NULL-私聊)
 	GiftId        int64     `gorm:"column:gift_id;type:bigint;comment:礼物ID;not null;" json:"gift_id"`                                        // 礼物ID
 	SendCount     int32     `gorm:"column:send_count;type:int;comment:赠送数量;not null;default:1;" json:"send_count"`                           // 赠送数量
@@ -194,4 +273,5 @@ type UserRoom struct {
 
 func (r *UserRoom) TableName() string {
 	return "user_room"
+
 }
