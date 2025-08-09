@@ -23,6 +23,7 @@ const (
 	Room_MuteUser_FullMethodName             = "/room.Room/MuteUser"
 	Room_UnmuteUser_FullMethodName           = "/room.Room/UnmuteUser"
 	Room_SendGifts_FullMethodName            = "/room.Room/SendGifts"
+	Room_SetAdmin_FullMethodName             = "/room.Room/SetAdmin"
 	Room_JoinRoom_FullMethodName             = "/room.Room/JoinRoom"
 	Room_CloseRoom_FullMethodName            = "/room.Room/CloseRoom"
 	Room_UpdateRoom_FullMethodName           = "/room.Room/UpdateRoom"
@@ -49,6 +50,7 @@ type RoomClient interface {
 	// 解除禁言接口
 	UnmuteUser(ctx context.Context, in *UnmuteUserReq, opts ...grpc.CallOption) (*UnmuteUserResp, error)
 	SendGifts(ctx context.Context, in *SendGiftsReq, opts ...grpc.CallOption) (*SendGiftsResp, error)
+	SetAdmin(ctx context.Context, in *SetAdminReq, opts ...grpc.CallOption) (*SetAdminResp, error)
 	JoinRoom(ctx context.Context, in *JoinRoomStreamReq, opts ...grpc.CallOption) (*JoinRoomStreamResp, error)
 	CloseRoom(ctx context.Context, in *CloseRoomStreamReq, opts ...grpc.CallOption) (*CloseRoomStreamResp, error)
 	UpdateRoom(ctx context.Context, in *UpdateRoomStreamReq, opts ...grpc.CallOption) (*UpdateRoomStreamResp, error)
@@ -107,6 +109,16 @@ func (c *roomClient) SendGifts(ctx context.Context, in *SendGiftsReq, opts ...gr
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(SendGiftsResp)
 	err := c.cc.Invoke(ctx, Room_SendGifts_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *roomClient) SetAdmin(ctx context.Context, in *SetAdminReq, opts ...grpc.CallOption) (*SetAdminResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SetAdminResp)
+	err := c.cc.Invoke(ctx, Room_SetAdmin_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -254,6 +266,7 @@ type RoomServer interface {
 	// 解除禁言接口
 	UnmuteUser(context.Context, *UnmuteUserReq) (*UnmuteUserResp, error)
 	SendGifts(context.Context, *SendGiftsReq) (*SendGiftsResp, error)
+	SetAdmin(context.Context, *SetAdminReq) (*SetAdminResp, error)
 	JoinRoom(context.Context, *JoinRoomStreamReq) (*JoinRoomStreamResp, error)
 	CloseRoom(context.Context, *CloseRoomStreamReq) (*CloseRoomStreamResp, error)
 	UpdateRoom(context.Context, *UpdateRoomStreamReq) (*UpdateRoomStreamResp, error)
@@ -286,6 +299,9 @@ func (UnimplementedRoomServer) UnmuteUser(context.Context, *UnmuteUserReq) (*Unm
 }
 func (UnimplementedRoomServer) SendGifts(context.Context, *SendGiftsReq) (*SendGiftsResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendGifts not implemented")
+}
+func (UnimplementedRoomServer) SetAdmin(context.Context, *SetAdminReq) (*SetAdminResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetAdmin not implemented")
 }
 func (UnimplementedRoomServer) JoinRoom(context.Context, *JoinRoomStreamReq) (*JoinRoomStreamResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method JoinRoom not implemented")
@@ -407,6 +423,24 @@ func _Room_SendGifts_Handler(srv interface{}, ctx context.Context, dec func(inte
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RoomServer).SendGifts(ctx, req.(*SendGiftsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Room_SetAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetAdminReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RoomServer).SetAdmin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Room_SetAdmin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RoomServer).SetAdmin(ctx, req.(*SetAdminReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -667,6 +701,10 @@ var Room_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SendGifts",
 			Handler:    _Room_SendGifts_Handler,
+		},
+		{
+			MethodName: "SetAdmin",
+			Handler:    _Room_SetAdmin_Handler,
 		},
 		{
 			MethodName: "JoinRoom",

@@ -4,18 +4,8 @@ package room;
 
 option go_package = "/";
 
-// 踢人请求
-message KickUserReq {
-  uint64 room_id = 1;      // 房间ID
-  uint64 user_id = 2;      // 被踢用户ID
-  uint64 operator_id = 3;
-  string reason = 4;       // 踢人原因
-}
 
-message KickUserResp {
-  bool success = 1;
-  string message = 2;
-}
+
 //创建房间
 message CreateRoomStreamReq {
   string room_name =1;
@@ -40,7 +30,13 @@ message UpdateRoomStreamResp {
   int32 id =1;
 }
 
-
+// 踢人请求
+message KickUserReq {
+  uint64 room_id = 1;      // 房间ID
+  uint64 user_id = 2;      // 被踢用户ID
+  uint64 operator_id = 3;  // 操作者ID
+  string reason = 4;       // 踢人原因
+}
 // 房间信息结构
 message RoomInfo {
   int64 id = 1;
@@ -58,7 +54,6 @@ message RoomInfo {
   uint64 tag_id = 13;
   string tag_name = 14;
 }
-
 // 推荐房间接口
 message GetRecommendRoomsReq {
   int32 page = 1;
@@ -71,6 +66,38 @@ message GetRecommendRoomsResp {
   int32 page = 3;
   int32 page_size = 4;
   int32 total_pages = 5;
+}
+// 踢人响应
+message KickUserResp {
+  bool success = 1;        // 操作是否成功
+  string message = 2;      // 响应消息
+}
+
+// 禁言请求
+message MuteUserReq {
+  uint64 room_id = 1;      // 房间ID
+  uint64 user_id = 2;      // 被禁言用户ID
+  uint64 operator_id = 3;  // 操作者ID
+  int32 duration_type = 4; // 禁言时长类型：1-1小时，2-24小时，3-永久
+  string reason = 5;       // 禁言原因
+}
+
+// 禁言响应
+message MuteUserResp {
+  bool success = 1;        // 操作是否成功
+  string message = 2;      // 响应消息
+}
+
+// 解除禁言请求
+message UnmuteUserReq {
+  uint64 room_id = 1;      // 房间ID
+  uint64 user_id = 2;      // 被解除禁言用户ID
+  uint64 operator_id = 3;  // 操作者ID
+}
+// 解除禁言响应
+message UnmuteUserResp {
+  bool success = 1;        // 操作是否成功
+  string message = 2;      // 响应消息
 }
 
 // 分类浏览接口
@@ -115,6 +142,7 @@ message CloseRoomStreamResp {
   string message = 2;
   int64 room_id = 3;
 }
+
 
 //进入房间接口
 message JoinRoomStreamReq {
@@ -193,6 +221,24 @@ message MuteMicUserReq {
   string reason = 6;
 }
 
+//刷礼物
+message SendGiftsReq {
+  int64 SendUserId =1;
+  int64 ReceiveUserId = 2;
+  int64 RoomId = 3;
+  int64 GiftId = 4;
+  int64 SendCount = 5;
+  string SendType = 6;
+  string Message = 7;
+  string Status = 8;
+  string ClientIp =9;
+  string SendTime =10;
+}
+
+message SendGiftsResp {
+  string greet = 1;
+}
+
 message MuteMicUserResp {
   bool success = 1;
   string message = 2;
@@ -230,54 +276,32 @@ message MicApplication {
   int32 status = 6;
 }
 
-// 禁言请求
-message MuteUserReq {
-  uint64 room_id = 1;      // 房间ID
-  uint64 user_id = 2;      // 被禁言用户ID
-  uint64 operator_id = 3;
-  int32 duration_type = 4; // 禁言时长 1-1小时，2-24小时，3-永久
-  string reason = 5;       // 禁言原因
+//设置房管管理房间
+message SetAdminReq {
+  int64 Id =1;
+  int64 UserId =2;
+  string Status =3;
+  string Reason =5;
+  string MuteDay =6;
+  string MuteResult =7;
+  string MuteType =8;
 }
 
-message MuteUserResp {
-  bool success = 1;
-  string message = 2;
-}
-
-// 解除禁言请求
-message UnmuteUserReq {
-  uint64 room_id = 1;      // 房间ID
-  uint64 user_id = 2;      // 被解除禁言用户ID
-  uint64 operator_id = 3;  // 操作者ID
-}
-
-message UnmuteUserResp {
-  bool success = 1;
-  string message = 2;
-}
-
-
-message SendGiftsReq {
-  int64 SendUserId =1;
-  int64 ReceiveUserId = 2;
-  int64 RoomId = 3;
-  int64 GiftId = 4;
-  int64 SendCount = 5;
-  string SendType = 6;
-  string Message = 7;
-  string Status = 8;
-  string ClientIp =9;
-  string SendTime =10;
-}
-
-message SendGiftsResp {
-  string greet = 1;
+message SetAdminResp {
+  string Greet =1;
 }
 
 service Room {
+
+  // 踢人接口
   rpc KickUser(KickUserReq) returns (KickUserResp);
+  // 禁言接口
   rpc MuteUser(MuteUserReq) returns (MuteUserResp);
+  // 解除禁言接口
   rpc UnmuteUser(UnmuteUserReq) returns (UnmuteUserResp);
+  rpc SendGifts(SendGiftsReq) returns (SendGiftsResp);//刷礼物
+  rpc SetAdmin(SetAdminReq) returns (SetAdminResp);//设置房管管理房间
+
   rpc JoinRoom(JoinRoomStreamReq) returns (JoinRoomStreamResp);
   rpc CloseRoom(CloseRoomStreamReq) returns (CloseRoomStreamResp);
   rpc UpdateRoom(UpdateRoomStreamReq) returns (UpdateRoomStreamResp);
@@ -293,6 +317,4 @@ service Room {
   rpc KickFromMic(KickFromMicReq) returns (KickFromMicResp);
   rpc MuteMicUser(MuteMicUserReq) returns (MuteMicUserResp);
   rpc GetMicStatus(GetMicStatusReq) returns (GetMicStatusResp);
-  rpc SendGifts(SendGiftsReq) returns (SendGiftsResp);
-
 }
