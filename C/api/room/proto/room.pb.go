@@ -1485,7 +1485,7 @@ func (x *JoinRoomStreamResp) GetRoomInfo() *RoomInfo {
 	return nil
 }
 
-// 申请上麦请求
+// 申请上麦
 type ApplyMicReq struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1604,7 +1604,7 @@ func (x *ApplyMicResp) GetApplicationId() int64 {
 	return 0
 }
 
-// 处理上麦申请请求
+// 处理上麦申请
 type HandleMicApplicationReq struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -2002,8 +2002,8 @@ type MuteMicUserReq struct {
 	RoomId       int64  `protobuf:"varint,1,opt,name=room_id,json=roomId,proto3" json:"room_id,omitempty"`
 	OperatorId   uint64 `protobuf:"varint,2,opt,name=operator_id,json=operatorId,proto3" json:"operator_id,omitempty"`
 	TargetUserId uint64 `protobuf:"varint,3,opt,name=target_user_id,json=targetUserId,proto3" json:"target_user_id,omitempty"`
-	Action       int32  `protobuf:"varint,4,opt,name=action,proto3" json:"action,omitempty"`     // 1-禁言, 2-解禁
-	Duration     int32  `protobuf:"varint,5,opt,name=duration,proto3" json:"duration,omitempty"` // 禁言时长(分钟)
+	Action       int32  `protobuf:"varint,4,opt,name=action,proto3" json:"action,omitempty"`
+	Duration     int32  `protobuf:"varint,5,opt,name=duration,proto3" json:"duration,omitempty"`
 	Reason       string `protobuf:"bytes,6,opt,name=reason,proto3" json:"reason,omitempty"`
 }
 
@@ -2413,7 +2413,7 @@ type MicInfo struct {
 	unknownFields protoimpl.UnknownFields
 
 	Position     int32  `protobuf:"varint,1,opt,name=position,proto3" json:"position,omitempty"`
-	Status       int32  `protobuf:"varint,2,opt,name=status,proto3" json:"status,omitempty"` // 0-空闲, 1-占用, 2-禁用
+	Status       int32  `protobuf:"varint,2,opt,name=status,proto3" json:"status,omitempty"`
 	UserId       uint64 `protobuf:"varint,3,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	UserNickname string `protobuf:"bytes,4,opt,name=user_nickname,json=userNickname,proto3" json:"user_nickname,omitempty"`
 	UserAvatar   string `protobuf:"bytes,5,opt,name=user_avatar,json=userAvatar,proto3" json:"user_avatar,omitempty"`

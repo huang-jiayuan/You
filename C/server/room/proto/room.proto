@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package room;
 
-option go_package = "/";
+option go_package = "./proto";
 
 
 
@@ -157,9 +157,7 @@ message JoinRoomStreamResp {
   RoomInfo room_info = 4;
 }
 
-// 麦位管理相关消息定义
-
-// 申请上麦请求
+// 申请上麦
 message ApplyMicReq {
   int64 room_id = 1;
   uint64 user_id = 2;
@@ -171,7 +169,7 @@ message ApplyMicResp {
   int64 application_id = 3;
 }
 
-// 处理上麦申请请求
+// 处理上麦申请
 message HandleMicApplicationReq {
   int64 application_id = 1;
   uint64 handler_id = 2;
@@ -216,8 +214,8 @@ message MuteMicUserReq {
   int64 room_id = 1;
   uint64 operator_id = 2;
   uint64 target_user_id = 3;
-  int32 action = 4;      // 1-禁言, 2-解禁
-  int32 duration = 5;    // 禁言时长(分钟)
+  int32 action = 4;
+  int32 duration = 5;
   string reason = 6;
 }
 
@@ -257,7 +255,7 @@ message GetMicStatusResp {
 // 麦位信息
 message MicInfo {
   int32 position = 1;
-  int32 status = 2;      // 0-空闲, 1-占用, 2-禁用
+  int32 status = 2;
   uint64 user_id = 3;
   string user_nickname = 4;
   string user_avatar = 5;

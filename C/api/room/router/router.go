@@ -31,6 +31,9 @@ func Router(r *gin.Engine) {
 			room.POST("/applyMic", handler.ApplyMic)
 			room.POST("/leaveMic", handler.LeaveMic)
 
+			room.POST("/handleMicApplication", handler.HandleMicApplication)
+			room.POST("/kickFromMic", handler.KickFromMic)
+			room.POST("/muteMicUser", handler.MuteMicUser)
 		}
 	}
 }
