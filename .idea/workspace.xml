@@ -5,21 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8879827a-ff20-41a2-8856-6cc8c9d126bb" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/C/api/go.mod" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/C/server/models/user_admi.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/GOHCache.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/GOHCache.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/C/api/request/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/request/room.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/C/api/room/handler/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/handler/room.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/C/api/room/proto/room.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/proto/room.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/C/api/room/proto/room.proto" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/proto/room.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/C/api/room/proto/room_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/proto/room_grpc.pb.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/C/api/room/router/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/api/room/router/router.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/C/server/models/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/models/room.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/C/server/room/handler/room.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/room/handler/room.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/C/server/room/proto/room.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/room/proto/room.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/C/server/room/proto/room.proto" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/room/proto/room.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/C/server/room/proto/room_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/C/server/room/proto/room_grpc.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/web/.env.development" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/web/.env.development" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/web/.env.production" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/web/.env.production" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gin-vue-admin/web/src/pathInfo.json" beforeDir="false" afterPath="$PROJECT_DIR$/gin-vue-admin/web/src/pathInfo.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,6 +58,7 @@
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "run.code.analysis.last.selected.profile": "pProject Default",
     "settings.editor.selected.configurable": "go.vgo",
     "vue.rearranger.settings.migration": "true"
   }

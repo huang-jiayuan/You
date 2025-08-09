@@ -12,8 +12,8 @@ func Router(r *gin.Engine) {
 		room := api.Group("/room")
 		{
 			room.POST("/sendgift", handler.SendGifts)
-			room.POST("/setadmin", handler.SetAdmin)
 			room.Use(pkg.JWTAuth("2211a"))
+			room.POST("/setadmin", handler.SetAdmin)
 			room.POST("/createroom", handler.CreateRoom)
 			room.POST("/updateroom", handler.UpdateRoom)
 			room.POST("/getRecommendRooms", handler.GetRecommendRooms)
