@@ -435,3 +435,29 @@ func UnFollowUser(c *gin.Context) {
 		"data": user,
 	})
 }
+
+func UserFollowList(c *gin.Context) {
+	conn, err := grpc.NewClient("127.0.0.1:8889", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		log.Fatalf("did not connect: %v", err)
+	}
+	defer conn.Close()
+	c1 := __.NewUserClient(conn)
+	userId := c.GetUint("userId")
+	user, err := c1.UserFollowList(c, &__.UserFollowListRequest{
+		UserId: int64(userId),
+	})
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 1001,
+			"msg":  "请求失败！服务器内部错误",
+			"data": err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": 0,
+		"msg":  "服务器响应正常",
+		"data": user,
+	})
+}

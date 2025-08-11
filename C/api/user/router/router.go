@@ -19,6 +19,7 @@ func Router(r *gin.Engine) {
 			user.POST("/improve/message", handler.ImproveUserMessage)
 			user.POST("/follow", handler.FollowUser)
 			user.POST("/unfollow", handler.UnFollowUser)
+			user.POST("/follow/list", handler.UserFollowList)
 			// 在Gin路由中添加WebSocket端点
 			user.GET("/ws", handler.HandleWebSocket)
 
@@ -27,7 +28,6 @@ func Router(r *gin.Engine) {
 		authGroup := r.Group("/auth")
 		authGroup.Use(handler.AuthMiddleware())
 		{
-
 			authGroup.GET("/profile", handler.Profile)
 			authGroup.POST("/logout", handler.Logout)
 		}
