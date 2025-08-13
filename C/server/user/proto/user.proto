@@ -98,7 +98,48 @@ message UnFollowUserResponse{
   string greet = 1;
 }
 
+//todo: 用户关注列表
+message UserFollowListRequest{
+  int64 userId = 1;
+}
 
+message UserFollowListResponse{
+  repeated UserFollowList list = 1;
+}
+
+message UserFollowList {
+  string Nickname = 1;
+  string Avatar = 2;
+}
+//todo: 创建消息请求
+message CreateMessageRequest {
+  int64 FromUserId = 1;  // 发送者ID
+  int64 ToUserId = 2;    // 接收者ID
+  string Type = 3;       // 消息类型：text, image, system
+  string Content = 4;    // 消息内容
+}
+
+message CreateMessageResponse {
+  string MessageId = 1;  // 创建的消息ID
+}
+
+//todo: 标记消息为已读请求
+message MarkMessageAsReadRequest {
+  int64 MessageId = 1;  // 消息ID
+}
+
+message MarkMessageAsReadResponse {
+  bool Success = 1;      // 操作是否成功
+}
+
+//todo: 标记消息为已发送请求
+message MarkMessageAsDeliveredRequest {
+  int64 MessageId = 1;  // 消息ID
+}
+
+message MarkMessageAsDeliveredResponse {
+  bool Success = 1;      // 操作是否成功
+}
 
 service User {
   rpc greet(StreamReq) returns (StreamResp);
@@ -111,4 +152,8 @@ service User {
   rpc ImproveUserMessage(ImproveUserMessageRequest) returns(ImproveUserMessageResponse);
   rpc FollowUser(FollowUserRequest) returns(FollowUserResponse);
   rpc UnFollowUser(UnFollowUserRequest) returns(UnFollowUserResponse);
+  rpc UserFollowList(UserFollowListRequest) returns(UserFollowListResponse);
+  rpc CreateMessage(CreateMessageRequest) returns(CreateMessageResponse);
+  rpc MarkMessageAsRead(MarkMessageAsReadRequest) returns(MarkMessageAsReadResponse);
+  rpc MarkMessageAsDelivered(MarkMessageAsDeliveredRequest) returns(MarkMessageAsDeliveredResponse);
 }

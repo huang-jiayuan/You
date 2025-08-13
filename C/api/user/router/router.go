@@ -7,6 +7,16 @@ import (
 )
 
 func Router(r *gin.Engine) {
+	// 健康检查端点
+	r.GET("/health", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"status": "ok",
+			"message": "Backend service is running",
+			"port": "8081",
+			"timestamp": c.GetHeader("Date"),
+		})
+	})
+
 	api := r.Group("/api")
 	{
 		user := api.Group("/user")
@@ -19,6 +29,7 @@ func Router(r *gin.Engine) {
 			user.POST("/improve/message", handler.ImproveUserMessage)
 			user.POST("/follow", handler.FollowUser)
 			user.POST("/unfollow", handler.UnFollowUser)
+			user.POST("/follow/list", handler.UserFollowList)
 			// 在Gin路由中添加WebSocket端点
 			user.GET("/ws", handler.HandleWebSocket)
 
@@ -27,7 +38,6 @@ func Router(r *gin.Engine) {
 		authGroup := r.Group("/auth")
 		authGroup.Use(handler.AuthMiddleware())
 		{
-
 			authGroup.GET("/profile", handler.Profile)
 			authGroup.POST("/logout", handler.Logout)
 		}

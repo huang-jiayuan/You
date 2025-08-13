@@ -4,13 +4,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/go-redis/redis/v8"
 	"math/rand"
 	"regexp"
 	"server/models"
 	"server/pkg"
 	"server/user/basic/inits"
 	__ "server/user/proto"
+
+	"github.com/go-redis/redis/v8"
 )
 
 type Server struct {
@@ -194,4 +195,72 @@ func (s *Server) UnFollowUser(_ context.Context, in *__.UnFollowUserRequest) (*_
 		return nil, err
 	}
 	return &__.UnFollowUserResponse{Greet: "成功取消关注"}, nil
+}
+
+func (s *Server) UserFollowList(_ context.Context, in *__.UserFollowListRequest) (*__.UserFollowListResponse, error) {
+	uf := &models.UserFollow{}
+	u := &models.User{}
+	list, err := uf.FollowList(in.UserId)
+	if err != nil {
+		return nil, err
+	}
+	var Item []*__.UserFollowList
+	for _, f := range list {
+		fmt.Println(f.FollowedId)
+		id, err := u.FindUserById(f.FollowedId)
+		if err != nil {
+			return nil, err
+		}
+		Item = append(Item, &__.UserFollowList{
+			Nickname: id.Nickname,
+			Avatar:   id.Avatar,
+		})
+	}
+	return &__.UserFollowListResponse{List: Item}, nil
+}
+
+// CreateMessage 创建新消息
+func (s *Server) CreateMessage(_ context.Context, in *__.CreateMessageRequest) (*__.CreateMessageResponse, error) {
+	msg := &models.Message{}
+
+	// 调用模型层创建消息
+	createdMsg, err := msg.CreateMessage(uint64(in.FromUserId), uint64(in.ToUserId), in.Type, in.Content, nil)
+	if err != nil {
+		return nil, fmt.Errorf("创建消息失败: %v", err)
+	}
+
+	// 返回创建的消息ID
+	return &__.CreateMessageResponse{
+		MessageId: fmt.Sprintf("%d", createdMsg.Id),
+	}, nil
+}
+
+// MarkMessageAsRead 标记消息为已读
+func (s *Server) MarkMessageAsRead(_ context.Context, in *__.MarkMessageAsReadRequest) (*__.MarkMessageAsReadResponse, error) {
+	msg := &models.Message{}
+
+	// 调用模型层标记消息为已读
+	err := msg.MarkAsRead(uint64(in.MessageId))
+	if err != nil {
+		return nil, fmt.Errorf("标记消息为已读失败: %v", err)
+	}
+
+	return &__.MarkMessageAsReadResponse{
+		Success: true,
+	}, nil
+}
+
+// MarkMessageAsDelivered 标记消息为已发送
+func (s *Server) MarkMessageAsDelivered(_ context.Context, in *__.MarkMessageAsDeliveredRequest) (*__.MarkMessageAsDeliveredResponse, error) {
+	msg := &models.Message{}
+
+	// 调用模型层标记消息为已发送
+	err := msg.MarkAsDelivered(uint64(in.MessageId))
+	if err != nil {
+		return nil, fmt.Errorf("标记消息为已发送失败: %v", err)
+	}
+
+	return &__.MarkMessageAsDeliveredResponse{
+		Success: true,
+	}, nil
 }

@@ -19,16 +19,20 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	User_Greet_FullMethodName              = "/user.User/greet"
-	User_SendSms_FullMethodName            = "/user.User/SendSms"
-	User_UserLogin_FullMethodName          = "/user.User/UserLogin"
-	User_UserPassword_FullMethodName       = "/user.User/UserPassword"
-	User_VerifyToken_FullMethodName        = "/user.User/VerifyToken"
-	User_Logout_FullMethodName             = "/user.User/Logout"
-	User_UpdatePassword_FullMethodName     = "/user.User/UpdatePassword"
-	User_ImproveUserMessage_FullMethodName = "/user.User/ImproveUserMessage"
-	User_FollowUser_FullMethodName         = "/user.User/FollowUser"
-	User_UnFollowUser_FullMethodName       = "/user.User/UnFollowUser"
+	User_Greet_FullMethodName                  = "/user.User/greet"
+	User_SendSms_FullMethodName                = "/user.User/SendSms"
+	User_UserLogin_FullMethodName              = "/user.User/UserLogin"
+	User_UserPassword_FullMethodName           = "/user.User/UserPassword"
+	User_VerifyToken_FullMethodName            = "/user.User/VerifyToken"
+	User_Logout_FullMethodName                 = "/user.User/Logout"
+	User_UpdatePassword_FullMethodName         = "/user.User/UpdatePassword"
+	User_ImproveUserMessage_FullMethodName     = "/user.User/ImproveUserMessage"
+	User_FollowUser_FullMethodName             = "/user.User/FollowUser"
+	User_UnFollowUser_FullMethodName           = "/user.User/UnFollowUser"
+	User_UserFollowList_FullMethodName         = "/user.User/UserFollowList"
+	User_CreateMessage_FullMethodName          = "/user.User/CreateMessage"
+	User_MarkMessageAsRead_FullMethodName      = "/user.User/MarkMessageAsRead"
+	User_MarkMessageAsDelivered_FullMethodName = "/user.User/MarkMessageAsDelivered"
 )
 
 // UserClient is the client API for User service.
@@ -45,6 +49,10 @@ type UserClient interface {
 	ImproveUserMessage(ctx context.Context, in *ImproveUserMessageRequest, opts ...grpc.CallOption) (*ImproveUserMessageResponse, error)
 	FollowUser(ctx context.Context, in *FollowUserRequest, opts ...grpc.CallOption) (*FollowUserResponse, error)
 	UnFollowUser(ctx context.Context, in *UnFollowUserRequest, opts ...grpc.CallOption) (*UnFollowUserResponse, error)
+	UserFollowList(ctx context.Context, in *UserFollowListRequest, opts ...grpc.CallOption) (*UserFollowListResponse, error)
+	CreateMessage(ctx context.Context, in *CreateMessageRequest, opts ...grpc.CallOption) (*CreateMessageResponse, error)
+	MarkMessageAsRead(ctx context.Context, in *MarkMessageAsReadRequest, opts ...grpc.CallOption) (*MarkMessageAsReadResponse, error)
+	MarkMessageAsDelivered(ctx context.Context, in *MarkMessageAsDeliveredRequest, opts ...grpc.CallOption) (*MarkMessageAsDeliveredResponse, error)
 }
 
 type userClient struct {
@@ -155,6 +163,46 @@ func (c *userClient) UnFollowUser(ctx context.Context, in *UnFollowUserRequest, 
 	return out, nil
 }
 
+func (c *userClient) UserFollowList(ctx context.Context, in *UserFollowListRequest, opts ...grpc.CallOption) (*UserFollowListResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UserFollowListResponse)
+	err := c.cc.Invoke(ctx, User_UserFollowList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) CreateMessage(ctx context.Context, in *CreateMessageRequest, opts ...grpc.CallOption) (*CreateMessageResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateMessageResponse)
+	err := c.cc.Invoke(ctx, User_CreateMessage_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) MarkMessageAsRead(ctx context.Context, in *MarkMessageAsReadRequest, opts ...grpc.CallOption) (*MarkMessageAsReadResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(MarkMessageAsReadResponse)
+	err := c.cc.Invoke(ctx, User_MarkMessageAsRead_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) MarkMessageAsDelivered(ctx context.Context, in *MarkMessageAsDeliveredRequest, opts ...grpc.CallOption) (*MarkMessageAsDeliveredResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(MarkMessageAsDeliveredResponse)
+	err := c.cc.Invoke(ctx, User_MarkMessageAsDelivered_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -169,6 +217,10 @@ type UserServer interface {
 	ImproveUserMessage(context.Context, *ImproveUserMessageRequest) (*ImproveUserMessageResponse, error)
 	FollowUser(context.Context, *FollowUserRequest) (*FollowUserResponse, error)
 	UnFollowUser(context.Context, *UnFollowUserRequest) (*UnFollowUserResponse, error)
+	UserFollowList(context.Context, *UserFollowListRequest) (*UserFollowListResponse, error)
+	CreateMessage(context.Context, *CreateMessageRequest) (*CreateMessageResponse, error)
+	MarkMessageAsRead(context.Context, *MarkMessageAsReadRequest) (*MarkMessageAsReadResponse, error)
+	MarkMessageAsDelivered(context.Context, *MarkMessageAsDeliveredRequest) (*MarkMessageAsDeliveredResponse, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -205,6 +257,18 @@ func (UnimplementedUserServer) FollowUser(context.Context, *FollowUserRequest) (
 }
 func (UnimplementedUserServer) UnFollowUser(context.Context, *UnFollowUserRequest) (*UnFollowUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UnFollowUser not implemented")
+}
+func (UnimplementedUserServer) UserFollowList(context.Context, *UserFollowListRequest) (*UserFollowListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserFollowList not implemented")
+}
+func (UnimplementedUserServer) CreateMessage(context.Context, *CreateMessageRequest) (*CreateMessageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateMessage not implemented")
+}
+func (UnimplementedUserServer) MarkMessageAsRead(context.Context, *MarkMessageAsReadRequest) (*MarkMessageAsReadResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MarkMessageAsRead not implemented")
+}
+func (UnimplementedUserServer) MarkMessageAsDelivered(context.Context, *MarkMessageAsDeliveredRequest) (*MarkMessageAsDeliveredResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MarkMessageAsDelivered not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -399,6 +463,78 @@ func _User_UnFollowUser_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_UserFollowList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserFollowListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UserFollowList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_UserFollowList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UserFollowList(ctx, req.(*UserFollowListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_CreateMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateMessageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).CreateMessage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_CreateMessage_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).CreateMessage(ctx, req.(*CreateMessageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_MarkMessageAsRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MarkMessageAsReadRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).MarkMessageAsRead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_MarkMessageAsRead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).MarkMessageAsRead(ctx, req.(*MarkMessageAsReadRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_MarkMessageAsDelivered_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MarkMessageAsDeliveredRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).MarkMessageAsDelivered(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_MarkMessageAsDelivered_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).MarkMessageAsDelivered(ctx, req.(*MarkMessageAsDeliveredRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -445,6 +581,22 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UnFollowUser",
 			Handler:    _User_UnFollowUser_Handler,
+		},
+		{
+			MethodName: "UserFollowList",
+			Handler:    _User_UserFollowList_Handler,
+		},
+		{
+			MethodName: "CreateMessage",
+			Handler:    _User_CreateMessage_Handler,
+		},
+		{
+			MethodName: "MarkMessageAsRead",
+			Handler:    _User_MarkMessageAsRead_Handler,
+		},
+		{
+			MethodName: "MarkMessageAsDelivered",
+			Handler:    _User_MarkMessageAsDelivered_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
