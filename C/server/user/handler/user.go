@@ -206,6 +206,7 @@ func (s *Server) UserFollowList(_ context.Context, in *__.UserFollowListRequest)
 	}
 	var Item []*__.UserFollowList
 	for _, f := range list {
+		fmt.Println(f.FollowedId)
 		id, err := u.FindUserById(f.FollowedId)
 		if err != nil {
 			return nil, err

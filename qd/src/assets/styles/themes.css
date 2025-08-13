@@ -1,0 +1,357 @@
+/* 主题系统 - 完整的主题变量定义 */
+
+/* 基础主题变量 */
+:root {
+  /* 主色调系统 */
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-primary-800: #1e40af;
+  --color-primary-900: #1e3a8a;
+  
+  /* 语义化颜色 */
+  --color-success-50: #ecfdf5;
+  --color-success-100: #d1fae5;
+  --color-success-500: #10b981;
+  --color-success-600: #059669;
+  --color-success-700: #047857;
+  
+  --color-warning-50: #fffbeb;
+  --color-warning-100: #fef3c7;
+  --color-warning-500: #f59e0b;
+  --color-warning-600: #d97706;
+  --color-warning-700: #b45309;
+  
+  --color-danger-50: #fef2f2;
+  --color-danger-100: #fee2e2;
+  --color-danger-500: #ef4444;
+  --color-danger-600: #dc2626;
+  --color-danger-700: #b91c1c;
+  
+  --color-info-50: #f0f9ff;
+  --color-info-100: #e0f2fe;
+  --color-info-500: #06b6d4;
+  --color-info-600: #0891b2;
+  --color-info-700: #0e7490;
+  
+  /* 中性色系统 */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+  
+  /* 主题映射 - 明亮主题 */
+  --color-primary: var(--color-primary-500);
+  --color-primary-dark: var(--color-primary-600);
+  --color-primary-light: var(--color-primary-400);
+  --color-primary-bg: var(--color-primary-50);
+  
+  --color-success: var(--color-success-500);
+  --color-success-bg: var(--color-success-50);
+  --color-warning: var(--color-warning-500);
+  --color-warning-bg: var(--color-warning-50);
+  --color-danger: var(--color-danger-500);
+  --color-danger-dark: var(--color-danger-600);
+  --color-danger-bg: var(--color-danger-50);
+  --color-info: var(--color-info-500);
+  --color-info-bg: var(--color-info-50);
+  
+  --color-white: #ffffff;
+  --color-black: #000000;
+  
+  /* 文本颜色 */
+  --color-text-primary: var(--color-gray-900);
+  --color-text-secondary: var(--color-gray-600);
+  --color-text-muted: var(--color-gray-500);
+  --color-text-disabled: var(--color-gray-400);
+  --color-text-inverse: var(--color-white);
+  
+  /* 背景颜色 */
+  --color-bg-primary: var(--color-white);
+  --color-bg-secondary: var(--color-gray-50);
+  --color-bg-tertiary: var(--color-gray-100);
+  --color-bg-quaternary: var(--color-gray-200);
+  --color-bg-overlay: rgba(0, 0, 0, 0.5);
+  --color-bg-modal: var(--color-white);
+  
+  /* 边框颜色 */
+  --color-border: var(--color-gray-200);
+  --color-border-light: var(--color-gray-100);
+  --color-border-dark: var(--color-gray-300);
+  --color-border-focus: var(--color-primary-500);
+  
+  /* 阴影颜色 */
+  --shadow-color: 0, 0, 0;
+  --shadow-sm: 0 1px 2px 0 rgb(var(--shadow-color) / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(var(--shadow-color) / 0.1), 0 2px 4px -1px rgb(var(--shadow-color) / 0.06);
+  --shadow-lg: 0 10px 15px -3px rgb(var(--shadow-color) / 0.1), 0 4px 6px -2px rgb(var(--shadow-color) / 0.05);
+  --shadow-xl: 0 20px 25px -5px rgb(var(--shadow-color) / 0.1), 0 10px 10px -5px rgb(var(--shadow-color) / 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgb(var(--shadow-color) / 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgb(var(--shadow-color) / 0.06);
+  
+  /* 渐变 */
+  --gradient-primary: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-600) 100%);
+  --gradient-secondary: linear-gradient(135deg, var(--color-gray-100) 0%, var(--color-gray-200) 100%);
+  --gradient-success: linear-gradient(135deg, var(--color-success-500) 0%, var(--color-success-600) 100%);
+  --gradient-warning: linear-gradient(135deg, var(--color-warning-500) 0%, var(--color-warning-600) 100%);
+  --gradient-danger: linear-gradient(135deg, var(--color-danger-500) 0%, var(--color-danger-600) 100%);
+}
+
+/* 暗色主题 */
+[data-theme="dark"] {
+  /* 主题映射 - 暗色主题 */
+  --color-primary: var(--color-primary-400);
+  --color-primary-dark: var(--color-primary-500);
+  --color-primary-light: var(--color-primary-300);
+  --color-primary-bg: var(--color-primary-900);
+  
+  --color-success: var(--color-success-400);
+  --color-success-bg: var(--color-success-900);
+  --color-warning: var(--color-warning-400);
+  --color-warning-bg: var(--color-warning-900);
+  --color-danger: var(--color-danger-400);
+  --color-danger-dark: var(--color-danger-500);
+  --color-danger-bg: var(--color-danger-900);
+  --color-info: var(--color-info-400);
+  --color-info-bg: var(--color-info-900);
+  
+  /* 文本颜色 */
+  --color-text-primary: var(--color-gray-100);
+  --color-text-secondary: var(--color-gray-300);
+  --color-text-muted: var(--color-gray-400);
+  --color-text-disabled: var(--color-gray-500);
+  --color-text-inverse: var(--color-gray-900);
+  
+  /* 背景颜色 */
+  --color-bg-primary: var(--color-gray-900);
+  --color-bg-secondary: var(--color-gray-800);
+  --color-bg-tertiary: var(--color-gray-700);
+  --color-bg-quaternary: var(--color-gray-600);
+  --color-bg-overlay: rgba(0, 0, 0, 0.8);
+  --color-bg-modal: var(--color-gray-800);
+  
+  /* 边框颜色 */
+  --color-border: var(--color-gray-700);
+  --color-border-light: var(--color-gray-600);
+  --color-border-dark: var(--color-gray-500);
+  --color-border-focus: var(--color-primary-400);
+  
+  /* 阴影颜色 */
+  --shadow-color: 0, 0, 0;
+  
+  /* 渐变 */
+  --gradient-primary: linear-gradient(135deg, var(--color-primary-400) 0%, var(--color-primary-500) 100%);
+  --gradient-secondary: linear-gradient(135deg, var(--color-gray-700) 0%, var(--color-gray-600) 100%);
+  --gradient-success: linear-gradient(135deg, var(--color-success-400) 0%, var(--color-success-500) 100%);
+  --gradient-warning: linear-gradient(135deg, var(--color-warning-400) 0%, var(--color-warning-500) 100%);
+  --gradient-danger: linear-gradient(135deg, var(--color-danger-400) 0%, var(--color-danger-500) 100%);
+}
+
+/* 蓝色主题 */
+[data-theme="blue"] {
+  --color-primary: #2563eb;
+  --color-primary-dark: #1d4ed8;
+  --color-primary-light: #3b82f6;
+  --color-primary-bg: #eff6ff;
+}
+
+/* 绿色主题 */
+[data-theme="green"] {
+  --color-primary: #059669;
+  --color-primary-dark: #047857;
+  --color-primary-light: #10b981;
+  --color-primary-bg: #ecfdf5;
+}
+
+/* 紫色主题 */
+[data-theme="purple"] {
+  --color-primary: #7c3aed;
+  --color-primary-dark: #6d28d9;
+  --color-primary-light: #8b5cf6;
+  --color-primary-bg: #f5f3ff;
+}
+
+/* 红色主题 */
+[data-theme="red"] {
+  --color-primary: #dc2626;
+  --color-primary-dark: #b91c1c;
+  --color-primary-light: #ef4444;
+  --color-primary-bg: #fef2f2;
+}
+
+/* 橙色主题 */
+[data-theme="orange"] {
+  --color-primary: #ea580c;
+  --color-primary-dark: #c2410c;
+  --color-primary-light: #f97316;
+  --color-primary-bg: #fff7ed;
+}
+
+/* 粉色主题 */
+[data-theme="pink"] {
+  --color-primary: #db2777;
+  --color-primary-dark: #be185d;
+  --color-primary-light: #ec4899;
+  --color-primary-bg: #fdf2f8;
+}
+
+/* 青色主题 */
+[data-theme="cyan"] {
+  --color-primary: #0891b2;
+  --color-primary-dark: #0e7490;
+  --color-primary-light: #06b6d4;
+  --color-primary-bg: #f0f9ff;
+}
+
+/* 高对比度主题 */
+[data-theme="high-contrast"] {
+  --color-primary: #0000ff;
+  --color-primary-dark: #000080;
+  --color-primary-light: #4169e1;
+  
+  --color-text-primary: #000000;
+  --color-text-secondary: #000000;
+  --color-text-muted: #333333;
+  
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #ffffff;
+  --color-bg-tertiary: #f0f0f0;
+  
+  --color-border: #000000;
+  --color-border-light: #333333;
+  --color-border-dark: #000000;
+  
+  --color-success: #008000;
+  --color-warning: #ff8c00;
+  --color-danger: #ff0000;
+}
+
+/* 高对比度暗色主题 */
+[data-theme="high-contrast-dark"] {
+  --color-primary: #00ffff;
+  --color-primary-dark: #0080ff;
+  --color-primary-light: #80ffff;
+  
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #ffffff;
+  --color-text-muted: #cccccc;
+  
+  --color-bg-primary: #000000;
+  --color-bg-secondary: #000000;
+  --color-bg-tertiary: #333333;
+  
+  --color-border: #ffffff;
+  --color-border-light: #cccccc;
+  --color-border-dark: #ffffff;
+  
+  --color-success: #00ff00;
+  --color-warning: #ffff00;
+  --color-danger: #ff0000;
+}
+
+/* 护眼主题 */
+[data-theme="eye-care"] {
+  --color-primary: #8b5a3c;
+  --color-primary-dark: #6d4c41;
+  --color-primary-light: #a1887f;
+  
+  --color-text-primary: #3e2723;
+  --color-text-secondary: #5d4037;
+  --color-text-muted: #8d6e63;
+  
+  --color-bg-primary: #f3e5ab;
+  --color-bg-secondary: #f0e68c;
+  --color-bg-tertiary: #ddd8a8;
+  
+  --color-border: #d4c5a9;
+  --color-border-light: #e6dcc6;
+  --color-border-dark: #c2b49a;
+}
+
+/* 主题过渡动画 */
+* {
+  transition: 
+    background-color var(--transition-normal),
+    border-color var(--transition-normal),
+    color var(--transition-normal),
+    box-shadow var(--transition-normal);
+}
+
+/* 主题切换时的特殊处理 */
+[data-theme-transitioning] * {
+  transition: 
+    background-color var(--transition-slow),
+    border-color var(--transition-slow),
+    color var(--transition-slow),
+    box-shadow var(--transition-slow);
+}
+
+/* 主题特定的组件样式 */
+[data-theme="dark"] .card {
+  background: linear-gradient(145deg, var(--color-bg-secondary), var(--color-bg-tertiary));
+}
+
+[data-theme="high-contrast"] .button,
+[data-theme="high-contrast-dark"] .button {
+  border: 2px solid currentColor;
+  font-weight: 700;
+}
+
+[data-theme="eye-care"] {
+  filter: sepia(0.1) saturate(0.8);
+}
+
+/* 系统主题偏好检测 */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --color-primary: var(--color-primary-400);
+    --color-primary-dark: var(--color-primary-500);
+    --color-primary-light: var(--color-primary-300);
+    --color-primary-bg: var(--color-primary-900);
+    
+    --color-text-primary: var(--color-gray-100);
+    --color-text-secondary: var(--color-gray-300);
+    --color-text-muted: var(--color-gray-400);
+    
+    --color-bg-primary: var(--color-gray-900);
+    --color-bg-secondary: var(--color-gray-800);
+    --color-bg-tertiary: var(--color-gray-700);
+    
+    --color-border: var(--color-gray-700);
+    --color-border-light: var(--color-gray-600);
+  }
+}
+
+/* 高对比度偏好检测 */
+@media (prefers-contrast: high) {
+  :root {
+    --color-border: var(--color-black);
+    --color-text-primary: var(--color-black);
+    --color-bg-primary: var(--color-white);
+  }
+  
+  [data-theme="dark"] {
+    --color-border: var(--color-white);
+    --color-text-primary: var(--color-white);
+    --color-bg-primary: var(--color-black);
+  }
+}
+
+/* 减少动画偏好检测 */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

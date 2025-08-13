@@ -7,6 +7,16 @@ import (
 )
 
 func Router(r *gin.Engine) {
+	// 健康检查端点
+	r.GET("/health", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"status": "ok",
+			"message": "Backend service is running",
+			"port": "8081",
+			"timestamp": c.GetHeader("Date"),
+		})
+	})
+
 	api := r.Group("/api")
 	{
 		user := api.Group("/user")

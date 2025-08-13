@@ -13,8 +13,6 @@ import (
 	"net/http"
 	"sync"
 	"time"
-	// "server/models" // 导入models包以使用Message表 - 无法直接导入server模块
-	// 需要通过gRPC调用server层的服务
 )
 
 var upgrader = websocket.Upgrader{
@@ -217,10 +215,6 @@ func handleReadAck(msg *Message) {
 	// 在数据库中标记消息为已读
 	markMessageAsReadInDatabase(msg.MessageID)
 
-	// 查找消息的发送者并转发已读确认
-	// 这里简化处理，实际应用中应该从消息存储中查找消息的发送者
-	// 然后将已读确认发送给原消息的发送者
-
 	// 创建已读确认响应
 	ackMsg := Message{
 		Type:      "read_ack",
@@ -228,7 +222,6 @@ func handleReadAck(msg *Message) {
 		Timestamp: time.Now().Unix(),
 	}
 	// 减少未读消息计数
-	// 在实际应用中，应该根据消息ID找到对应的接收者
 	if msg.ReceiverID != 0 {
 		unreadMessages.Lock()
 		if count, exists := unreadMessages.m[msg.ReceiverID]; exists && count > 0 {
@@ -288,9 +281,6 @@ func sendSystemMessage(conn *websocket.Conn, message string) {
 
 // markMessageAsReadInDatabase 在数据库中标记消息为已读
 func markMessageAsReadInDatabase(messageID int64) {
-	// 由于api层无法直接调用server层的models包，需要通过gRPC调用server层的服务
-	// 目前proto文件中没有定义与消息相关的服务，需要先添加相关的服务定义
-	// 以下是伪代码，展示如何通过gRPC调用server层的服务
 
 	// 建立gRPC连接
 	conn, err := grpc.Dial("127.0.0.1:8889", grpc.WithTransportCredentials(insecure.NewCredentials()))
@@ -323,9 +313,6 @@ func markMessageAsReadInDatabase(messageID int64) {
 
 // storeMessageInDatabase 将消息存储到数据库
 func storeMessageInDatabase(msg *Message) {
-	// 由于api层无法直接调用server层的models包，需要通过gRPC调用server层的服务
-	// 目前proto文件中没有定义与消息相关的服务，需要先添加相关的服务定义
-	// 以下是伪代码，展示如何通过gRPC调用server层的服务
 
 	// 建立gRPC连接
 	conn, err := grpc.Dial("127.0.0.1:8889", grpc.WithTransportCredentials(insecure.NewCredentials()))

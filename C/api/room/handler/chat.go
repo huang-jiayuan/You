@@ -111,7 +111,6 @@ func (c *Client) Read() {
 	}
 
 	for {
-		// 只接受文本消息，拒绝二进制消息（图片等）
 		_, message, err := c.Conn.ReadMessage()
 		if err != nil {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
