@@ -57,9 +57,9 @@ func (a *giftInfo) DeleteGiftInfo(c *gin.Context) {
     // 创建业务用Context
     ctx := c.Request.Context()
 
-	giftId := c.Query("giftId")
+	ID := c.Query("ID")
     userID := utils.GetUserID(c)
-	err := serviceGiftInfo.DeleteGiftInfo(ctx,giftId,userID)
+	err := serviceGiftInfo.DeleteGiftInfo(ctx,ID,userID)
 	if err != nil {
         global.GVA_LOG.Error("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败:" + err.Error(), c)
@@ -80,9 +80,9 @@ func (a *giftInfo) DeleteGiftInfoByIds(c *gin.Context) {
     // 创建业务用Context
     ctx := c.Request.Context()
 
-	giftIds := c.QueryArray("giftIds[]")
+	IDs := c.QueryArray("IDs[]")
     userID := utils.GetUserID(c)
-	err := serviceGiftInfo.DeleteGiftInfoByIds(ctx,giftIds,userID)
+	err := serviceGiftInfo.DeleteGiftInfoByIds(ctx,IDs,userID)
 	if err != nil {
         global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
 		response.FailWithMessage("批量删除失败:" + err.Error(), c)
@@ -126,15 +126,15 @@ func (a *giftInfo) UpdateGiftInfo(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Accept application/json
 // @Produce application/json
-// @Param giftId query int true "用id查询giftInfo表"
+// @Param ID query uint true "用id查询giftInfo表"
 // @Success 200 {object} response.Response{data=model.GiftInfo,msg=string} "查询成功"
 // @Router /giftInfo/findGiftInfo [get]
 func (a *giftInfo) FindGiftInfo(c *gin.Context) {
     // 创建业务用Context
     ctx := c.Request.Context()
 
-	giftId := c.Query("giftId")
-	regiftInfo, err := serviceGiftInfo.GetGiftInfo(ctx,giftId)
+	ID := c.Query("ID")
+	regiftInfo, err := serviceGiftInfo.GetGiftInfo(ctx,ID)
 	if err != nil {
         global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败:" + err.Error(), c)

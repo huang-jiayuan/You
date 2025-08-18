@@ -277,8 +277,8 @@ func (s *Server) SetAdmin(_ context.Context, in *__.SetAdminReq) (*__.SetAdminRe
 		fmt.Println("未查询到当前的用户")
 		return nil, err
 	}
-	if user.Status == "3" {
-		fmt.Println("用户已经被禁言处理")
+	if user.Status != "0" {
+		fmt.Println("用户已经被管理员进行其他处理")
 		return nil, err
 	}
 
@@ -291,6 +291,8 @@ func (s *Server) SetAdmin(_ context.Context, in *__.SetAdminReq) (*__.SetAdminRe
 		statusec = "2"
 	} else if in.Status == "3" {
 		statusec = "3"
+	} else if in.Status == "4" {
+		statusec = "4"
 	}
 	err = global.DB.Table("user").Where("id=?", in.UserId).Update("status", statusec).Error
 	if err != nil {

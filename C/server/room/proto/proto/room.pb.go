@@ -2005,6 +2005,16 @@ type SendGiftsReq struct {
 	Status        string                 `protobuf:"bytes,8,opt,name=Status,proto3" json:"Status,omitempty"`                //是否赠送成功
 	ClientIp      string                 `protobuf:"bytes,9,opt,name=ClientIp,proto3" json:"ClientIp,omitempty"`            //赠送者的ID地址
 	SendTime      string                 `protobuf:"bytes,10,opt,name=SendTime,proto3" json:"SendTime,omitempty"`           //赠送时间
+	SendUserId    int64                  `protobuf:"varint,1,opt,name=SendUserId,proto3" json:"SendUserId,omitempty"`
+	ReceiveUserId int64                  `protobuf:"varint,2,opt,name=ReceiveUserId,proto3" json:"ReceiveUserId,omitempty"`
+	RoomId        int64                  `protobuf:"varint,3,opt,name=RoomId,proto3" json:"RoomId,omitempty"`
+	GiftId        int64                  `protobuf:"varint,4,opt,name=GiftId,proto3" json:"GiftId,omitempty"`
+	SendCount     int64                  `protobuf:"varint,5,opt,name=SendCount,proto3" json:"SendCount,omitempty"`
+	SendType      string                 `protobuf:"bytes,6,opt,name=SendType,proto3" json:"SendType,omitempty"`
+	Message       string                 `protobuf:"bytes,7,opt,name=Message,proto3" json:"Message,omitempty"`
+	Status        string                 `protobuf:"bytes,8,opt,name=Status,proto3" json:"Status,omitempty"`
+	ClientIp      string                 `protobuf:"bytes,9,opt,name=ClientIp,proto3" json:"ClientIp,omitempty"`
+	SendTime      string                 `protobuf:"bytes,10,opt,name=SendTime,proto3" json:"SendTime,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }

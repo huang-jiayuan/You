@@ -17,7 +17,7 @@ func main() {
 	inits2.InitMysql()
 	inits2.RedisInit()
 	flag.Parse()
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 8888))
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 8887))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}

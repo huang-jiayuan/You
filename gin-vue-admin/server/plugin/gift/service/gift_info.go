@@ -21,12 +21,12 @@ func (s *giftInfo) CreateGiftInfo(ctx context.Context, giftInfo *model.GiftInfo)
 
 // DeleteGiftInfo 删除giftInfo表记录
 // Author [yourname](https://github.com/yourname)
-func (s *giftInfo) DeleteGiftInfo(ctx context.Context, giftId string,userID uint) (err error) {
+func (s *giftInfo) DeleteGiftInfo(ctx context.Context, ID string,userID uint) (err error) {
 	err = global.GVA_DB.Transaction(func(tx *gorm.DB) error {
-	    if err := tx.Model(&model.GiftInfo{}).Where("gift_id = ?", giftId).Update("deleted_by", userID).Error; err != nil {
+	    if err := tx.Model(&model.GiftInfo{}).Where("id = ?", ID).Update("deleted_by", userID).Error; err != nil {
               return err
         }
-        if err = tx.Delete(&model.GiftInfo{},"gift_id = ?",giftId).Error; err != nil {
+        if err = tx.Delete(&model.GiftInfo{},"id = ?",ID).Error; err != nil {
               return err
         }
         return nil
@@ -36,12 +36,12 @@ func (s *giftInfo) DeleteGiftInfo(ctx context.Context, giftId string,userID uint
 
 // DeleteGiftInfoByIds 批量删除giftInfo表记录
 // Author [yourname](https://github.com/yourname)
-func (s *giftInfo) DeleteGiftInfoByIds(ctx context.Context, giftIds []string,deleted_by uint) (err error) {
+func (s *giftInfo) DeleteGiftInfoByIds(ctx context.Context, IDs []string,deleted_by uint) (err error) {
 	err = global.GVA_DB.Transaction(func(tx *gorm.DB) error {
-	    if err := tx.Model(&model.GiftInfo{}).Where("gift_id in ?", giftIds).Update("deleted_by", deleted_by).Error; err != nil {
+	    if err := tx.Model(&model.GiftInfo{}).Where("id in ?", IDs).Update("deleted_by", deleted_by).Error; err != nil {
             return err
         }
-        if err := tx.Where("gift_id in ?", giftIds).Delete(&model.GiftInfo{}).Error; err != nil {
+        if err := tx.Where("id in ?", IDs).Delete(&model.GiftInfo{}).Error; err != nil {
             return err
         }
         return nil
@@ -52,14 +52,14 @@ func (s *giftInfo) DeleteGiftInfoByIds(ctx context.Context, giftIds []string,del
 // UpdateGiftInfo 更新giftInfo表记录
 // Author [yourname](https://github.com/yourname)
 func (s *giftInfo) UpdateGiftInfo(ctx context.Context, giftInfo model.GiftInfo) (err error) {
-	err = global.GVA_DB.Model(&model.GiftInfo{}).Where("gift_id = ?",giftInfo.GiftId).Updates(&giftInfo).Error
+	err = global.GVA_DB.Model(&model.GiftInfo{}).Where("id = ?",giftInfo.ID).Updates(&giftInfo).Error
 	return err
 }
 
-// GetGiftInfo 根据giftId获取giftInfo表记录
+// GetGiftInfo 根据ID获取giftInfo表记录
 // Author [yourname](https://github.com/yourname)
-func (s *giftInfo) GetGiftInfo(ctx context.Context, giftId string) (giftInfo model.GiftInfo, err error) {
-	err = global.GVA_DB.Where("gift_id = ?", giftId).First(&giftInfo).Error
+func (s *giftInfo) GetGiftInfo(ctx context.Context, ID string) (giftInfo model.GiftInfo, err error) {
+	err = global.GVA_DB.Where("id = ?", ID).First(&giftInfo).Error
 	return
 }
 // GetGiftInfoInfoList 分页获取giftInfo表记录
@@ -71,6 +71,9 @@ func (s *giftInfo) GetGiftInfoInfoList(ctx context.Context, info request.GiftInf
 	db := global.GVA_DB.Model(&model.GiftInfo{})
     var giftInfos []model.GiftInfo
     // 如果有条件搜索 下方会自动创建搜索语句
+    if len(info.CreatedAtRange) == 2 {
+     db = db.Where("created_at BETWEEN ? AND ?", info.CreatedAtRange[0], info.CreatedAtRange[1])
+    }
   
     if info.GiftName != nil && *info.GiftName != "" {
         db = db.Where("gift_name LIKE ?", "%"+ *info.GiftName+"%")

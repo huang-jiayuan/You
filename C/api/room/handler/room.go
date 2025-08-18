@@ -566,6 +566,7 @@ func LeaveMic(c *gin.Context) {
 	return
 }
 
+// 刷礼物表
 func SendGifts(c *gin.Context) {
 	var req request.SendGifts
 	if err := c.ShouldBind(&req); err != nil {
@@ -824,6 +825,7 @@ func MuteMicUser(c *gin.Context) {
 	return
 }
 
+// 管理员管理操作
 func SetAdmin(c *gin.Context) {
 	var req request.SetAdmin
 	if err := c.ShouldBind(&req); err != nil {

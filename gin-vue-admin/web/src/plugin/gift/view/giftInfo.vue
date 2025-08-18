@@ -3,6 +3,25 @@
   <div>
     <div class="gva-search-box">
       <el-form ref="elSearchFormRef" :inline="true" :model="searchInfo" class="demo-form-inline" @keyup.enter="onSubmit">
+      <el-form-item label="创建日期" prop="createdAtRange">
+      <template #label>
+        <span>
+          创建日期
+          <el-tooltip content="搜索范围是开始日期（包含）至结束日期（不包含）">
+            <el-icon><QuestionFilled /></el-icon>
+          </el-tooltip>
+        </span>
+      </template>
+         <el-date-picker
+                  v-model="searchInfo.createdAtRange"
+                  class="w-[380px]"
+                  type="datetimerange"
+                  range-separator="至"
+                  start-placeholder="开始时间"
+                  end-placeholder="结束时间"
+                />
+       </el-form-item>
+      
             <el-form-item label="礼物名称" prop="giftName">
   <el-input v-model="searchInfo.giftName" placeholder="搜索条件" />
 </el-form-item>
@@ -32,10 +51,14 @@
         style="width: 100%"
         tooltip-effect="dark"
         :data="tableData"
-        row-key="giftId"
+        row-key="ID"
         @selection-change="handleSelectionChange"
         >
         <el-table-column type="selection" width="55" />
+        
+        <el-table-column sortable align="left" label="日期" prop="CreatedAt"width="180">
+            <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
+        </el-table-column>
         
             <el-table-column align="left" label="礼物唯一ID" prop="giftId" width="120" />
 
@@ -70,12 +93,6 @@
     <template #default="scope">
     {{ filterDict(scope.row.status,giftstatusOptions) }}
     </template>
-</el-table-column>
-            <el-table-column align="left" label="创建时间" prop="createdAt" width="180">
-   <template #default="scope">{{ formatDate(scope.row.createdAt) }}</template>
-</el-table-column>
-            <el-table-column align="left" label="修改时间" prop="updatedAt" width="180">
-   <template #default="scope">{{ formatDate(scope.row.updatedAt) }}</template>
 </el-table-column>
         <el-table-column align="left" label="操作" fixed="right" min-width="240">
             <template #default="scope">
@@ -150,12 +167,6 @@
         <el-option v-for="(item,key) in giftstatusOptions" :key="key" :label="item.label" :value="item.value" />
     </el-select>
 </el-form-item>
-             <el-form-item label="创建时间:" prop="createdAt">
-    <el-date-picker v-model="formData.createdAt" type="date" style="width:100%" placeholder="选择日期" :clearable="true" />
-</el-form-item>
-             <el-form-item label="修改时间:" prop="updatedAt">
-    <el-date-picker v-model="formData.updatedAt" type="date" style="width:100%" placeholder="选择日期" :clearable="true" />
-</el-form-item>
           </el-form>
     </el-drawer>
 
@@ -193,12 +204,6 @@
 </el-descriptions-item>
                  <el-descriptions-item label="状态(0-下架,1-上架,2-待审核)">
     {{ detailFrom.status }}
-</el-descriptions-item>
-                 <el-descriptions-item label="创建时间">
-    {{ detailFrom.createdAt }}
-</el-descriptions-item>
-                 <el-descriptions-item label="修改时间">
-    {{ detailFrom.updatedAt }}
 </el-descriptions-item>
             </el-descriptions>
         </el-drawer>
@@ -246,8 +251,8 @@ const showAllQuery = ref(false)
 // 自动化生成的字典（可能为空）以及字段
 const gifttypeOptions = ref([])
 const ishotOptions = ref([])
-const giftstatusOptions = ref([])
 const islimitOptions = ref([])
+const giftstatusOptions = ref([])
 const formData = ref({
             giftId: undefined,
             giftName: '',
@@ -260,8 +265,6 @@ const formData = ref({
             isHot: '',
             isLimit: '',
             status: '',
-            createdAt: new Date(),
-            updatedAt: new Date(),
         })
 
 
@@ -358,8 +361,8 @@ getTableData()
 const setOptions = async () =>{
     gifttypeOptions.value = await getDictFunc('gifttype')
     ishotOptions.value = await getDictFunc('ishot')
-    giftstatusOptions.value = await getDictFunc('giftstatus')
     islimitOptions.value = await getDictFunc('islimit')
+    giftstatusOptions.value = await getDictFunc('giftstatus')
 }
 
 // 获取需要的字典 可能为空 按需保留
@@ -391,7 +394,7 @@ const onDelete = async() => {
     cancelButtonText: '取消',
     type: 'warning'
   }).then(async() => {
-      const giftIds = []
+      const IDs = []
       if (multipleSelection.value.length === 0) {
         ElMessage({
           type: 'warning',
@@ -401,15 +404,15 @@ const onDelete = async() => {
       }
       multipleSelection.value &&
         multipleSelection.value.map(item => {
-          giftIds.push(item.giftId)
+          IDs.push(item.ID)
         })
-      const res = await deleteGiftInfoByIds({ giftIds })
+      const res = await deleteGiftInfoByIds({ IDs })
       if (res.code === 0) {
         ElMessage({
           type: 'success',
           message: '删除成功'
         })
-        if (tableData.value.length === giftIds.length && page.value > 1) {
+        if (tableData.value.length === IDs.length && page.value > 1) {
           page.value--
         }
         getTableData()
@@ -422,7 +425,7 @@ const type = ref('')
 
 // 更新行
 const updateGiftInfoFunc = async(row) => {
-    const res = await findGiftInfo({ giftId: row.giftId })
+    const res = await findGiftInfo({ ID: row.ID })
     type.value = 'update'
     if (res.code === 0) {
         formData.value = res.data
@@ -433,7 +436,7 @@ const updateGiftInfoFunc = async(row) => {
 
 // 删除行
 const deleteGiftInfoFunc = async (row) => {
-    const res = await deleteGiftInfo({ giftId: row.giftId })
+    const res = await deleteGiftInfo({ ID: row.ID })
     if (res.code === 0) {
         ElMessage({
                 type: 'success',
@@ -470,8 +473,6 @@ const closeDialog = () => {
         isHot: '',
         isLimit: '',
         status: '',
-        createdAt: new Date(),
-        updatedAt: new Date(),
         }
 }
 // 弹窗确定
@@ -518,7 +519,7 @@ const openDetailShow = () => {
 // 打开详情
 const getDetails = async (row) => {
   // 打开弹窗
-  const res = await findGiftInfo({ giftId: row.giftId })
+  const res = await findGiftInfo({ ID: row.ID })
   if (res.code === 0) {
     detailFrom.value = res.data
     openDetailShow()
