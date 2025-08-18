@@ -7,8 +7,8 @@ import (
 	"log"
 	"server/models"
 	"server/pkg"
+	"server/room/basic/global"
 	__ "server/room/proto"
-	"server/user/basic/global"
 	"time"
 )
 
@@ -173,15 +173,16 @@ func (s *Server) UnmuteUser(_ context.Context, req *__.UnmuteUserReq) (*__.Unmut
 // 刷礼物
 func (s *Server) SendGifts(_ context.Context, in *__.SendGiftsReq) (*__.SendGiftsResp, error) {
 	//查看房间存不存在
+
 	room := models.Room{}
-	err := global.DB.Where("id = ?", in.RoomId).First(&room).Error
+	err := global.DB.Model(&models.Room{}).First(&room).Error
 	if err != nil {
 		fmt.Println("该房间不存在")
 		return nil, err
 	}
 	//查询用户存不存在
 	user := models.User{}
-	err = global.DB.Where("id =?", in.SendUserId).First(&user).Error
+	err = global.DB.Model(&models.User{}).Where("id =?", in.SendUserId).First(&user).Error
 	if err != nil {
 		fmt.Println("赠送的用户不存在")
 		return nil, err
@@ -189,14 +190,14 @@ func (s *Server) SendGifts(_ context.Context, in *__.SendGiftsReq) (*__.SendGift
 
 	//查询接受礼物的人
 	mic := models.RoomMic{}
-	err = global.DB.Where("user_id =?", in.ReceiveUserId).First(&mic).Error
+	err = global.DB.Model(&models.RoomMic{}).Where("user_id =?", in.ReceiveUserId).First(&mic).Error
 	if err != nil {
 		fmt.Println("收礼物的用户不存在")
 		return nil, err
 	}
 	//查看礼物存不存在
 	info := models.GiftInfo{}
-	err = global.DB.Where("gift_id =?", in.GiftId).First(&info).Error
+	err = global.DB.Model(&models.GiftInfo{}).Where("gift_id =?", in.GiftId).First(&info).Error
 	if err != nil {
 		fmt.Println("查询的礼物不存在")
 		return nil, err
@@ -224,13 +225,13 @@ func (s *Server) SendGifts(_ context.Context, in *__.SendGiftsReq) (*__.SendGift
 		}
 	}()
 	//修改用户的余额
-	err = global.DB.Table("user").Where("id =?", in.SendUserId).Update("balance", user.Balance-giftprice).Error
+	err = global.DB.Table("user").Model(&models.User{}).Where("id =?", in.SendUserId).Update("balance", user.Balance-giftprice).Error
 	if err != nil {
 		fmt.Println("用户余额扣减失败")
 		tx.Rollback()
 		return nil, err
 	}
-	err = global.DB.Table("user").Where("id =?", in.SendUserId).Update("diamond", user.Diamond-int16(giftprice)).Error
+	err = global.DB.Table("user").Model(&models.User{}).Where("id =?", in.SendUserId).Update("diamond", user.Diamond-int16(giftprice)).Error
 	if err != nil {
 		fmt.Println("用户扣减余额失败")
 		tx.Rollback()
@@ -994,10 +995,10 @@ func (s *Server) ApplyMic(ctx context.Context, req *__.ApplyMicReq) (*__.ApplyMi
 // 处理申请上麦功能
 func (s *Server) HandleMicApplication(ctx context.Context, req *__.HandleMicApplicationReq) (*__.HandleMicApplicationResp, error) {
 	// 调试：打印接收到的参数和请求对象
-	fmt.Printf("[DEBUG] HandleMicApplication called with ApplicationId: %d, HandlerId: %d, Action: %d\n", 
+	fmt.Printf("[DEBUG] HandleMicApplication called with ApplicationId: %d, HandlerId: %d, Action: %d\n",
 		req.ApplicationId, req.HandlerId, req.Action)
 	fmt.Printf("[DEBUG] Request object: %+v\n", req)
-	
+
 	// 参数验证
 	if req.ApplicationId == 0 {
 		return &__.HandleMicApplicationResp{
@@ -1017,7 +1018,7 @@ func (s *Server) HandleMicApplication(ctx context.Context, req *__.HandleMicAppl
 			Message: "Action不能为0，请使用1(批准)或2(拒绝)",
 		}, nil
 	}
-	
+
 	// 查询申请记录并验证状态
 	var application models.MicApplication
 	err := global.DB.Where("id = ?", req.ApplicationId).First(&application).Error
