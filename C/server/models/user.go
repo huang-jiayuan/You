@@ -71,11 +71,12 @@ func (u *User) UpdatePassword(id int64, password string) error {
 
 // 根据用户id查询用户信息
 func (u *User) FindUserById(id int64) (*User, error) {
-	err := global.DB.Where("id=?", id).First(&u).Error
+	var users *User
+	err := global.DB.Where("id=?", id).Find(&users).Error
 	if err != nil {
 		return nil, err
 	}
-	return u, nil
+	return users, nil
 }
 
 func (u *User) ImproveUserMessage(in *__.ImproveUserMessageRequest) error {

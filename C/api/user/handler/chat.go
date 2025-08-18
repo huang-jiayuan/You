@@ -1,11 +1,14 @@
 package handler
 
 import (
+	__ "api/user/proto"
+	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 	"log"
 	"net/http"
 	"sync"
@@ -35,7 +38,7 @@ type Message struct {
 	ReceiverID int64  `json:"receiver_id"`
 	Content    string `json:"content"` // 文本内容或图片URL/base64
 	Timestamp  int64  `json:"timestamp"`
-	MessageID  string `json:"message_id"` // 消息唯一标识
+	MessageID  int64  `json:"message_id"` // 消息唯一标识
 	IsRead     bool   `json:"is_read"`    // 消息是否已读
 }
 
@@ -118,7 +121,6 @@ func HandleWebSocket(c *gin.Context) {
 		switch msg.Type {
 		case "text", "image":
 			// 生成消息ID
-			msg.MessageID = uuid.New().String()
 			msg.IsRead = false
 			handleMessage(user, &msg)
 		case "read_ack":
@@ -140,6 +142,9 @@ func handleMessage(sender *User, msg *Message) {
 	onlineUsers.RLock()
 	receiver, exists := onlineUsers.m[msg.ReceiverID]
 	onlineUsers.RUnlock()
+
+	// 将消息存储到数据库
+	storeMessageInDatabase(msg)
 
 	if exists {
 		// 接收者在线，直接发送消息
@@ -202,14 +207,13 @@ func sendOfflineMessages(user *User) {
 
 // handleReadAck 处理消息已读确认
 func handleReadAck(msg *Message) {
-	if msg.MessageID == "" {
+	if msg.MessageID == 0 {
 		log.Println("消息ID不能为空")
 		return
 	}
 
-	// 查找消息的发送者并转发已读确认
-	// 这里简化处理，实际应用中应该从消息存储中查找消息的发送者
-	// 然后将已读确认发送给原消息的发送者
+	// 在数据库中标记消息为已读
+	markMessageAsReadInDatabase(msg.MessageID)
 
 	// 创建已读确认响应
 	ackMsg := Message{
@@ -218,7 +222,6 @@ func handleReadAck(msg *Message) {
 		Timestamp: time.Now().Unix(),
 	}
 	// 减少未读消息计数
-	// 在实际应用中，应该根据消息ID找到对应的接收者
 	if msg.ReceiverID != 0 {
 		unreadMessages.Lock()
 		if count, exists := unreadMessages.m[msg.ReceiverID]; exists && count > 0 {
@@ -274,4 +277,83 @@ func sendSystemMessage(conn *websocket.Conn, message string) {
 		Timestamp: time.Now().Unix(),
 	}
 	sendMessageToUser(conn, &sysMsg)
+}
+
+// markMessageAsReadInDatabase 在数据库中标记消息为已读
+func markMessageAsReadInDatabase(messageID int64) {
+
+	// 建立gRPC连接
+	conn, err := grpc.Dial("127.0.0.1:8889", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		log.Printf("无法连接到gRPC服务: %v", err)
+		return
+	}
+	defer conn.Close()
+
+	// 创建gRPC客户端
+	client := __.NewUserClient(conn)
+
+	// 创建请求
+	req := &__.MarkMessageAsReadRequest{
+		MessageId: messageID,
+	}
+
+	// 调用gRPC服务
+	_, err = client.MarkMessageAsRead(context.Background(), req)
+	if err != nil {
+		log.Printf("标记消息为已读失败: %v", err)
+		return
+	}
+
+	log.Printf("消息 %s 已标记为已读", messageID)
+
+	// 临时记录日志，表示需要实现此功能
+	log.Printf("需要通过gRPC实现标记消息为已读功能: 消息ID: %s", messageID)
+}
+
+// storeMessageInDatabase 将消息存储到数据库
+func storeMessageInDatabase(msg *Message) {
+
+	// 建立gRPC连接
+	conn, err := grpc.Dial("127.0.0.1:8889", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		log.Printf("无法连接到gRPC服务: %v", err)
+		return
+	}
+	defer conn.Close()
+
+	// 创建gRPC客户端
+	client := __.NewUserClient(conn)
+
+	// 设置消息类型
+	messageType := "text" // 默认为文本消息
+	if msg.Type == "image" {
+		messageType = "image"
+	} else if msg.Type == "system" {
+		messageType = "system"
+	}
+
+	// 转换用户ID
+	fromUserID := msg.SenderID
+	toUserID := msg.ReceiverID
+
+	// 创建请求
+	req := &__.CreateMessageRequest{
+		FromUserId: fromUserID,
+		ToUserId:   toUserID,
+		Type:       messageType,
+		Content:    msg.Content,
+	}
+
+	// 调用gRPC服务
+	resp, err := client.CreateMessage(context.Background(), req)
+	if err != nil {
+		log.Printf("存储消息到数据库失败: %v", err)
+		return
+	}
+
+	log.Printf("消息已存储到数据库: 从用户 %d 到用户 %d, 消息ID: %s", fromUserID, toUserID, resp.MessageId)
+
+	// 临时记录日志，表示需要实现此功能
+	log.Printf("需要通过gRPC实现消息存储功能: 从用户 %d 到用户 %d, 内容: %s", msg.SenderID, msg.ReceiverID, msg.Content)
 }
