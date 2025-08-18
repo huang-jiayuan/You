@@ -44,12 +44,6 @@
               <el-option v-for="(item,key) in giftstatusOptions" :key="key" :label="item.label" :value="item.value" />
            </el-select>
        </el-form-item>
-        <el-form-item label="创建时间:" prop="createdAt">
-          <el-date-picker v-model="formData.createdAt" type="date" placeholder="选择日期" :clearable="true"></el-date-picker>
-       </el-form-item>
-        <el-form-item label="修改时间:" prop="updatedAt">
-          <el-date-picker v-model="formData.updatedAt" type="date" placeholder="选择日期" :clearable="true"></el-date-picker>
-       </el-form-item>
         <el-form-item>
           <el-button :loading="btnLoading" type="primary" @click="save">保存</el-button>
           <el-button type="primary" @click="back">返回</el-button>
@@ -86,8 +80,8 @@ const btnLoading = ref(false)
 const type = ref('')
 const gifttypeOptions = ref([])
 const ishotOptions = ref([])
-const giftstatusOptions = ref([])
 const islimitOptions = ref([])
+const giftstatusOptions = ref([])
 const formData = ref({
             giftId: undefined,
             giftName: '',
@@ -100,8 +94,6 @@ const formData = ref({
             isHot: '',
             isLimit: '',
             status: '',
-            createdAt: new Date(),
-            updatedAt: new Date(),
         })
 // 验证规则
 const rule = reactive({
@@ -138,8 +130,8 @@ const init = async () => {
     }
     gifttypeOptions.value = await getDictFunc('gifttype')
     ishotOptions.value = await getDictFunc('ishot')
-    giftstatusOptions.value = await getDictFunc('giftstatus')
     islimitOptions.value = await getDictFunc('islimit')
+    giftstatusOptions.value = await getDictFunc('giftstatus')
 }
 
 init()

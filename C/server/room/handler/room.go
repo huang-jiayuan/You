@@ -7,8 +7,8 @@ import (
 	"log"
 	"server/models"
 	"server/pkg"
+	"server/room/basic/global"
 	__ "server/room/proto"
-	"server/user/basic/global"
 	"time"
 )
 
@@ -276,8 +276,8 @@ func (s *Server) SetAdmin(_ context.Context, in *__.SetAdminReq) (*__.SetAdminRe
 		fmt.Println("未查询到当前的用户")
 		return nil, err
 	}
-	if user.Status == "3" {
-		fmt.Println("用户已经被禁言处理")
+	if user.Status != "0" {
+		fmt.Println("用户已经被管理员进行其他处理")
 		return nil, err
 	}
 
@@ -290,6 +290,8 @@ func (s *Server) SetAdmin(_ context.Context, in *__.SetAdminReq) (*__.SetAdminRe
 		statusec = "2"
 	} else if in.Status == "3" {
 		statusec = "3"
+	} else if in.Status == "4" {
+		statusec = "4"
 	}
 	err = global.DB.Table("user").Where("id=?", in.UserId).Update("status", statusec).Error
 	if err != nil {
@@ -994,10 +996,10 @@ func (s *Server) ApplyMic(ctx context.Context, req *__.ApplyMicReq) (*__.ApplyMi
 // 处理申请上麦功能
 func (s *Server) HandleMicApplication(ctx context.Context, req *__.HandleMicApplicationReq) (*__.HandleMicApplicationResp, error) {
 	// 调试：打印接收到的参数和请求对象
-	fmt.Printf("[DEBUG] HandleMicApplication called with ApplicationId: %d, HandlerId: %d, Action: %d\n", 
+	fmt.Printf("[DEBUG] HandleMicApplication called with ApplicationId: %d, HandlerId: %d, Action: %d\n",
 		req.ApplicationId, req.HandlerId, req.Action)
 	fmt.Printf("[DEBUG] Request object: %+v\n", req)
-	
+
 	// 参数验证
 	if req.ApplicationId == 0 {
 		return &__.HandleMicApplicationResp{
@@ -1017,7 +1019,7 @@ func (s *Server) HandleMicApplication(ctx context.Context, req *__.HandleMicAppl
 			Message: "Action不能为0，请使用1(批准)或2(拒绝)",
 		}, nil
 	}
-	
+
 	// 查询申请记录并验证状态
 	var application models.MicApplication
 	err := global.DB.Where("id = ?", req.ApplicationId).First(&application).Error

@@ -94,12 +94,4 @@
   "/src/plugin/gift/view/giftInfo.vue": "GiftInfo",
   "/src/plugin/gift/view/giftSendRecord.vue": "GiftSendRecord",
   "/src/plugin/gift/view/userGiftBackpack.vue": "UserGiftBackpack"
-<<<<<<< HEAD
-=======
-  "/src/plugin/gift/form/giftInfo.vue": "GiftInfoForm",
-  "/src/plugin/gift/view/giftInfo.vue": "GiftInfo",
-  "/src/plugin/silence/form/mute.vue": "MuteForm",
-  "/src/plugin/silence/view/mute.vue": "Mute"
-  "/src/plugin/gift/view/giftInfo.vue": "GiftInfo"
->>>>>>> c43f73117726d705c0d478e5c7124ee2a97e67b5
 }

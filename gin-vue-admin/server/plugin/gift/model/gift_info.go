@@ -1,11 +1,12 @@
 
 package model
 import (
-	"time"
+	"github.com/flipped-aurora/gin-vue-admin/server/global"
 )
 
 // GiftInfo giftInfo表 结构体
 type GiftInfo struct {
+    global.GVA_MODEL
   GiftId  *int `json:"giftId" form:"giftId" gorm:"primarykey;comment:礼物唯一ID;column:gift_id;size:19;"`  //礼物唯一ID
   GiftName  *string `json:"giftName" form:"giftName" gorm:"comment:礼物名称;column:gift_name;size:100;" binding:"required"`  //礼物名称
   GiftType  *string `json:"giftType" form:"giftType" gorm:"default:0;comment:礼物类型(1-普通,2-特效,3-稀有,4-自定义);column:gift_type;size:1;" binding:"required"`  //礼物类型(1-普通,2-特效,3-稀有,4-自定义)
@@ -17,8 +18,6 @@ type GiftInfo struct {
   IsHot  *string `json:"isHot" form:"isHot" gorm:"default:0;comment:是否热门(1-是,0-否);column:is_hot;size:1;"`  //是否热门(1-是,0-否)
   IsLimit  *string `json:"isLimit" form:"isLimit" gorm:"default:0;comment:是否限时(1-是,0-否);column:is_limit;size:1;"`  //是否限时(1-是,0-否)
   Status  *string `json:"status" form:"status" gorm:"default:1;comment:状态(0-下架,1-上架,2-待审核);column:status;size:1;" binding:"required"`  //状态(0-下架,1-上架,2-待审核)
-  CreatedAt  *time.Time `json:"createdAt" form:"createdAt" gorm:"comment:创建时间;column:created_at;"`  //创建时间
-  UpdatedAt  *time.Time `json:"updatedAt" form:"updatedAt" gorm:"comment:修改时间;column:updated_at;"`  //修改时间
     CreatedBy  uint   `gorm:"column:created_by;comment:创建者"`
     UpdatedBy  uint   `gorm:"column:updated_by;comment:更新者"`
     DeletedBy  uint   `gorm:"column:deleted_by;comment:删除者"`

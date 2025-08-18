@@ -40,6 +40,6 @@ type Mute struct {
 	DeletedBy  uint64    `gorm:"column:deleted_by;type:bigint UNSIGNED;comment:删除者;default:NULL;" json:"deleted_by"` // 删除者
 }
 
-func (a *Mute) TableName() string {
+func (m *Mute) TableName() string {
 	return "mute"
 }

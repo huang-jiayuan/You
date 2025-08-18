@@ -8,11 +8,11 @@ import (
 
 func main() {
 	g := gen.NewGenerator(gen.Config{OutPath: filepath.Join("..", "..", "..", "gift", "blender", "model", "dao"), Mode: gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface})
-	g.ApplyBasic(new(model.GiftInfo), new(model.UserGiftBackpack), //go:generate go mod tidy
+	g.ApplyBasic(new(model.UserGiftBackpack), new(model.GiftSendRecord), //go:generate go mod tidy
 		//go:generate go mod download
 		//go:generate go run gen.go
 
-		new(model.GiftSendRecord),
+		new(model.GiftInfo),
 	)
 	g.Execute()
 }
