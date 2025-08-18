@@ -27,6 +27,7 @@
 <script>
 import { onMounted } from 'vue'
 import { useTheme } from './composables/useTheme.js'
+import { initErrorHandler } from './utils/errorHandler'
 
 export default {
   name: 'App',
@@ -42,9 +43,10 @@ export default {
       return ['Home', 'About'] // Contact页面包含表单，不缓存
     }
 
-    // 初始化主题
+    // 初始化主题和错误处理
     onMounted(() => {
       initTheme()
+      initErrorHandler()
     })
 
     return {
@@ -95,17 +97,33 @@ export default {
 
 .slide-left-enter-active,
 .slide-left-leave-active {
-  transition: all var(--transition-normal);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .slide-left-enter-from {
   opacity: 0;
-  transform: translateX(30px);
+  transform: translateX(100%);
 }
 
 .slide-left-leave-to {
   opacity: 0;
-  transform: translateX(-30px);
+  transform: translateX(-30%);
+}
+
+/* 聊天页面专用的滑动动画 */
+.chat-slide-enter-active,
+.chat-slide-leave-active {
+  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.chat-slide-enter-from {
+  opacity: 0;
+  transform: translateX(100%) scale(0.95);
+}
+
+.chat-slide-leave-to {
+  opacity: 0;
+  transform: translateX(-20%) scale(1.05);
 }
 
 .slide-right-enter-active,

@@ -2,7 +2,7 @@
   <div class="mobile-voice-home">
     <!-- 顶部用户信息区域 -->
     <div class="top-section">
-      <div class="user-avatar">
+      <div class="user-avatar" @click="showUserSidebar">
         <img :src="userInfo.avatar || 'https://via.placeholder.com/40x40/4CAF50/ffffff?text=我'" :alt="userInfo.nickname" />
         <div class="online-indicator"></div>
       </div>
@@ -29,11 +29,11 @@
         <div class="card-content">
           <div class="avatar-showcase">
             <div class="avatar-item">
-              <img src="https://via.placeholder.com/40x40/ff6b9d/ffffff?text=西" alt="西法" />
+              <div class="avatar-placeholder" style="background: #ff6b9d;">西</div>
               <span>西法</span>
             </div>
             <div class="avatar-item">
-              <img src="https://via.placeholder.com/40x40/ff6b9d/ffffff?text=通" alt="通阿里" />
+              <div class="avatar-placeholder" style="background: #ff6b9d;">通</div>
               <span>通阿里</span>
             </div>
           </div>
@@ -52,7 +52,7 @@
         </div>
         <div class="card-content">
           <div class="brother-avatar">
-            <img src="https://via.placeholder.com/60x60/4facfe/ffffff?text=哥" alt="小哥哥" />
+            <div class="avatar-placeholder brother-avatar-placeholder">哥</div>
           </div>
           <div class="voice-controls">
             <button class="voice-btn" @click="togglePlay">
@@ -174,6 +174,13 @@
     <div class="floating-voice-btn" @click="startVoiceChat">
       <span class="voice-icon">🎤</span>
     </div>
+
+    <!-- 用户侧边栏 -->
+    <UserSidebar 
+      :isVisible="sidebarVisible" 
+      :userInfo="sidebarUserInfo"
+      @close="hideUserSidebar" 
+    />
   </div>
 </template>
 
@@ -184,9 +191,13 @@ import { authAPI } from '@/api'
 import { useAudioPlayer } from '@/composables/mobile-chat/useAudioPlayer'
 import { usePerformanceOptimization } from '@/composables/mobile-chat/usePerformanceOptimization'
 import { useToast } from '@/composables/useToast'
+import UserSidebar from '@/components/UserSidebar.vue'
 
 export default {
   name: 'VoiceChatHome',
+  components: {
+    UserSidebar
+  },
   setup() {
     const router = useRouter()
     
@@ -210,7 +221,7 @@ export default {
         id: 1,
         name: '夜长梦多',
         description: '友友连麦',
-        cover: 'https://via.placeholder.com/80x80/667eea/ffffff?text=夜',
+        cover: 'data:image/svg+xml,%3Csvg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="80" height="80" rx="12" fill="%23667eea"/%3E%3Ctext x="40" y="45" font-family="Arial" font-size="24" font-weight="bold" fill="white" text-anchor="middle"%3E夜%3C/text%3E%3C/svg%3E',
         tag: '热门',
         userCount: 'x10'
       },
@@ -218,7 +229,7 @@ export default {
         id: 2,
         name: '友友连麦',
         description: '友友连麦',
-        cover: 'https://via.placeholder.com/80x80/764ba2/ffffff?text=友',
+        cover: 'data:image/svg+xml,%3Csvg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="80" height="80" rx="12" fill="%23764ba2"/%3E%3Ctext x="40" y="45" font-family="Arial" font-size="24" font-weight="bold" fill="white" text-anchor="middle"%3E友%3C/text%3E%3C/svg%3E',
         tag: '热门',
         userCount: 'x10'
       },
@@ -226,7 +237,7 @@ export default {
         id: 3,
         name: '友友连麦',
         description: '友友连麦',
-        cover: 'https://via.placeholder.com/80x80/f093fb/ffffff?text=连',
+        cover: 'data:image/svg+xml,%3Csvg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="80" height="80" rx="12" fill="%23f093fb"/%3E%3Ctext x="40" y="45" font-family="Arial" font-size="24" font-weight="bold" fill="white" text-anchor="middle"%3E连%3C/text%3E%3C/svg%3E',
         tag: '热门',
         userCount: 'x10'
       },
@@ -234,20 +245,37 @@ export default {
         id: 4,
         name: '友友连麦',
         description: '友友连麦',
-        cover: 'https://via.placeholder.com/80x80/4facfe/ffffff?text=麦',
+        cover: 'data:image/svg+xml,%3Csvg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="80" height="80" rx="12" fill="%234facfe"/%3E%3Ctext x="40" y="45" font-family="Arial" font-size="24" font-weight="bold" fill="white" text-anchor="middle"%3E麦%3C/text%3E%3C/svg%3E',
         tag: '热门',
         userCount: 'x10'
       }
     ])
     
     const isPlaying = ref(false)
+    const sidebarVisible = ref(false)
+    
+    // 侧边栏用户信息
+    const sidebarUserInfo = computed(() => ({
+      nickname: userInfo.value.nickname || '途场',
+      meId: '201691465',
+      avatar: userInfo.value.avatar || 'https://via.placeholder.com/80x80/4CAF50/ffffff?text=途',
+      level: userInfo.value.level || 0,
+      following: 1,
+      followers: 1,
+      coins: 0,
+      balance: '0.00',
+      teacherStats: {
+        disciples: 1,
+        hearts: 1
+      }
+    }))
     
     const onlineUsers = ref([
       {
         id: 1,
         nickname: '处对象，希望非',
         age: 33,
-        avatar: 'https://via.placeholder.com/48x48/ff6b9d/ffffff?text=处',
+        avatar: 'data:image/svg+xml,%3Csvg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Ccircle cx="24" cy="24" r="24" fill="%23ff6b9d"/%3E%3Ctext x="24" y="28" font-family="Arial" font-size="16" font-weight="bold" fill="white" text-anchor="middle"%3E处%3C/text%3E%3C/svg%3E',
         level: 4,
         statusText: '天友连麦-千青',
         statusEmoji: '😊',
@@ -260,7 +288,7 @@ export default {
         id: 2,
         nickname: '没有节操的清欢',
         age: 69,
-        avatar: 'https://via.placeholder.com/48x48/4facfe/ffffff?text=清',
+        avatar: 'data:image/svg+xml,%3Csvg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Ccircle cx="24" cy="24" r="24" fill="%234facfe"/%3E%3Ctext x="24" y="28" font-family="Arial" font-size="16" font-weight="bold" fill="white" text-anchor="middle"%3E清%3C/text%3E%3C/svg%3E',
         level: 1,
         statusText: '电台音乐',
         statusEmoji: '🎵',
@@ -273,7 +301,7 @@ export default {
         id: 3,
         nickname: '茶',
         age: 15,
-        avatar: 'https://via.placeholder.com/48x48/fa709a/ffffff?text=茶',
+        avatar: 'data:image/svg+xml,%3Csvg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Ccircle cx="24" cy="24" r="24" fill="%23fa709a"/%3E%3Ctext x="24" y="28" font-family="Arial" font-size="16" font-weight="bold" fill="white" text-anchor="middle"%3E茶%3C/text%3E%3C/svg%3E',
         level: 2,
         statusText: '电台音乐',
         statusEmoji: '🎵',
@@ -286,7 +314,7 @@ export default {
         id: 4,
         nickname: '聊五块美金的清欢',
         age: 69,
-        avatar: 'https://via.placeholder.com/48x48/667eea/ffffff?text=聊',
+        avatar: 'data:image/svg+xml,%3Csvg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Ccircle cx="24" cy="24" r="24" fill="%23667eea"/%3E%3Ctext x="24" y="28" font-family="Arial" font-size="16" font-weight="bold" fill="white" text-anchor="middle"%3E聊%3C/text%3E%3C/svg%3E',
         level: 1,
         statusText: '天友连麦',
         statusEmoji: '💬',
@@ -313,13 +341,16 @@ export default {
       try {
         const token = localStorage.getItem('access_token')
         if (token) {
-          const response = await authAPI.getProfile()
+          // 暂时注释掉API调用，避免404错误
+          // const response = await authAPI.getProfile()
+          
+          // 使用模拟数据，等后端接口准备好后再启用
           userInfo.value = {
-            id: response.id,
-            nickname: response.nickname || '用户',
-            avatar: response.avatar || 'https://via.placeholder.com/50x50/4CAF50/ffffff?text=我',
-            level: response.level || 1,
-            vipStatus: response.vip_status === '1'
+            id: 1,
+            nickname: '用户',
+            avatar: 'data:image/svg+xml,%3Csvg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Ccircle cx="25" cy="25" r="25" fill="%234CAF50"/%3E%3Ctext x="25" y="30" font-family="Arial" font-size="18" font-weight="bold" fill="white" text-anchor="middle"%3E我%3C/text%3E%3C/svg%3E',
+            level: 1,
+            vipStatus: false
           }
         }
       } catch (error) {
@@ -369,6 +400,14 @@ export default {
       }
     }
 
+    const showUserSidebar = () => {
+      sidebarVisible.value = true
+    }
+
+    const hideUserSidebar = () => {
+      sidebarVisible.value = false
+    }
+
     // 生命周期
     let timeInterval = null
 
@@ -391,11 +430,15 @@ export default {
       onlineUsers,
       isLoggedIn,
       isPlaying,
+      sidebarVisible,
+      sidebarUserInfo,
       enterRoom,
       viewUserProfile,
       startVoiceChat,
       togglePlay,
-      navigateTo
+      navigateTo,
+      showUserSidebar,
+      hideUserSidebar
     }
   }
 }
@@ -433,6 +476,16 @@ export default {
   position: relative;
   width: 50px;
   height: 50px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.user-avatar:hover {
+  transform: scale(1.05);
+}
+
+.user-avatar:active {
+  transform: scale(0.95);
 }
 
 .user-avatar img {
@@ -615,6 +668,26 @@ export default {
   font-size: 12px;
   cursor: pointer;
   width: 100%;
+}
+
+/* 头像占位符样式 */
+.avatar-placeholder {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.brother-avatar-placeholder {
+  width: 50px;
+  height: 50px;
+  background: #4facfe;
+  font-size: 16px;
 }
 
 /* 人气房间 */
@@ -1014,7 +1087,7 @@ export default {
     margin-bottom: 8px;
   }
   
-  .avatar-item img {
+  .avatar-placeholder {
     width: 28px;
     height: 28px;
   }
@@ -1023,7 +1096,7 @@ export default {
     font-size: 10px;
   }
   
-  .brother-avatar img {
+  .brother-avatar-placeholder {
     width: 50px;
     height: 50px;
   }

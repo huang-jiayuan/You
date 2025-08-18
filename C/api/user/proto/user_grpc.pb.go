@@ -30,6 +30,7 @@ const (
 	User_FollowUser_FullMethodName             = "/user.User/FollowUser"
 	User_UnFollowUser_FullMethodName           = "/user.User/UnFollowUser"
 	User_UserFollowList_FullMethodName         = "/user.User/UserFollowList"
+	User_UserCenterList_FullMethodName         = "/user.User/UserCenterList"
 	User_CreateMessage_FullMethodName          = "/user.User/CreateMessage"
 	User_MarkMessageAsRead_FullMethodName      = "/user.User/MarkMessageAsRead"
 	User_MarkMessageAsDelivered_FullMethodName = "/user.User/MarkMessageAsDelivered"
@@ -50,6 +51,7 @@ type UserClient interface {
 	FollowUser(ctx context.Context, in *FollowUserRequest, opts ...grpc.CallOption) (*FollowUserResponse, error)
 	UnFollowUser(ctx context.Context, in *UnFollowUserRequest, opts ...grpc.CallOption) (*UnFollowUserResponse, error)
 	UserFollowList(ctx context.Context, in *UserFollowListRequest, opts ...grpc.CallOption) (*UserFollowListResponse, error)
+	UserCenterList(ctx context.Context, in *UserCenterListRequest, opts ...grpc.CallOption) (*UserCenterListResponse, error)
 	// 消息相关服务
 	CreateMessage(ctx context.Context, in *CreateMessageRequest, opts ...grpc.CallOption) (*CreateMessageResponse, error)
 	MarkMessageAsRead(ctx context.Context, in *MarkMessageAsReadRequest, opts ...grpc.CallOption) (*MarkMessageAsReadResponse, error)
@@ -174,6 +176,16 @@ func (c *userClient) UserFollowList(ctx context.Context, in *UserFollowListReque
 	return out, nil
 }
 
+func (c *userClient) UserCenterList(ctx context.Context, in *UserCenterListRequest, opts ...grpc.CallOption) (*UserCenterListResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UserCenterListResponse)
+	err := c.cc.Invoke(ctx, User_UserCenterList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userClient) CreateMessage(ctx context.Context, in *CreateMessageRequest, opts ...grpc.CallOption) (*CreateMessageResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CreateMessageResponse)
@@ -219,6 +231,7 @@ type UserServer interface {
 	FollowUser(context.Context, *FollowUserRequest) (*FollowUserResponse, error)
 	UnFollowUser(context.Context, *UnFollowUserRequest) (*UnFollowUserResponse, error)
 	UserFollowList(context.Context, *UserFollowListRequest) (*UserFollowListResponse, error)
+	UserCenterList(context.Context, *UserCenterListRequest) (*UserCenterListResponse, error)
 	// 消息相关服务
 	CreateMessage(context.Context, *CreateMessageRequest) (*CreateMessageResponse, error)
 	MarkMessageAsRead(context.Context, *MarkMessageAsReadRequest) (*MarkMessageAsReadResponse, error)
@@ -262,6 +275,9 @@ func (UnimplementedUserServer) UnFollowUser(context.Context, *UnFollowUserReques
 }
 func (UnimplementedUserServer) UserFollowList(context.Context, *UserFollowListRequest) (*UserFollowListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserFollowList not implemented")
+}
+func (UnimplementedUserServer) UserCenterList(context.Context, *UserCenterListRequest) (*UserCenterListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserCenterList not implemented")
 }
 func (UnimplementedUserServer) CreateMessage(context.Context, *CreateMessageRequest) (*CreateMessageResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateMessage not implemented")
@@ -483,6 +499,24 @@ func _User_UserFollowList_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_UserCenterList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserCenterListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UserCenterList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_UserCenterList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UserCenterList(ctx, req.(*UserCenterListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _User_CreateMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateMessageRequest)
 	if err := dec(in); err != nil {
@@ -587,6 +621,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UserFollowList",
 			Handler:    _User_UserFollowList_Handler,
+		},
+		{
+			MethodName: "UserCenterList",
+			Handler:    _User_UserCenterList_Handler,
 		},
 		{
 			MethodName: "CreateMessage",
