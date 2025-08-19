@@ -53,6 +53,33 @@ export const userAPI = {
    */
   getFollowList() {
     return http.post(API_ENDPOINTS.USER.FOLLOW_LIST)
+  },
+
+  /**
+   * 获取用户信息
+   * @param {number} userId - 用户ID，不传则获取当前用户信息
+   */
+  getUserInfo(userId = null) {
+    if (userId) {
+      // 获取指定用户详情信息
+      return http.post(API_ENDPOINTS.PROFILE.GET_USER_INFO, { user_id: userId })
+    } else {
+      // 获取当前用户信息
+      return http.get(API_ENDPOINTS.PROFILE.GET_INFO)
+    }
+  },
+
+  /**
+   * 更新用户信息（需要认证）
+   * @param {Object} userData - 用户数据
+   * @param {string} userData.nickname - 用户昵称
+   * @param {string} userData.signature - 个性签名
+   * @param {string} userData.gender - 性别
+   * @param {number} userData.age - 年龄
+   * @param {string} userData.location - 地区
+   */
+  updateUserInfo(userData) {
+    return http.post(API_ENDPOINTS.PROFILE.UPDATE_INFO, userData)
   }
 }
 

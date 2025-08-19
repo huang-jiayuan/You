@@ -39,7 +39,7 @@ class HttpRequest {
     }
 
     if (this.token) {
-      headers['Authorization'] = `Bearer ${this.token}`
+      headers['x-token'] = this.token
     }
 
     return headers

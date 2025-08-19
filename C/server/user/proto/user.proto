@@ -162,6 +162,8 @@ message UserCenterList{
   int64   Diamond = 9;
 }
 
+
+
 service User {
   rpc greet(StreamReq) returns (StreamResp);
   rpc SendSms(SendSmsRequest) returns(SendSmsResponse);

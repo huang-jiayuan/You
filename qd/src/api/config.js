@@ -40,6 +40,13 @@ export const API_ENDPOINTS = {
     LOGOUT: '/auth/logout'                   // 退出登录
   },
   
+  // 用户信息管理接口
+  PROFILE: {
+    GET_INFO: '/user/profile',               // 获取当前用户信息
+    GET_USER_INFO: '/user/center',           // 获取用户详情信息
+    UPDATE_INFO: '/user/improve-info'        // 更新用户信息
+  },
+  
   // 其他业务接口
   COMMON: {
     UPLOAD: '/common/upload',                // 文件上传

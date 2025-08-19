@@ -211,7 +211,7 @@ export default {
     }
 
     const goToUserProfile = () => {
-      router.push('/profile/me')
+      router.push('/profile')
       closeSidebar()
     }
 
