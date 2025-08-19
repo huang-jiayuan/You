@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>热门标签测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .tag-filter {
+            margin-bottom: 20px;
+        }
+        .tag-list {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .tag-item {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 16px;
+            padding: 6px 12px;
+            font-size: 12px;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .tag-item:hover {
+            background: #f8f9ff;
+            border-color: #4CAF50;
+        }
+        .tag-item.active {
+            background: #4CAF50;
+            border-color: #4CAF50;
+            color: white;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            background: #e8f5e8;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>热门标签显示测试</h1>
+        
+        <div class="tag-filter">
+            <h3>标签列表：</h3>
+            <div class="tag-list" id="tagList">
+                <!-- 标签将通过JavaScript动态生成 -->
+            </div>
+        </div>
+        
+        <div class="status" id="status">
+            正在加载标签...
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <h3>测试说明：</h3>
+            <ul>
+                <li>如果您能看到"热门"标签并且它是绿色高亮的，说明标签功能正常</li>
+                <li>如果看不到"热门"标签，可能是CSS或JavaScript问题</li>
+                <li>点击不同标签可以测试选中效果</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // 模拟标签数据
+        const roomTags = [
+            { id: 0, name: '热门', color: '#FF6B35' },
+            { id: 1, name: '娱乐', color: '#4facfe' },
+            { id: 2, name: '才艺', color: '#f093fb' },
+            { id: 3, name: '交友速配', color: '#fa709a' },
+            { id: 4, name: '音乐', color: '#764ba2' },
+            { id: 5, name: '聊天', color: '#ff6b9d' },
+            { id: 6, name: '陪伴', color: '#667eea' }
+        ];
+        
+        let selectedTag = 0; // 默认选中热门
+        
+        function renderTags() {
+            const tagList = document.getElementById('tagList');
+            const status = document.getElementById('status');
+            
+            tagList.innerHTML = '';
+            
+            roomTags.forEach(tag => {
+                const button = document.createElement('button');
+                button.className = `tag-item ${selectedTag === tag.id ? 'active' : ''}`;
+                button.textContent = tag.name;
+                button.onclick = () => selectTag(tag.id);
+                tagList.appendChild(button);
+            });
+            
+            status.innerHTML = `
+                <strong>当前状态：</strong><br>
+                • 标签总数：${roomTags.length}<br>
+                • 选中标签：${roomTags.find(t => t.id === selectedTag)?.name || '无'}<br>
+                • 热门标签是否存在：${roomTags.some(t => t.name === '热门') ? '✅ 是' : '❌ 否'}<br>
+                • 热门标签是否选中：${selectedTag === 0 ? '✅ 是' : '❌ 否'}
+            `;
+        }
+        
+        function selectTag(tagId) {
+            selectedTag = tagId;
+            renderTags();
+            console.log('选中标签:', tagId, roomTags.find(t => t.id === tagId)?.name);
+        }
+        
+        // 页面加载完成后渲染标签
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTags();
+            console.log('标签数据:', roomTags);
+            console.log('默认选中:', selectedTag);
+        });
+    </script>
+</body>
+</html>

@@ -273,6 +273,22 @@ message MicApplication {
   string apply_time = 5;
   int32 status = 6;
 }
+
+//设置房管管理房间
+message SetAdminReq {
+  int64 Id =1;
+  int64 UserId =2;
+  string Status =3;
+  string Reason =5;
+  string MuteDay =6;
+  string MuteResult =7;
+  string MuteType =8;
+}
+
+message SetAdminResp {
+ string Greet =1;
+}
+
 service Room {
 
   // 踢人接口
@@ -282,6 +298,8 @@ service Room {
   // 解除禁言接口
   rpc UnmuteUser(UnmuteUserReq) returns (UnmuteUserResp);
   rpc SendGifts(SendGiftsReq) returns (SendGiftsResp);//刷礼物
+  rpc SetAdmin(SetAdminReq) returns (SetAdminResp);//设置房管管理房间
+
   rpc JoinRoom(JoinRoomStreamReq) returns (JoinRoomStreamResp);
   rpc CloseRoom(CloseRoomStreamReq) returns (CloseRoomStreamResp);
   rpc UpdateRoom(UpdateRoomStreamReq) returns (UpdateRoomStreamResp);

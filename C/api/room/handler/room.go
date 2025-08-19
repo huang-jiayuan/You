@@ -164,9 +164,14 @@ func CreateRoom(c *gin.Context) {
 		return
 	}
 
-	// 添加调试信息
-	userId := c.GetUint("userId")
-	fmt.Printf("JWT解析的用户ID: %d, 创建房间: %s\n", userId, req.RoomName)
+	// 由于现在是公开接口，如果没有JWT token，使用默认用户ID
+	var userId int32 = 1 // 默认用户ID
+	if jwtUserId := c.GetUint("userId"); jwtUserId != 0 {
+		// 如果有JWT token，使用JWT中的用户ID
+		userId = int32(jwtUserId)
+	}
+
+	fmt.Printf("创建房间 - 用户ID: %d, 房间名: %s, 标签ID: %d\n", userId, req.RoomName, req.TagId)
 
 	conn, err := grpc.NewClient("127.0.0.1:8888", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
@@ -176,7 +181,7 @@ func CreateRoom(c *gin.Context) {
 	c1 := __.NewRoomClient(conn)
 	create, err := c1.CreateRoom(c, &__.CreateRoomStreamReq{
 		RoomName: req.RoomName,
-		UserId:   int32(c.GetUint("userId")), // 修改为userId
+		UserId:   userId,
 		TagId:    int32(req.TagId),
 		Content:  req.Content,
 		IdCard:   req.IdCard,
@@ -427,6 +432,28 @@ func JoinRoom(c *gin.Context) {
 		return
 	}
 
+	// 由于现在是公开接口，如果没有JWT token，使用请求中的UserId
+	var userId uint64
+	if jwtUserId := c.GetUint("userId"); jwtUserId != 0 {
+		// 如果有JWT token，使用JWT中的用户ID
+		userId = uint64(jwtUserId)
+	} else {
+		// 如果没有JWT token，使用请求参数中的UserId
+		userId = req.UserId
+	}
+
+	// 验证用户ID不能为0
+	if userId == 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 10000,
+			"msg":  "用户ID不能为空",
+			"data": nil,
+		})
+		return
+	}
+
+	fmt.Printf("进入房间 - 用户ID: %d, 房间ID: %d\n", userId, req.RoomId)
+
 	conn, err := grpc.NewClient("127.0.0.1:8888", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
@@ -435,7 +462,7 @@ func JoinRoom(c *gin.Context) {
 	c1 := __.NewRoomClient(conn)
 	create, err := c1.JoinRoom(c, &__.JoinRoomStreamReq{
 		RoomId: req.RoomId,
-		UserId: uint64(c.GetUint("userId")), // 修改为userId
+		UserId: userId,
 	})
 
 	if err != nil {
@@ -466,9 +493,27 @@ func ApplyMic(c *gin.Context) {
 		return
 	}
 
-	// 获取JWT中的用户ID
-	userId := c.GetUint("userId")
-	fmt.Printf("JWT解析的用户ID: %d, 申请房间 %d 的麦位\n", userId, req.RoomId)
+	// 由于现在是公开接口，如果没有JWT token，使用请求中的UserId
+	var userId uint64
+	if jwtUserId := c.GetUint("userId"); jwtUserId != 0 {
+		// 如果有JWT token，使用JWT中的用户ID
+		userId = uint64(jwtUserId)
+	} else {
+		// 如果没有JWT token，使用请求参数中的UserId
+		userId = req.UserId
+	}
+
+	// 验证用户ID不能为0
+	if userId == 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 10000,
+			"msg":  "用户ID不能为空",
+			"data": nil,
+		})
+		return
+	}
+
+	fmt.Printf("申请上麦 - 用户ID: %d, 房间ID: %d\n", userId, req.RoomId)
 
 	conn, err := grpc.NewClient("127.0.0.1:8888", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
@@ -479,7 +524,7 @@ func ApplyMic(c *gin.Context) {
 	c1 := __.NewRoomClient(conn)
 	result, err := c1.ApplyMic(c, &__.ApplyMicReq{
 		RoomId: req.RoomId,
-		UserId: uint64(userId),
+		UserId: userId,
 	})
 
 	if err != nil {
@@ -522,9 +567,27 @@ func LeaveMic(c *gin.Context) {
 		return
 	}
 
-	// 获取JWT中的用户ID
-	userId := c.GetUint("userId")
-	fmt.Printf("JWT解析的用户ID: %d, 请求下麦房间 %d\n", userId, req.RoomId)
+	// 由于现在是公开接口，如果没有JWT token，使用请求中的UserId
+	var userId uint64
+	if jwtUserId := c.GetUint("userId"); jwtUserId != 0 {
+		// 如果有JWT token，使用JWT中的用户ID
+		userId = uint64(jwtUserId)
+	} else {
+		// 如果没有JWT token，使用请求参数中的UserId
+		userId = req.UserId
+	}
+
+	// 验证用户ID不能为0
+	if userId == 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 10000,
+			"msg":  "用户ID不能为空",
+			"data": nil,
+		})
+		return
+	}
+
+	fmt.Printf("下麦 - 用户ID: %d, 房间ID: %d\n", userId, req.RoomId)
 
 	conn, err := grpc.NewClient("127.0.0.1:8888", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
@@ -535,7 +598,7 @@ func LeaveMic(c *gin.Context) {
 	c1 := __.NewRoomClient(conn)
 	result, err := c1.LeaveMic(c, &__.LeaveMicReq{
 		RoomId: req.RoomId,
-		UserId: uint64(userId),
+		UserId: userId,
 	})
 
 	if err != nil {
@@ -569,6 +632,7 @@ func LeaveMic(c *gin.Context) {
 func SendGifts(c *gin.Context) {
 	var req request.SendGifts
 	if err := c.ShouldBind(&req); err != nil {
+		fmt.Println(err)
 		c.JSON(http.StatusOK, gin.H{
 			"code": 10000,
 			"msg":  "未接收参数",
@@ -604,7 +668,7 @@ func SendGifts(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"code": 200,
-		"msg":  "刷礼记录成",
+		"msg":  "刷礼记录成功",
 		"data": gifts,
 	})
 }
@@ -821,4 +885,44 @@ func MuteMicUser(c *gin.Context) {
 		"data": nil,
 	})
 	return
+}
+
+func SetAdmin(c *gin.Context) {
+	var req request.SetAdmin
+	if err := c.ShouldBind(&req); err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 10000,
+			"msg":  "未接收参数",
+			"data": nil,
+		})
+		return
+	}
+	client, err := grpc.NewClient("127.0.0.1:8888", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		log.Fatalf("did not connect: %v", err)
+	}
+	defer client.Close()
+	c1 := __.NewRoomClient(client)
+	admin, err := c1.SetAdmin(c, &__.SetAdminReq{
+		Id:         req.Id,
+		UserId:     req.UserId,
+		Status:     req.Status,
+		Reason:     req.Reason,
+		MuteDay:    req.MuteDay,
+		MuteResult: req.MuteResult,
+		MuteType:   req.MuteType,
+	})
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": 10000,
+			"msg":  "管理员管理失败",
+			"data": nil,
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": 200,
+		"msg":  "管理员管理成功",
+		"data": admin,
+	})
 }

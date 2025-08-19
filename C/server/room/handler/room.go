@@ -4,10 +4,11 @@ import (
 	"context"
 	"fmt"
 	"gorm.io/gorm"
+	"log"
 	"server/models"
 	"server/pkg"
+	"server/room/basic/global"
 	__ "server/room/proto"
-	"server/user/basic/global"
 	"time"
 )
 
@@ -169,30 +170,49 @@ func (s *Server) UnmuteUser(_ context.Context, req *__.UnmuteUserReq) (*__.Unmut
 	}, nil
 }
 
+// 刷礼物
 func (s *Server) SendGifts(_ context.Context, in *__.SendGiftsReq) (*__.SendGiftsResp, error) {
-	user := &models.User{}
-	_, err := user.FindUserById(in.SendUserId)
+	//查看房间存不存在
+	room := models.Room{}
+	err := global.DB.Where("id = ?", in.RoomId).First(&room).Error
 	if err != nil {
-		fmt.Println("未查询到当前送礼的用户")
+		fmt.Println("该房间不存在")
 		return nil, err
 	}
-	_, err = user.FindUserById(in.ReceiveUserId)
+	//查询用户存不存在
+	user := models.User{}
+	err = global.DB.Where("id =?", in.SendUserId).First(&user).Error
 	if err != nil {
-		fmt.Println("未查询到当前接受礼物的用户")
+		fmt.Println("赠送的用户不存在")
 		return nil, err
 	}
-	room := &models.Room{}
-	err = room.GetFindRoomById(in.RoomId)
+
+	//查询接受礼物的人
+	mic := models.RoomMic{}
+	err = global.DB.Where("user_id =?", in.ReceiveUserId).First(&mic).Error
 	if err != nil {
-		fmt.Println("未查询到该房间号")
+		fmt.Println("收礼物的用户不存在")
 		return nil, err
 	}
-	info := &models.GiftInfo{}
-	err = info.GetFindGiftById(in.GiftId)
+	//查看礼物存不存在
+	info := models.GiftInfo{}
+	err = global.DB.Where("gift_id =?", in.GiftId).First(&info).Error
 	if err != nil {
-		fmt.Println("未查询到当前的礼物")
+		fmt.Println("查询的礼物不存在")
 		return nil, err
 	}
+	//赠送的礼物数不可以小于等于O
+	if in.SendCount <= 0 {
+		fmt.Println("赠送礼物数量不可以小于等于0")
+		return nil, err
+	}
+	//判断用户的余额是否充足
+	giftprice := info.Price * float64(in.SendCount)
+	if user.Balance < giftprice {
+		fmt.Println("当前用户的余额不够请前往充值")
+		return nil, err
+	}
+
 	tx := global.DB.Begin()
 	if tx.Error != nil {
 		return nil, fmt.Errorf("failed to begin transaction: %w", tx.Error)
@@ -203,33 +223,97 @@ func (s *Server) SendGifts(_ context.Context, in *__.SendGiftsReq) (*__.SendGift
 			tx.Rollback()
 		}
 	}()
-	giftprice := info.Price * float64(in.SendCount)
-	if user.Balance < giftprice {
-		fmt.Println("用户余额不够购买此礼物")
+	//修改用户的余额
+	err = global.DB.Table("user").Where("id =?", in.SendUserId).Update("balance", user.Balance-giftprice).Error
+	if err != nil {
+		fmt.Println("用户余额扣减失败")
 		tx.Rollback()
 		return nil, err
 	}
-	record := &models.GiftSendRecord{
+	err = global.DB.Table("user").Where("id =?", in.SendUserId).Update("diamond", user.Diamond-int16(giftprice)).Error
+	if err != nil {
+		fmt.Println("用户扣减余额失败")
+		tx.Rollback()
+		return nil, err
+	}
+	//礼物记录表
+	record := models.GiftSendRecord{
 		SendUserId:    uint64(in.SendUserId),
 		ReceiveUserId: uint64(in.ReceiveUserId),
 		RoomId:        in.RoomId,
 		GiftId:        in.GiftId,
 		SendCount:     int32(in.SendCount),
-		TotalDiamond:  int32(giftprice),
 		TotalPrice:    giftprice,
+		TotalDiamond:  int32(giftprice),
 		SendType:      in.SendType,
 		Message:       in.Message,
+		SendTime:      time.Now(),
 		Status:        in.Status,
 		ClientIp:      in.ClientIp,
 	}
 	err = global.DB.Create(&record).Error
 	if err != nil {
+		fmt.Println("礼物记录失败")
 		tx.Rollback()
-		fmt.Println("刷礼物记录失败")
 		return nil, err
 	}
 	tx.Commit()
-	return &__.SendGiftsResp{Greet: "刷礼物成功"}, nil
+	return &__.SendGiftsResp{Greet: "刷新礼物记录表成功"}, nil
+}
+
+// 设置房管管理房间
+func (s *Server) SetAdmin(_ context.Context, in *__.SetAdminReq) (*__.SetAdminResp, error) {
+	admin := models.AdminUser{}
+	user := models.User{}
+	mute := models.Mute{}
+	err := global.DB.Where("id =?", in.Id).First(&admin).Error
+	if err != nil {
+		fmt.Println("并没该管理员，请确定管理员是否存在")
+		return nil, err
+	}
+	err = global.DB.Where("id =?", in.UserId).First(&user).Error
+	if err != nil {
+		fmt.Println("未查询到当前的用户")
+		return nil, err
+	}
+	if user.Status == "3" {
+		fmt.Println("用户已经被禁言处理")
+		return nil, err
+	}
+
+	var statusec string
+	if in.Status == "0" {
+		statusec = "0"
+	} else if in.Status == "1" {
+		statusec = "1"
+	} else if in.Status == "2" {
+		statusec = "2"
+	} else if in.Status == "3" {
+		statusec = "3"
+	}
+	err = global.DB.Table("user").Where("id=?", in.UserId).Update("status", statusec).Error
+	if err != nil {
+		log.Println("用户账号状态修改失败")
+		return nil, err
+	}
+	mute = models.Mute{
+		UserId:     in.UserId,
+		MuteType:   in.MuteType,
+		StartTime:  time.Now(),
+		EndTime:    time.Now(),
+		Reason:     in.Reason,
+		OperatorId: in.Id,
+		Status:     in.Status,
+		MuteDay:    in.MuteDay,
+		MuteResult: in.MuteResult,
+	}
+	err = global.DB.Create(&mute).Error
+	if err != nil {
+		fmt.Println("管理员管理账号失败")
+		return nil, err
+	}
+	return &__.SetAdminResp{Greet: "管理员操作成功"}, nil
+
 }
 
 func (s *Server) CreateRoom(_ context.Context, in *__.CreateRoomStreamReq) (*__.CreateRoomStreamResp, error) {
@@ -503,22 +587,44 @@ func (s *Server) SearchRooms(ctx context.Context, req *__.SearchRoomsReq) (*__.S
 		return nil, fmt.Errorf("搜索关键词长度不能超过50个字符")
 	}
 
-	// 模糊查询条件
+	// 模糊查询条件 - 支持房间名称和房主昵称搜索
 	searchPattern := "%" + req.Keyword + "%"
-	z := "status = '0' AND closed_at IS NULL AND deleted_at IS NULL AND room_name LIKE ?"
 
-	// 查询总数
-	var total int64
-	err := global.DB.Model(&models.Room{}).Where(z, searchPattern).Count(&total).Error
+	// 先查询符合条件的房间ID
+	var roomIds []uint
+	err := global.DB.Table("room").
+		Select("DISTINCT room.id").
+		Joins("LEFT JOIN user ON room.user_id = user.id").
+		Where("room.status = '0' AND room.closed_at IS NULL AND room.deleted_at IS NULL").
+		Where("(room.room_name LIKE ? OR user.nickname LIKE ?)", searchPattern, searchPattern).
+		Pluck("room.id", &roomIds).Error
 	if err != nil {
-		return nil, fmt.Errorf("查询搜索结果总数失败: %v", err)
+		return nil, fmt.Errorf("搜索房间ID失败: %v", err)
 	}
 
-	// 查询房间列表
+	fmt.Printf("搜索关键词: %s, 找到房间ID: %v\n", req.Keyword, roomIds)
+
+	// 如果没有找到房间，直接返回空结果
+	if len(roomIds) == 0 {
+		return &__.SearchRoomsResp{
+			Rooms:    []*__.RoomInfo{},
+			Total:    0,
+			Page:     1,
+			PageSize: int32(req.PageSize),
+			Keyword:  req.Keyword,
+		}, nil
+	}
+
+	// 查询总数
+	total := int64(len(roomIds))
+
+	// 分页查询房间详细信息
 	paginateScope, page, pageSize := Paginate(req.Page, req.PageSize)
 	var rooms []*models.Room
 	//根据在线人数倒序展示
-	err = global.DB.Scopes(paginateScope).Where(z, searchPattern).Order("fk_member_room DESC, created_at DESC").
+	err = global.DB.Where("id IN ?", roomIds).
+		Order("fk_member_room DESC, created_at DESC").
+		Scopes(paginateScope).
 		Find(&rooms).Error
 	if err != nil {
 		return nil, fmt.Errorf("搜索房间失败: %v", err)
@@ -570,16 +676,6 @@ func (s *Server) CloseRoom(ctx context.Context, req *__.CloseRoomStreamReq) (*__
 	// 验证用户是否是房主
 	if room.UserId != req.UserId {
 		return nil, fmt.Errorf("只有房主才能关闭房间 %v", err)
-	}
-
-	// 检查房间是否已经关闭
-	if room.Status == "1" || !room.ClosedAt.IsZero() {
-		return nil, fmt.Errorf("房间已关闭 %v", err)
-	}
-
-	// 检查房间是否已经被软删除
-	if !room.DeletedAt.IsZero() {
-		return nil, fmt.Errorf("房间已被删除 %v", err)
 	}
 
 	//开始事务处理
@@ -811,15 +907,15 @@ func (s *Server) ApplyMic(ctx context.Context, req *__.ApplyMicReq) (*__.ApplyMi
 		return nil, fmt.Errorf("查询房间失败: %v", err)
 	}
 
-	// 验证用户是否在房间中
-	var userRoom models.UserRoom
-	err = global.DB.Where("user_id = ? AND room_id = ? AND is_online = 1", req.UserId, req.RoomId).First(&userRoom).Error
-	if err != nil {
-		return &__.ApplyMicResp{
-			Success: false,
-			Message: "用户不在房间中",
-		}, nil
-	}
+	//// 验证用户是否在房间中
+	//var userRoom models.UserRoom
+	//err = global.DB.Where("user_id = ? AND room_id = ? AND is_online = 1", req.UserId, req.RoomId).First(&userRoom).Error
+	//if err != nil {
+	//	return &__.ApplyMicResp{
+	//		Success: false,
+	//		Message: "用户不在房间中",
+	//	}, nil
+	//}
 
 	// 先执行自动解禁过期用户
 	s.autoUnmuteExpiredUsers()
@@ -887,6 +983,18 @@ func (s *Server) ApplyMic(ctx context.Context, req *__.ApplyMicReq) (*__.ApplyMi
 		}, nil
 	}
 
+	// 检查用户是否已有待审批的申请记录
+	var existingApplication models.MicApplication
+	err = global.DB.Where("room_id = ? AND user_id = ? AND status = 0", req.RoomId, req.UserId).First(&existingApplication).Error
+	if err == nil {
+		return &__.ApplyMicResp{
+			Success: false,
+			Message: "您已有待审批的上麦申请，请等待审批结果",
+		}, nil
+	} else if err != gorm.ErrRecordNotFound {
+		return nil, fmt.Errorf("查询申请记录失败: %v", err)
+	}
+
 	// 创建申请记录
 	application := models.MicApplication{
 		RoomId:    req.RoomId,
@@ -902,7 +1010,7 @@ func (s *Server) ApplyMic(ctx context.Context, req *__.ApplyMicReq) (*__.ApplyMi
 
 	return &__.ApplyMicResp{
 		Success:       true,
-		Message:       "申请已提交，等待房主/管理员审批",
+		Message:       "申请已提交",
 		ApplicationId: application.Id,
 	}, nil
 }
@@ -910,10 +1018,10 @@ func (s *Server) ApplyMic(ctx context.Context, req *__.ApplyMicReq) (*__.ApplyMi
 // 处理申请上麦功能
 func (s *Server) HandleMicApplication(ctx context.Context, req *__.HandleMicApplicationReq) (*__.HandleMicApplicationResp, error) {
 	// 调试：打印接收到的参数和请求对象
-	fmt.Printf("[DEBUG] HandleMicApplication called with ApplicationId: %d, HandlerId: %d, Action: %d\n", 
+	fmt.Printf("[DEBUG] HandleMicApplication called with ApplicationId: %d, HandlerId: %d, Action: %d\n",
 		req.ApplicationId, req.HandlerId, req.Action)
 	fmt.Printf("[DEBUG] Request object: %+v\n", req)
-	
+
 	// 参数验证
 	if req.ApplicationId == 0 {
 		return &__.HandleMicApplicationResp{
@@ -933,7 +1041,7 @@ func (s *Server) HandleMicApplication(ctx context.Context, req *__.HandleMicAppl
 			Message: "Action不能为0，请使用1(批准)或2(拒绝)",
 		}, nil
 	}
-	
+
 	// 查询申请记录并验证状态
 	var application models.MicApplication
 	err := global.DB.Where("id = ?", req.ApplicationId).First(&application).Error
@@ -1355,6 +1463,112 @@ func (s *Server) initializeRoomMics(roomId int64) error {
 }
 
 // 禁言管理功能
+// 自动审批上麦申请（用于开发测试）
+func (s *Server) autoApproveMicApplication(applicationId int64, roomId int64, userId int64) {
+	// 查询申请记录并验证状态
+	var application models.MicApplication
+	err := global.DB.Where("id = ?", applicationId).First(&application).Error
+	if err != nil {
+		log.Printf("[AUTO_APPROVE] 查询申请记录失败: %v", err)
+		return
+	}
+
+	// 验证申请状态，只处理待审批的申请
+	if application.Status != 0 {
+		log.Printf("[AUTO_APPROVE] 申请已被处理，跳过自动审批")
+		return
+	}
+
+	// 验证房间存在性和状态
+	var room models.Room
+	err = global.DB.Where("id = ? AND status = '0' AND closed_at IS NULL AND deleted_at IS NULL", roomId).First(&room).Error
+	if err != nil {
+		log.Printf("[AUTO_APPROVE] 房间不存在或已关闭: %v", err)
+		return
+	}
+
+	// 检查用户是否还在房间中
+	var userRoom models.UserRoom
+	err = global.DB.Where("user_id = ? AND room_id = ? AND is_online = 1", userId, roomId).First(&userRoom).Error
+	if err != nil {
+		// 用户已离开房间，取消申请
+		global.DB.Model(&application).Updates(map[string]interface{}{
+			"status":      3, // 已取消
+			"handle_time": time.Now(),
+			"handler_id":  0, // 系统自动处理
+			"reason":      "用户已离开房间",
+		})
+		log.Printf("[AUTO_APPROVE] 用户已离开房间，申请已自动取消")
+		return
+	}
+
+	// 开始事务处理
+	tx := global.DB.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
+	// 确保房间麦位已初始化
+	err = s.initializeRoomMics(roomId)
+	if err != nil {
+		tx.Rollback()
+		log.Printf("[AUTO_APPROVE] 初始化房间麦位失败: %v", err)
+		return
+	}
+
+	// 检查用户是否已在麦位上
+	var existingMic models.RoomMic
+	err = tx.Where("room_id = ? AND user_id = ? AND status = 1", roomId, userId).First(&existingMic).Error
+	if err == nil {
+		tx.Rollback()
+		log.Printf("[AUTO_APPROVE] 用户已在麦位上")
+		return
+	}
+
+	// 查找可用麦位
+	var availableMic models.RoomMic
+	err = tx.Where("room_id = ? AND status = 0 AND is_locked = 0", roomId).Order("mic_position").First(&availableMic).Error
+	if err != nil {
+		tx.Rollback()
+		log.Printf("[AUTO_APPROVE] 没有可用的麦位: %v", err)
+		return
+	}
+
+	// 分配麦位
+	err = tx.Model(&availableMic).Updates(map[string]interface{}{
+		"status":      1, // 占用
+		"user_id":     userId,
+		"occupy_time": time.Now(),
+	}).Error
+	if err != nil {
+		tx.Rollback()
+		log.Printf("[AUTO_APPROVE] 分配麦位失败: %v", err)
+		return
+	}
+
+	// 更新申请状态为已批准
+	err = tx.Model(&application).Updates(map[string]interface{}{
+		"status":      1, // 已批准
+		"handle_time": time.Now(),
+		"handler_id":  0, // 系统自动处理
+	}).Error
+	if err != nil {
+		tx.Rollback()
+		log.Printf("[AUTO_APPROVE] 更新申请状态失败: %v", err)
+		return
+	}
+
+	// 提交事务
+	if err := tx.Commit().Error; err != nil {
+		log.Printf("[AUTO_APPROVE] 处理申请失败: %v", err)
+		return
+	}
+
+	log.Printf("[AUTO_APPROVE] 自动审批成功，用户 %d 已上麦位 %d", userId, availableMic.MicPosition)
+}
+
 func (s *Server) MuteMicUser(ctx context.Context, req *__.MuteMicUserReq) (*__.MuteMicUserResp, error) {
 	// 先执行自动解禁过期用户
 	s.autoUnmuteExpiredUsers()
