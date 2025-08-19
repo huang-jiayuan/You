@@ -221,16 +221,16 @@ message MuteMicUserReq {
 
 //刷礼物
 message SendGiftsReq {
-  int64 SendUserId =1;
-  int64 ReceiveUserId = 2;
-  int64 RoomId = 3;
-  int64 GiftId = 4;
-  int64 SendCount = 5;
-  string SendType = 6;
-  string Message = 7;
-  string Status = 8;
-  string ClientIp =9;
-  string SendTime =10;
+  int64 SendUserId =1;  //赠送礼物的用户ID
+  int64 ReceiveUserId = 2;  //接收礼物的用户ID
+  int64 RoomId = 3;  //房间ID
+  int64 GiftId = 4;  //礼物ID
+  int64 SendCount = 5;  //赠送数量
+  string SendType = 6; //赠送方式
+  string Message = 7;  //赠送的留言
+  string Status = 8;  //是否赠送成功
+  string ClientIp =9;  //赠送者的ID地址
+  string SendTime =10;  //赠送时间
 }
 
 message SendGiftsResp {

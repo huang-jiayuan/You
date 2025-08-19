@@ -10,7 +10,7 @@ export const mockNavigationTabs: NavigationTab[] = [
     id: 'home',
     label: '首页',
     icon: '🏠',
-    route: '/home',
+    route: '/',
     badge: 0,
     isActive: false
   },

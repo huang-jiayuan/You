@@ -46,7 +46,25 @@ export const API_ENDPOINTS = {
     GET_USER_INFO: '/user/center',           // 获取用户详情信息
     UPDATE_INFO: '/user/improve-info'        // 更新用户信息
   },
-  
+
+  // 房间相关接口
+  ROOM: {
+    GET_RECOMMEND_ROOMS: '/room/getRecommendRooms',     // 获取推荐房间
+    GET_ROOMS_BY_CATEGORY: '/room/getRoomsByCategory',  // 根据分类获取房间
+    SEARCH_ROOMS: '/room/searchRooms',                  // 搜索房间
+    JOIN_ROOM: '/room/joinRoom',                        // 进入房间
+    LEAVE_ROOM: '/room/leaveRoom',                      // 离开房间
+    CREATE_ROOM: '/room/createroom',                    // 创建房间
+    UPDATE_ROOM: '/room/updateroom',                    // 更新房间
+    CLOSE_ROOM: '/room/closeRoom',                      // 关闭房间
+    // 麦位管理接口
+    APPLY_MIC: '/room/applyMic',                        // 申请上麦
+    LEAVE_MIC: '/room/leaveMic',                        // 下麦
+    HANDLE_MIC_APPLICATION: '/room/handleMicApplication', // 处理麦位申请
+    KICK_FROM_MIC: '/room/kickFromMic',                 // 踢人下麦
+    MUTE_MIC_USER: '/room/muteMicUser'                  // 禁言麦位用户
+  },
+
   // 其他业务接口
   COMMON: {
     UPLOAD: '/common/upload',                // 文件上传
@@ -67,7 +85,7 @@ export const HTTP_STATUS = {
 
 // 业务状态码（根据后端实际响应码）
 export const BUSINESS_CODE = {
-  SUCCESS: 0,        // 后端成功状态码是0
+  SUCCESS: 0,      // 后端成功状态码是200
   FAIL: 1,
   REQUEST_ERROR: 1000,     // 请求失败！无法找到获取的资源
   SERVER_ERROR: 1001,      // 请求失败！服务器内部错误

@@ -191,7 +191,7 @@ export default {
         }
         
         alert('登录成功！')
-        router.push('/home')
+        router.push('/')
         
       } catch (error) {
         console.error('登录失败:', error)

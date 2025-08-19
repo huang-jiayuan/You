@@ -35,7 +35,6 @@
     <div class="user-info-card">
       <div class="user-avatar-section">
         <div class="avatar-container">
-          // 在模板部分修改头像显示逻辑
           <img 
             :src="userInfo.avatar" 
             :alt="userInfo.name" 
@@ -51,6 +50,29 @@
             <p class="user-signature">{{ userInfo.signature || '这个人很懒，什么都没有留下~' }}</p>
           </div>
           <div v-else class="edit-form">
+            <div class="form-group">
+              <label>头像：</label>
+              <div class="avatar-upload-section">
+                <div class="current-avatar">
+                  <img :src="editForm.avatar || '/default-avatar.png'" alt="当前头像" class="preview-avatar" />
+                </div>
+                <div class="upload-controls">
+                  <input 
+                    ref="avatarInput" 
+                    type="file" 
+                    accept="image/*" 
+                    @change="handleAvatarUpload" 
+                    style="display: none;"
+                  />
+                  <button type="button" @click="$refs.avatarInput.click()" class="upload-btn">
+                    选择头像
+                  </button>
+                  <button type="button" @click="resetAvatar" class="reset-btn">
+                    重置默认
+                  </button>
+                </div>
+              </div>
+            </div>
             <div class="form-group">
               <label>用户昵称：</label>
               <input v-model="editForm.name" type="text" class="form-input" placeholder="请输入用户昵称">
@@ -227,7 +249,8 @@ const editForm = ref({
   signature: '',
   gender: '',
   age: '',
-  location: ''
+  location: '',
+  avatar: '' // 添加头像字段
 })
 
 const posts = ref([])
@@ -266,8 +289,13 @@ const loadUserInfo = async () => {
     const response = await userAPI.getUserInfo(userId)
     
     console.log('API Response:', response)
+    console.log('response.data:', response.data)
+    console.log('response.data.list:', response.data.list)
+    console.log('response.data.list.length:', response.data.list ? response.data.list.length : 'undefined')
+    console.log('条件判断结果:', !!(response && response.data && response.data.list && response.data.list.length > 0))
     
     if (response && response.data && response.data.list && response.data.list.length > 0) {
+      console.log('✅ 进入了if分支 - 使用API数据')
       // 获取数组中的第一个用户数据
       const userData = response.data.list[0]
       
@@ -281,7 +309,6 @@ const loadUserInfo = async () => {
       userInfo.value = {
         id: userData.id || userId,
         name: userData.Nickname || userData.nickname || userData.name || '用户' + (userData.id || userId),
-        // 使用固定的默认头像
         avatar: '/default-avatar.png',
         signature: userData.signature || '这个人很懒，什么都没有留下~',
         isOnline: userData.is_online || false,
@@ -304,6 +331,7 @@ const loadUserInfo = async () => {
       console.log('userData.Nickname value:', userData.Nickname)
       console.log('Is entering else branch?')
     } else {
+      console.log('❌ 进入了else分支 - 使用默认数据，这就是问题所在！')
       console.log('No valid data received from API')
       // 如果API没有返回有效数据，使用默认数据
       userInfo.value = {
@@ -331,7 +359,7 @@ const loadUserInfo = async () => {
         id: getCurrentUserId(),
         name: '桑梨', // 临时硬编码测试
         avatar: '/default-avatar.png',
-        signature: '用户信息加载失败',
+        signature: '这个人很懒，什么都没有留下~',
         isOnline: false,
         followingCount: 0,
         followersCount: 0,
@@ -402,7 +430,8 @@ const startEdit = () => {
     signature: userInfo.value.signature,
     gender: userInfo.value.gender,
     age: userInfo.value.age,
-    location: userInfo.value.location
+    location: userInfo.value.location,
+    avatar: userInfo.value.avatar // 添加当前头像
   }
   isEditing.value = true
 }
@@ -438,29 +467,25 @@ const saveEdit = async () => {
       signature: editForm.value.signature,
       gender: editForm.value.gender,
       age: editForm.value.age,
-      location: editForm.value.location
+      location: editForm.value.location,
+      avatar: editForm.value.avatar // 添加头像字段
     }
     
-    // 调用API保存用户信息
-    const response = await userAPI.updateUserInfo(updateData)
+    // ... existing code ...
     
-    if (response && response.code === 200) {
-      // 保存成功，更新本地数据
-      userInfo.value.name = editForm.value.name
-      userInfo.value.signature = editForm.value.signature
-      userInfo.value.gender = editForm.value.gender
-      userInfo.value.age = editForm.value.age
-      userInfo.value.location = editForm.value.location
-      
-      console.log('用户信息保存成功')
-      isEditing.value = false
-      alert('保存成功！')
-    } else {
-      alert('保存失败：' + (response?.message || '未知错误'))
-    }
+    // 更新本地用户信息
+    userInfo.value.name = editForm.value.name
+    userInfo.value.signature = editForm.value.signature
+    userInfo.value.gender = editForm.value.gender
+    userInfo.value.age = editForm.value.age
+    userInfo.value.location = editForm.value.location
+    userInfo.value.avatar = editForm.value.avatar // 更新头像
+    
+    isEditing.value = false
+    console.log('用户信息已保存')
   } catch (error) {
-    console.error('保存用户信息失败:', error)
-    alert('保存失败，请稍后重试')
+    console.error('保存失败:', error)
+    alert('保存失败，请重试')
   }
 }
 
@@ -468,9 +493,87 @@ const saveEdit = async () => {
 onMounted(() => {
   loadUserInfo()
 })
+
+// 添加头像上传处理方法
+const handleAvatarUpload = (event) => {
+  const file = event.target.files[0]
+  if (file) {
+    // 检查文件类型
+    if (!file.type.startsWith('image/')) {
+      alert('请选择图片文件')
+      return
+    }
+    
+    // 检查文件大小（限制为2MB）
+    if (file.size > 2 * 1024 * 1024) {
+      alert('图片大小不能超过2MB')
+      return
+    }
+    
+    // 创建FileReader来预览图片
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      editForm.value.avatar = e.target.result
+    }
+    reader.readAsDataURL(file)
+  }
+}
+
+// 重置头像为默认头像
+const resetAvatar = () => {
+  editForm.value.avatar = '/default-avatar.png'
+}
 </script>
 
 <style scoped>
+.avatar-upload-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.current-avatar {
+  flex-shrink: 0;
+}
+
+.preview-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e0e0e0;
+}
+
+.upload-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.upload-btn, .reset-btn {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.upload-btn:hover {
+  background: #f0f0f0;
+  border-color: #999;
+}
+
+.reset-btn {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.reset-btn:hover {
+  background: #e0e0e0;
+}
+
 .user-profile {
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -910,5 +1013,5 @@ onMounted(() => {
 </style>
 const handleAvatarError = (event) => {
   console.log('Avatar load error, using default avatar')
-  event.target.src = '/default-avatar.png' // 或者使用默认头像
+  event.target.src = '/default-avatar.png'
 }

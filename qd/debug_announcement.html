@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>公告更新调试</title>
+</head>
+<body>
+    <h1>房间公告更新调试工具</h1>
+    
+    <div>
+        <label>房间ID: </label>
+        <input type="number" id="roomId" value="13" />
+    </div>
+    
+    <div>
+        <label>公告内容: </label>
+        <textarea id="announcement" rows="4" cols="50">测试公告内容</textarea>
+    </div>
+    
+    <button onclick="testUpdate()">测试更新</button>
+    
+    <div id="result" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc;"></div>
+
+    <script>
+        async function testUpdate() {
+            const roomId = document.getElementById('roomId').value;
+            const announcement = document.getElementById('announcement').value;
+            const resultDiv = document.getElementById('result');
+            
+            resultDiv.innerHTML = '正在发送请求...';
+            
+            try {
+                const response = await fetch('/api/room/updateroom', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: parseInt(roomId),
+                        announcement: announcement
+                    })
+                });
+                
+                const data = await response.json();
+                
+                resultDiv.innerHTML = `
+                    <h3>响应结果:</h3>
+                    <p><strong>HTTP状态:</strong> ${response.status}</p>
+                    <p><strong>响应码:</strong> ${data.code}</p>
+                    <p><strong>消息:</strong> ${data.msg}</p>
+                    <p><strong>数据:</strong> ${JSON.stringify(data.data, null, 2)}</p>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+                
+                if (data.code === 200) {
+                    resultDiv.style.backgroundColor = '#d4edda';
+                    resultDiv.style.color = '#155724';
+                } else {
+                    resultDiv.style.backgroundColor = '#f8d7da';
+                    resultDiv.style.color = '#721c24';
+                }
+                
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <h3>请求失败:</h3>
+                    <p style="color: red;">${error.message}</p>
+                `;
+                resultDiv.style.backgroundColor = '#f8d7da';
+            }
+        }
+    </script>
+</body>
+</html>

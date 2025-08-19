@@ -4,6 +4,8 @@
     <div class="top-section">
       <div class="user-avatar" @click="showUserSidebar">
         <img :src="userInfo.avatar || 'https://via.placeholder.com/40x40/4CAF50/ffffff?text=我'" :alt="userInfo.nickname" />
+      <div class="user-avatar">
+        <img :src="userInfo.avatar || generateAvatar('我', '4CAF50', 40)" :alt="userInfo.nickname" />
         <div class="online-indicator"></div>
       </div>
       <div class="top-actions">
@@ -30,10 +32,12 @@
           <div class="avatar-showcase">
             <div class="avatar-item">
               <div class="avatar-placeholder" style="background: #ff6b9d;">西</div>
+              <img :src="generateAvatar('西', 'ff6b9d', 40)" alt="西法" />
               <span>西法</span>
             </div>
             <div class="avatar-item">
               <div class="avatar-placeholder" style="background: #ff6b9d;">通</div>
+              <img :src="generateAvatar('通', 'ff6b9d', 40)" alt="通阿里" />
               <span>通阿里</span>
             </div>
           </div>
@@ -53,6 +57,7 @@
         <div class="card-content">
           <div class="brother-avatar">
             <div class="avatar-placeholder brother-avatar-placeholder">哥</div>
+            <img :src="generateAvatar('哥', '4facfe', 60)" alt="小哥哥" />
           </div>
           <div class="voice-controls">
             <button class="voice-btn" @click="togglePlay">
@@ -82,25 +87,117 @@
     <div class="popular-rooms">
       <div class="section-header">
         <h2>人气房间</h2>
+        <div class="header-actions">
+          <button class="search-btn" @click="showSearch = !showSearch">
+            <span class="icon">🔍</span>
+          </button>
+          <button class="filter-btn" @click="showTagFilter = !showTagFilter">筛选</button>
+        </div>
       </div>
-      <div class="rooms-grid">
+
+      <!-- 搜索框 -->
+      <div v-if="showSearch" class="search-container">
+        <input
+          v-model="searchKeyword"
+          type="text"
+          placeholder="搜索房间名称或房主名字..."
+          class="search-input"
+          @input="searchRooms(searchKeyword)"
+          @keyup.enter="searchRooms(searchKeyword)"
+        />
+        <button v-if="searchKeyword" @click="searchKeyword = ''; loadRecommendRooms()" class="clear-search">
+          ✕
+        </button>
+      </div>
+
+      <!-- 标签筛选 -->
+      <div class="tag-filter">
+        <div class="tag-list">
+          <button
+            v-for="tag in roomTags"
+            :key="tag.id"
+            :class="['tag-item', { active: selectedTag === tag.id }]"
+            @click="loadRoomsByTag(tag.id)"
+          >
+            {{ tag.name }}
+          </button>
+        </div>
+      </div>
+
+      <!-- 加载状态 -->
+      <div v-if="roomsLoading" class="loading-container">
+        <div class="loading-spinner"></div>
+        <span>加载中...</span>
+      </div>
+
+      <!-- 错误状态 -->
+      <div v-else-if="roomsError" class="error-container">
+        <div class="error-message">{{ roomsError }}</div>
+        <button class="retry-btn" @click="retryLoadRooms">重试</button>
+      </div>
+
+      <!-- 房间列表 -->
+      <div v-else-if="popularRooms.length > 0" class="rooms-list">
         <div 
           v-for="room in popularRooms" 
-          :key="room.id"
-          class="room-card"
-          @click="enterRoom(room.id)"
+          :key="room.id || room.room_id"
+          class="room-item"
+          @click="console.log('点击了房间卡片!'); enterRoom(room.id || room.room_id)"
+          style="cursor: pointer;"
         >
+          <!-- 房间封面 -->
           <div class="room-cover">
-            <img :src="room.cover" :alt="room.name" />
-            <div class="room-overlay">
-              <div class="room-tag">{{ room.tag }}</div>
-              <div class="room-count">{{ room.userCount }}</div>
+            <img
+              :src="room.cover || generateDefaultCover(room.room_name || room.name || '房间')"
+              :alt="room.room_name || room.name || '房间'"
+              @error="handleImageError"
+            />
+            <div class="room-count">{{ formatUserCount(room.user_count || room.fk_member_room || 0) }}</div>
+          </div>
+
+          <!-- 房间信息 -->
+          <div class="room-content">
+            <!-- 房间标题 -->
+            <div class="room-title">
+              <span class="room-icon">🔥</span>
+              <h4>{{ room.room_name || room.name || '未命名房间' }}</h4>
+              <span class="room-emoji">✨</span>
+            </div>
+
+            <!-- 房间标签 -->
+            <div class="room-tags">
+              <span class="room-tag">{{ getRoomTagName(room) }}</span>
+              <span class="room-status">🎵 梦幻邮轮中</span>
+            </div>
+
+            <!-- 房主信息 -->
+            <div class="room-owner">
+              <span class="owner-name">{{ room.owner_nickname || '房主' }}</span>
+            </div>
+
+            <!-- 在线用户头像 -->
+            <div class="room-users">
+              <div
+                v-for="i in Math.min(4, Math.max(1, Math.floor((room.fk_member_room || 0) / 30)))"
+                :key="i"
+                class="user-avatar"
+              >
+                <img :src="generateAvatar(`用户${i}`, getRandomColor(), 24)" :alt="`用户${i}`" />
+              </div>
             </div>
           </div>
-          <div class="room-info">
-            <h4>{{ room.name }}</h4>
-          </div>
         </div>
+      </div>
+
+      <!-- 无数据状态 -->
+      <div v-else class="empty-container">
+        <div class="empty-icon">🏠</div>
+        <div class="empty-message">
+          {{ searchKeyword ? '未找到相关房间' : '暂无房间数据' }}
+        </div>
+        <button v-if="searchKeyword" @click="searchKeyword = ''; loadRecommendRooms()" class="reset-btn">
+          查看推荐房间
+        </button>
       </div>
     </div>
 
@@ -176,11 +273,24 @@
     </div>
 
     <!-- 用户侧边栏 -->
-    <UserSidebar 
-      :isVisible="sidebarVisible" 
+    <UserSidebar
+      :isVisible="sidebarVisible"
       :userInfo="sidebarUserInfo"
-      @close="hideUserSidebar" 
+      @close="hideUserSidebar"
     />
+
+    <!-- 调试组件（开发时使用） -->
+    <SearchFilterDebug v-if="showDebug" />
+
+    <!-- 调试开关 -->
+    <button
+      class="debug-toggle"
+      @click="showDebug = !showDebug"
+      style="position: fixed; top: 10px; left: 10px; z-index: 10000; padding: 8px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;"
+    >
+      {{ showDebug ? '隐藏调试' : '显示调试' }}
+    </button>
+    </div>
   </div>
 </template>
 
@@ -216,44 +326,20 @@ export default {
       vipStatus: false
     })
     
-    const popularRooms = ref([
-      {
-        id: 1,
-        name: '夜长梦多',
-        description: '友友连麦',
-        cover: 'data:image/svg+xml,%3Csvg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="80" height="80" rx="12" fill="%23667eea"/%3E%3Ctext x="40" y="45" font-family="Arial" font-size="24" font-weight="bold" fill="white" text-anchor="middle"%3E夜%3C/text%3E%3C/svg%3E',
-        tag: '热门',
-        userCount: 'x10'
-      },
-      {
-        id: 2,
-        name: '友友连麦',
-        description: '友友连麦',
-        cover: 'data:image/svg+xml,%3Csvg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="80" height="80" rx="12" fill="%23764ba2"/%3E%3Ctext x="40" y="45" font-family="Arial" font-size="24" font-weight="bold" fill="white" text-anchor="middle"%3E友%3C/text%3E%3C/svg%3E',
-        tag: '热门',
-        userCount: 'x10'
-      },
-      {
-        id: 3,
-        name: '友友连麦',
-        description: '友友连麦',
-        cover: 'data:image/svg+xml,%3Csvg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="80" height="80" rx="12" fill="%23f093fb"/%3E%3Ctext x="40" y="45" font-family="Arial" font-size="24" font-weight="bold" fill="white" text-anchor="middle"%3E连%3C/text%3E%3C/svg%3E',
-        tag: '热门',
-        userCount: 'x10'
-      },
-      {
-        id: 4,
-        name: '友友连麦',
-        description: '友友连麦',
-        cover: 'data:image/svg+xml,%3Csvg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="80" height="80" rx="12" fill="%234facfe"/%3E%3Ctext x="40" y="45" font-family="Arial" font-size="24" font-weight="bold" fill="white" text-anchor="middle"%3E麦%3C/text%3E%3C/svg%3E',
-        tag: '热门',
-        userCount: 'x10'
-      }
-    ])
+    // 房间相关数据
+    const popularRooms = ref([])
+    const roomsLoading = ref(false)
+    const roomsError = ref(null)
+    const searchKeyword = ref('')
+    const selectedTag = ref(null)
+    const roomTags = ref([])
+    const showSearch = ref(false)
+    const showTagFilter = ref(false)
+    const showDebug = ref(false)
     
     const isPlaying = ref(false)
     const sidebarVisible = ref(false)
-    
+
     // 侧边栏用户信息
     const sidebarUserInfo = computed(() => ({
       nickname: userInfo.value.nickname || '途场',
@@ -269,13 +355,28 @@ export default {
         hearts: 1
       }
     }))
-    
+
+    // 生成本地 SVG 头像
+    const generateAvatar = (text, color = '4CAF50', size = 50) => {
+      const svg = `
+        <svg width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
+          <rect width="${size}" height="${size}" fill="#${color}" rx="${size/10}"/>
+          <text x="${size/2}" y="${size/2 + size/8}" font-family="Arial, sans-serif"
+                font-size="${size/2.5}" font-weight="bold" text-anchor="middle"
+                dominant-baseline="middle" fill="white">
+            ${text}
+          </text>
+        </svg>
+      `
+      return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svg)))}`
+    }
+
     const onlineUsers = ref([
       {
         id: 1,
         nickname: '处对象，希望非',
         age: 33,
-        avatar: 'data:image/svg+xml,%3Csvg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Ccircle cx="24" cy="24" r="24" fill="%23ff6b9d"/%3E%3Ctext x="24" y="28" font-family="Arial" font-size="16" font-weight="bold" fill="white" text-anchor="middle"%3E处%3C/text%3E%3C/svg%3E',
+        avatar: generateAvatar('处', 'ff6b9d', 48),
         level: 4,
         statusText: '天友连麦-千青',
         statusEmoji: '😊',
@@ -288,7 +389,7 @@ export default {
         id: 2,
         nickname: '没有节操的清欢',
         age: 69,
-        avatar: 'data:image/svg+xml,%3Csvg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Ccircle cx="24" cy="24" r="24" fill="%234facfe"/%3E%3Ctext x="24" y="28" font-family="Arial" font-size="16" font-weight="bold" fill="white" text-anchor="middle"%3E清%3C/text%3E%3C/svg%3E',
+        avatar: generateAvatar('清', '4facfe', 48),
         level: 1,
         statusText: '电台音乐',
         statusEmoji: '🎵',
@@ -301,7 +402,7 @@ export default {
         id: 3,
         nickname: '茶',
         age: 15,
-        avatar: 'data:image/svg+xml,%3Csvg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Ccircle cx="24" cy="24" r="24" fill="%23fa709a"/%3E%3Ctext x="24" y="28" font-family="Arial" font-size="16" font-weight="bold" fill="white" text-anchor="middle"%3E茶%3C/text%3E%3C/svg%3E',
+        avatar: generateAvatar('茶', 'fa709a', 48),
         level: 2,
         statusText: '电台音乐',
         statusEmoji: '🎵',
@@ -314,7 +415,7 @@ export default {
         id: 4,
         nickname: '聊五块美金的清欢',
         age: 69,
-        avatar: 'data:image/svg+xml,%3Csvg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Ccircle cx="24" cy="24" r="24" fill="%23667eea"/%3E%3Ctext x="24" y="28" font-family="Arial" font-size="16" font-weight="bold" fill="white" text-anchor="middle"%3E聊%3C/text%3E%3C/svg%3E',
+        avatar: generateAvatar('聊', '667eea', 48),
         level: 1,
         statusText: '天友连麦',
         statusEmoji: '💬',
@@ -343,7 +444,7 @@ export default {
         if (token) {
           // 暂时注释掉API调用，避免404错误
           // const response = await authAPI.getProfile()
-          
+
           // 使用模拟数据，等后端接口准备好后再启用
           userInfo.value = {
             id: 1,
@@ -362,10 +463,308 @@ export default {
       }
     }
 
-    const enterRoom = (roomId) => {
-      console.log('进入房间:', roomId)
-      // 这里可以导航到房间页面
-      // router.push(`/room/${roomId}`)
+    // 加载推荐房间数据
+    const loadRecommendRooms = async () => {
+      if (roomsLoading.value) return
+
+      try {
+        roomsLoading.value = true
+        roomsError.value = null
+
+        console.log('开始加载推荐房间数据...')
+
+        const response = await roomAPI.getRecommendRooms(1, 10)
+        console.log('收到推荐房间响应:', response)
+
+        // 处理响应数据
+        let roomsData = []
+        if (response && response.code === 200) {
+          if (response.data && response.data.rooms) {
+            roomsData = response.data.rooms
+          } else if (response.data && Array.isArray(response.data)) {
+            roomsData = response.data
+          }
+        }
+
+        popularRooms.value = roomsData
+        console.log('推荐房间数据:', popularRooms.value)
+
+        // 重置筛选状态
+        selectedTag.value = null
+
+      } catch (error) {
+        console.error('加载推荐房间失败:', error)
+        roomsError.value = error.message || '加载房间数据失败'
+        popularRooms.value = []
+      } finally {
+        roomsLoading.value = false
+      }
+    }
+
+    // 格式化用户数量显示的辅助函数
+    const formatUserCount = (count) => {
+      const num = parseInt(count) || 0
+      if (num === 0) return 'x0'
+      if (num >= 1000) return `x${(num / 1000).toFixed(1)}k`
+      return `x${num}`
+    }
+
+    // 生成默认房间封面
+    const generateDefaultCover = (roomName = '房') => {
+      const colors = ['667eea', '764ba2', 'f093fb', '4facfe', 'ff6b9d', 'fa709a', 'fee140']
+      const colorIndex = Math.abs(hashCode(roomName)) % colors.length
+      const color = colors[colorIndex]
+      const firstChar = roomName.charAt(0) || '房'
+
+      const svg = `
+        <svg width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+          <rect width="80" height="80" fill="#${color}" rx="8"/>
+          <text x="40" y="50" font-family="Arial, sans-serif" font-size="24" font-weight="bold"
+                text-anchor="middle" dominant-baseline="middle" fill="white">
+            ${firstChar}
+          </text>
+        </svg>
+      `
+
+      return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svg)))}`
+    }
+
+    // 字符串哈希函数
+    const hashCode = (str) => {
+      let hash = 0
+      if (str.length === 0) return hash
+
+      for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i)
+        hash = ((hash << 5) - hash) + char
+        hash = hash & hash
+      }
+
+      return Math.abs(hash)
+    }
+
+    // 获取房间标签名称
+    const getRoomTagName = (room) => {
+      // 优先使用后端返回的标签名称
+      if (room.tag_name) {
+        return room.tag_name
+      }
+
+      // 如果有room_type，根据类型映射
+      if (room.room_type) {
+        const tagMap = {
+          '1': '交友速配',
+          '2': '才艺',
+          '3': '点唱',
+          '4': '电台音乐'
+        }
+        return tagMap[room.room_type] || '热门'
+      }
+
+      // 默认返回
+      return '热门'
+    }
+
+    // 获取随机颜色
+    const getRandomColor = () => {
+      const colors = ['ff6b9d', '4facfe', 'fa709a', 'f093fb', '764ba2', '667eea', '4CAF50', 'FF9800']
+      return colors[Math.floor(Math.random() * colors.length)]
+    }
+
+    // 根据标签加载房间
+    const loadRoomsByTag = async (tagId) => {
+      if (roomsLoading.value) return
+
+      try {
+        roomsLoading.value = true
+        roomsError.value = null
+
+        console.log('开始根据标签加载房间，标签ID:', tagId)
+
+        let response
+        if (tagId === null || tagId === 0) {
+          // 加载推荐房间
+          console.log('加载推荐房间...')
+          response = await roomAPI.getRecommendRooms(1, 10)
+        } else {
+          // 根据标签加载房间
+          console.log('根据标签加载房间，标签ID:', tagId)
+          response = await roomAPI.getRoomsByCategory(tagId, 1, 10)
+        }
+
+        console.log('标签筛选响应:', response)
+
+        // 处理响应数据
+        let roomsData = []
+        if (response && response.code === 200) {
+          if (response.data && response.data.rooms) {
+            roomsData = response.data.rooms
+          } else if (response.data && Array.isArray(response.data)) {
+            roomsData = response.data
+          } else if (response.rooms) {
+            roomsData = response.rooms
+          }
+        }
+
+        // 确保数据是数组格式
+        if (!Array.isArray(roomsData)) {
+          console.warn('标签筛选返回的数据不是数组格式:', roomsData)
+          roomsData = []
+        }
+
+        popularRooms.value = roomsData
+        selectedTag.value = tagId
+
+        console.log('标签筛选结果:', popularRooms.value)
+        console.log('标签筛选结果数量:', popularRooms.value.length)
+
+      } catch (error) {
+        console.error('加载分类房间失败:', error)
+        roomsError.value = error.message || '加载房间数据失败'
+        popularRooms.value = []
+      } finally {
+        roomsLoading.value = false
+      }
+    }
+
+    // 搜索防抖定时器
+    let searchTimer = null
+
+    // 搜索房间（带防抖）
+    const searchRooms = (keyword) => {
+      // 清除之前的定时器
+      if (searchTimer) {
+        clearTimeout(searchTimer)
+      }
+
+      // 设置新的定时器
+      searchTimer = setTimeout(async () => {
+        await performSearch(keyword)
+      }, 500) // 500ms 防抖延迟
+    }
+
+    // 执行搜索
+    const performSearch = async (keyword) => {
+      if (!keyword || keyword.trim().length === 0) {
+        // 如果搜索关键词为空，重新加载推荐房间
+        console.log('搜索关键词为空，加载推荐房间')
+        await loadRecommendRooms()
+        return
+      }
+
+      if (roomsLoading.value) return
+
+      try {
+        roomsLoading.value = true
+        roomsError.value = null
+
+        console.log('开始搜索房间，关键词:', keyword.trim())
+
+        const response = await roomAPI.searchRooms(keyword.trim(), 1, 10)
+
+        console.log('搜索房间响应:', response)
+
+        // 处理响应数据
+        let roomsData = []
+        if (response && response.code === 200) {
+          if (response.data && response.data.rooms) {
+            roomsData = response.data.rooms
+          } else if (response.data && Array.isArray(response.data)) {
+            roomsData = response.data
+          }
+        }
+
+        popularRooms.value = roomsData
+
+        console.log('搜索结果:', popularRooms.value)
+
+      } catch (error) {
+        console.error('搜索房间失败:', error)
+        roomsError.value = error.message || '搜索房间失败'
+        popularRooms.value = []
+      } finally {
+        roomsLoading.value = false
+      }
+    }
+
+    // 加载房间标签
+    const loadRoomTags = async () => {
+      try {
+        console.log('开始加载房间标签...')
+        const response = await roomAPI.getRoomTags()
+        console.log('房间标签响应:', response)
+
+        // 始终确保热门标签在第一位
+        let backendTags = []
+        if (response && response.code === 200 && response.data) {
+          backendTags = response.data
+        } else {
+          // 使用默认标签
+          backendTags = [
+            { id: 1, name: '娱乐', color: '#4facfe' },
+            { id: 2, name: '才艺', color: '#f093fb' },
+            { id: 3, name: '交友速配', color: '#fa709a' },
+            { id: 4, name: '音乐', color: '#764ba2' },
+            { id: 5, name: '聊天', color: '#ff6b9d' },
+            { id: 6, name: '陪伴', color: '#667eea' }
+          ]
+        }
+
+        // 确保热门标签始终在第一位
+        roomTags.value = [
+          { id: 0, name: '热门', color: '#FF6B35' },
+          ...backendTags
+        ]
+
+        console.log('房间标签数据:', roomTags.value)
+
+        // 默认选中热门标签
+        if (roomTags.value.length > 0) {
+          selectedTag.value = 0
+        }
+
+      } catch (error) {
+        console.error('加载房间标签失败:', error)
+        // 使用默认标签，确保热门标签在第一位
+        const defaultTags = [
+          { id: 1, name: '娱乐', color: '#4facfe' },
+          { id: 2, name: '才艺', color: '#f093fb' },
+          { id: 3, name: '交友速配', color: '#fa709a' },
+          { id: 4, name: '音乐', color: '#764ba2' },
+          { id: 5, name: '聊天', color: '#ff6b9d' },
+          { id: 6, name: '陪伴', color: '#667eea' }
+        ]
+
+        roomTags.value = [
+          { id: 0, name: '热门', color: '#FF6B35' },
+          ...defaultTags
+        ]
+
+        // 默认选中热门标签
+        if (roomTags.value.length > 0) {
+          selectedTag.value = 0
+        }
+      }
+    }
+
+    // 重试加载房间数据
+    const retryLoadRooms = () => {
+      if (searchKeyword.value) {
+        searchRooms(searchKeyword.value)
+      } else if (selectedTag.value !== null) {
+        loadRoomsByTag(selectedTag.value)
+      } else {
+        loadRecommendRooms()
+      }
+    }
+
+    const enterRoom = async (roomId) => {
+      console.log('🔥 enterRoom函数被调用，房间ID:', roomId)
+      alert(`点击了房间 ${roomId}`)
+
+      // 直接跳转，先不调用API
+      console.log('🚀 直接跳转到房间页面')
+      router.push(`/room/${roomId}`)
     }
 
     const viewUserProfile = (userId) => {
@@ -375,8 +774,9 @@ export default {
     }
 
     const startVoiceChat = () => {
-      console.log('开始语音聊天')
-      // 这里可以打开语音聊天功能
+      console.log('点击创建房间按钮')
+      // 跳转到创建房间页面
+      router.push('/create-room')
     }
 
     const togglePlay = () => {
@@ -408,18 +808,38 @@ export default {
       sidebarVisible.value = false
     }
 
+    // 处理图片加载错误
+    const handleImageError = (event) => {
+      const img = event.target
+      const roomName = img.alt || '房间'
+      img.src = generateDefaultCover(roomName)
+    }
+
     // 生命周期
     let timeInterval = null
 
-    onMounted(() => {
+    onMounted(async () => {
       updateTime()
       timeInterval = setInterval(updateTime, 1000)
-      loadUserInfo()
+
+      // 并行加载，但不让用户信息错误影响其他功能
+      const promises = [
+        loadUserInfo().catch(err => console.warn('用户信息加载失败:', err)),
+        loadRecommendRooms().catch(err => console.error('房间数据加载失败:', err)),
+        loadRoomTags().catch(err => console.warn('标签数据加载失败:', err))
+      ]
+
+      await Promise.allSettled(promises)
     })
 
     onUnmounted(() => {
       if (timeInterval) {
         clearInterval(timeInterval)
+      }
+
+      // 清除搜索定时器
+      if (searchTimer) {
+        clearTimeout(searchTimer)
       }
     })
 
@@ -430,6 +850,27 @@ export default {
       onlineUsers,
       isLoggedIn,
       isPlaying,
+      // 房间相关数据和方法
+      roomsLoading,
+      roomsError,
+      searchKeyword,
+      selectedTag,
+      roomTags,
+      showSearch,
+      showTagFilter,
+      showDebug,
+      loadRecommendRooms,
+      loadRoomsByTag,
+      searchRooms,
+      retryLoadRooms,
+      // 工具函数
+      generateAvatar,
+      generateDefaultCover,
+      formatUserCount,
+      handleImageError,
+      getRoomTagName,
+      getRandomColor,
+      // 原有方法
       sidebarVisible,
       sidebarUserInfo,
       enterRoom,
@@ -709,50 +1150,67 @@ export default {
   margin: 0;
 }
 
-.rooms-grid {
+.header-actions {
   display: flex;
-  gap: 12px;
-  overflow-x: auto;
-  padding-bottom: 8px;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
+  align-items: center;
+  gap: 8px;
 }
 
-.rooms-grid::-webkit-scrollbar {
-  height: 4px;
-}
-
-.rooms-grid::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 2px;
-}
-
-.rooms-grid::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 2px;
-}
-
-.rooms-grid::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.5);
-}
-
-.room-card {
+.search-btn {
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: transform 0.2s ease;
-  flex-shrink: 0;
-  width: 80px;
+  font-size: 14px;
+  color: #666;
+  transition: all 0.2s ease;
 }
 
-.room-card:hover {
-  transform: scale(1.05);
+.search-btn:hover {
+  background: #f8f9ff;
+  border-color: #4CAF50;
+}
+
+.search-btn .icon {
+  font-size: 14px;
+}
+
+/* 房间列表样式 */
+.rooms-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.room-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  border-radius: 12px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.room-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
 .room-cover {
   position: relative;
-  aspect-ratio: 1;
+  width: 80px;
+  height: 80px;
   border-radius: 12px;
   overflow: hidden;
-  margin-bottom: 8px;
+  flex-shrink: 0;
 }
 
 .room-cover img {
@@ -761,43 +1219,106 @@ export default {
   object-fit: cover;
 }
 
-.room-overlay {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.room-tag {
-  background: #FFD700;
-  color: #333;
-  padding: 2px 6px;
-  border-radius: 8px;
-  font-size: 10px;
-  font-weight: 600;
-}
-
 .room-count {
-  background: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  background: rgba(0, 0, 0, 0.7);
   color: white;
   padding: 2px 6px;
   border-radius: 8px;
   font-size: 10px;
+  font-weight: 600;
 }
 
-.room-info h4 {
-  font-size: 12px;
+.room-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.room-title {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.room-icon {
+  font-size: 16px;
+}
+
+.room-title h4 {
+  font-size: 16px;
   font-weight: 600;
   color: #333;
-  margin: 0 0 2px 0;
+  margin: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.room-info p {
-  font-size: 10px;
+.room-emoji {
+  font-size: 14px;
+}
+
+.room-tags {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.room-tag {
+  background: linear-gradient(135deg, #ff6b9d, #ff8a9b);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.room-status {
   color: #666;
-  margin: 0;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.room-owner {
+  color: #666;
+  font-size: 12px;
+}
+
+.owner-name {
+  color: #333;
+  font-weight: 500;
+}
+
+.room-users {
+  display: flex;
+  gap: -4px;
+  margin-top: 4px;
+}
+
+.room-users .user-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid white;
+  overflow: hidden;
+  margin-left: -4px;
+}
+
+.room-users .user-avatar:first-child {
+  margin-left: 0;
+}
+
+.room-users .user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* 广播/在线用户 */
@@ -819,10 +1340,198 @@ export default {
   background: none;
   border: 1px solid #ddd;
   border-radius: 16px;
-  padding: 4px 12px;
+  padding: 6px 12px;
   font-size: 12px;
   color: #666;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+  background: #f8f9ff;
+  border-color: #4CAF50;
+}
+
+/* 搜索容器 */
+.search-container {
+  position: relative;
+  margin-bottom: 12px;
+  animation: slideDown 0.3s ease-out;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 40px 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  font-size: 14px;
+  background: white;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.search-input:focus {
+  border-color: #4CAF50;
+}
+
+.clear-search {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  font-size: 16px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clear-search:hover {
+  color: #666;
+}
+
+/* 标签筛选 */
+.tag-filter {
+  margin-bottom: 12px;
+  animation: slideDown 0.3s ease-out;
+}
+
+.tag-list {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tag-item {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  padding: 6px 12px;
+  font-size: 12px;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tag-item:hover {
+  background: #f8f9ff;
+  border-color: #4CAF50;
+}
+
+.tag-item.active {
+  background: #4CAF50;
+  border-color: #4CAF50;
+  color: white;
+}
+
+/* 加载状态 */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: #666;
+}
+
+.loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #4CAF50;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 12px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 错误状态 */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.error-message {
+  color: #ff4444;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.retry-btn {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 16px;
+  padding: 8px 16px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.retry-btn:hover {
+  background: #45a049;
+}
+
+/* 无数据状态 */
+.empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+  opacity: 0.5;
+}
+
+.empty-message {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.reset-btn {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 16px;
+  padding: 8px 16px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.reset-btn:hover {
+  background: #45a049;
+}
+
+/* 动画效果 */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .broadcast-list {
@@ -1411,7 +2120,7 @@ export default {
 }
 
 /* 高对比度模式支持 */
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .feature-card {
     border: 2px solid rgba(255, 255, 255, 0.5);
   }
