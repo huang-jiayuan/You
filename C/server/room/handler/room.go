@@ -213,7 +213,6 @@ func (s *Server) SendGifts(_ context.Context, in *__.SendGiftsReq) (*__.SendGift
 		fmt.Println("当前用户的余额不够请前往充值")
 		return nil, err
 	}
-
 	tx := global.DB.Begin()
 	if tx.Error != nil {
 		return nil, fmt.Errorf("failed to begin transaction: %w", tx.Error)
@@ -260,6 +259,12 @@ func (s *Server) SendGifts(_ context.Context, in *__.SendGiftsReq) (*__.SendGift
 	}
 	tx.Commit()
 	return &__.SendGiftsResp{Greet: "刷新礼物记录表成功"}, nil
+}
+
+// 充值金币换算
+func AmountToDiamonds(amount float64) int {
+	// 1元=10钻石，10元=100钻石，以此类推
+	return int(amount * 10)
 }
 
 // 设置房管管理房间
