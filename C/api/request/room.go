@@ -50,7 +50,8 @@ type SearchRooms struct {
 }
 
 type JoinRoom struct {
-	RoomId int64 `json:"room_id" form:"room_id" `
+	RoomId int64  `json:"room_id" form:"room_id" binding:"required"`
+	UserId uint64 `json:"user_id" form:"user_id"` // 用户ID，可选（如果没有JWT token时使用）
 }
 
 type CloseRoom struct {
@@ -58,11 +59,13 @@ type CloseRoom struct {
 }
 
 type ApplyMic struct {
-	RoomId int64 `json:"room_id" form:"room_id" binding:"required"`
+	RoomId int64  `json:"room_id" form:"room_id" binding:"required"`
+	UserId uint64 `json:"user_id" form:"user_id"` // 用户ID，可选（如果没有JWT token时使用）
 }
 
 type LeaveMic struct {
-	RoomId int64 `json:"room_id" form:"room_id" binding:"required"`
+	RoomId int64  `json:"room_id" form:"room_id" binding:"required"`
+	UserId uint64 `json:"user_id" form:"user_id"` // 用户ID，可选（如果没有JWT token时使用）
 }
 type HandleMicApplication struct {
 	ApplicationId int64  `json:"application_id" binding:"required"`

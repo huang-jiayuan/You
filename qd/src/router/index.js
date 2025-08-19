@@ -6,6 +6,8 @@ import Login from '../views/Login.vue'
 import PhoneLogin from '../views/PhoneLogin.vue'
 import PasswordLogin from '../views/PasswordLogin.vue'
 import Home from '../views/Home.vue'
+import Room from '../views/Room.vue'
+import CreateRoom from '../views/CreateRoom.vue'
 import About from '../views/About.vue'
 import Contact from '../views/Contact.vue'
 import Chat from '../views/Chat.vue'
@@ -15,6 +17,20 @@ import ApiTest from '../views/ApiTest.vue'
 const routes = [
   {
     path: '/',
+    name: 'Home',
+    component: Home,
+    meta: {
+      title: '首页',
+      description: '声音交友首页，发现有趣的人和房间',
+      keywords: '声音交友, 首页, 房间, ME',
+      requiresAuth: false,
+      keepAlive: true,
+      transition: 'fade',
+      icon: '🏠'
+    }
+  },
+  {
+    path: '/login',
     name: 'Login',
     component: Login,
     meta: {
@@ -28,17 +44,31 @@ const routes = [
     }
   },
   {
-    path: '/home',
-    name: 'Home',
-    component: Home,
+    path: '/room/:id',
+    name: 'Room',
+    component: Room,
     meta: {
-      title: '首页',
-      description: 'Vue3前端应用首页，展示现代Vue3开发特性',
-      keywords: 'Vue3, 前端, 应用, 首页',
-      requiresAuth: true,
-      keepAlive: true,
-      transition: 'fade',
-      icon: '🏠'
+      title: '语音房间',
+      description: '语音聊天房间，与好友畅聊',
+      keywords: '语音房间, 聊天, 麦位, ME',
+      requiresAuth: false,
+      keepAlive: false,
+      transition: 'slide-up',
+      icon: '🎤'
+    }
+  },
+  {
+    path: '/create-room',
+    name: 'CreateRoom',
+    component: CreateRoom,
+    meta: {
+      title: '创建房间',
+      description: '创建语音聊天房间',
+      keywords: '创建房间, 语音房间, ME',
+      requiresAuth: false,
+      keepAlive: false,
+      transition: 'slide-up',
+      icon: '🏗️'
     }
   },
   {

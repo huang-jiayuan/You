@@ -1,5 +1,6 @@
 import { computed } from 'vue'
 import { getGlobalAppStore } from '../stores/app.js'
+import { getCurrentUserId, getCurrentUserInfo, isUserLoggedIn, clearUserAuth, setUserAuth } from '../utils/userUtils.js'
 
 /**
  * 用户状态管理组合式函数
@@ -10,8 +11,29 @@ export function useUser() {
   
   // 计算属性
   const user = computed(() => store.state.user)
-  const isLoggedIn = computed(() => store.isLoggedIn.value)
-  const currentUser = computed(() => store.currentUser.value)
+  const isLoggedIn = computed(() => {
+    // 优先检查token有效性
+    const tokenValid = isUserLoggedIn()
+    const storeLoggedIn = store.isLoggedIn.value
+    return tokenValid && storeLoggedIn
+  })
+  const currentUser = computed(() => {
+    const tokenUserInfo = getCurrentUserInfo()
+    const storeUser = store.currentUser.value
+    
+    // 如果token中有用户信息，优先使用token信息
+    if (tokenUserInfo) {
+      return {
+        ...storeUser,
+        id: tokenUserInfo.id,
+        username: tokenUserInfo.username,
+        nickname: tokenUserInfo.nickname,
+        isLoggedIn: isUserLoggedIn()
+      }
+    }
+    
+    return storeUser
+  })
   const preferences = computed(() => store.state.user.preferences)
   
   // 用户信息管理
@@ -43,8 +65,15 @@ export function useUser() {
       // 模拟登录过程
       await new Promise(resolve => setTimeout(resolve, 1000))
       
+      // 模拟API返回的token和用户信息
+      const mockToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJ0ZXN0dXNlciIsIm5pY2tuYW1lIjoi5rWL6K-V55So5oi3IiwiZXhwIjoxNzU1NjUyMjMzfQ.mock_signature'
+      const mockRefreshToken = 'refresh_token_mock'
+      
+      // 设置认证信息
+      setUserAuth(mockToken, mockRefreshToken)
+      
       const userData = {
-        name: credentials.username || '用户',
+        name: credentials.username || '测试用户',
         email: credentials.email || 'user@example.com',
         avatar: credentials.avatar || '',
         preferences: {
@@ -72,6 +101,9 @@ export function useUser() {
     try {
       // 这里应该调用实际的登出API
       // await authAPI.logout()
+      
+      // 清除认证信息
+      clearUserAuth()
       
       // 清除用户数据
       store.clearUser()

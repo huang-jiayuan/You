@@ -209,7 +209,7 @@ export default {
       console.log('导航到:', page)
       switch(page) {
         case 'home':
-          router.push('/home')
+          router.push('/')
           break
         case 'room':
           // router.push('/room')

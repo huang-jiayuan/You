@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>快速标签测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test { margin: 15px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .button { padding: 8px 16px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .result { margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 4px; font-family: monospace; font-size: 12px; max-height: 300px; overflow-y: auto; }
+        .success { background-color: #d4edda; }
+        .error { background-color: #f8d7da; }
+        .room-item { margin: 5px 0; padding: 5px; background: white; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <h1>快速标签测试</h1>
+    <p>根据已知房间数据测试标签映射</p>
+    
+    <div class="test">
+        <h3>测试推荐房间（查看所有房间的标签信息）</h3>
+        <button class="button" onclick="analyzeAllRooms()">分析所有房间标签</button>
+        <div id="analyzeResult" class="result">点击按钮开始分析...</div>
+    </div>
+    
+    <div class="test">
+        <h3>逐个测试标签ID</h3>
+        <button class="button" onclick="testTag(1)">tag_id=1</button>
+        <button class="button" onclick="testTag(2)">tag_id=2</button>
+        <button class="button" onclick="testTag(3)">tag_id=3</button>
+        <button class="button" onclick="testTag(4)">tag_id=4</button>
+        <button class="button" onclick="testTag(5)">tag_id=5</button>
+        <div id="tagResults" class="result">点击标签按钮查看结果...</div>
+    </div>
+
+    <script>
+        async function analyzeAllRooms() {
+            const resultDiv = document.getElementById('analyzeResult');
+            resultDiv.textContent = '正在分析所有房间...';
+            
+            try {
+                const response = await fetch('/api/room/getRecommendRooms', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ page: 1, page_size: 20 })
+                });
+                
+                const data = await response.json();
+                console.log('推荐房间数据:', data);
+                
+                if (data.code === 200 && data.data && data.data.rooms) {
+                    const rooms = data.data.rooms;
+                    
+                    let analysis = `找到 ${rooms.length} 个房间:\n\n`;
+                    
+                    // 按标签分组
+                    const tagGroups = {};
+                    rooms.forEach(room => {
+                        const tagName = room.tag_name || '未知标签';
+                        if (!tagGroups[tagName]) {
+                            tagGroups[tagName] = [];
+                        }
+                        tagGroups[tagName].push(room);
+                    });
+                    
+                    analysis += '标签分组统计:\n';
+                    Object.keys(tagGroups).forEach(tagName => {
+                        analysis += `${tagName}: ${tagGroups[tagName].length} 个房间\n`;
+                    });
+                    
+                    analysis += '\n详细房间信息:\n';
+                    rooms.forEach((room, index) => {
+                        analysis += `${index + 1}. ${room.room_name}\n`;
+                        analysis += `   ID: ${room.id}, tag_name: "${room.tag_name}", room_type: "${room.room_type}"\n`;
+                        analysis += `   用户数: ${room.fk_member_room}, 房主: ${room.owner_nickname}\n\n`;
+                    });
+                    
+                    resultDiv.textContent = analysis;
+                    resultDiv.className = 'result success';
+                } else {
+                    resultDiv.textContent = `获取房间失败: ${data.msg}`;
+                    resultDiv.className = 'result error';
+                }
+                
+            } catch (error) {
+                resultDiv.textContent = `请求失败: ${error.message}`;
+                resultDiv.className = 'result error';
+            }
+        }
+        
+        async function testTag(tagId) {
+            const resultDiv = document.getElementById('tagResults');
+            
+            try {
+                const response = await fetch('/api/room/getRoomsByCategory', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tag_id: tagId, page: 1, page_size: 10 })
+                });
+                
+                const data = await response.json();
+                console.log(`tag_id=${tagId} 结果:`, data);
+                
+                let result = `tag_id=${tagId} 测试结果:\n`;
+                result += `状态码: ${data.code}\n`;
+                result += `消息: ${data.msg}\n`;
+                
+                if (data.code === 200 && data.data && data.data.rooms) {
+                    const rooms = data.data.rooms;
+                    result += `房间数量: ${rooms.length}\n\n`;
+                    
+                    if (rooms.length > 0) {
+                        result += '房间列表:\n';
+                        rooms.forEach((room, index) => {
+                            result += `${index + 1}. ${room.room_name}\n`;
+                            result += `   tag_name: "${room.tag_name}", room_type: "${room.room_type}"\n`;
+                        });
+                    }
+                } else {
+                    result += '无房间数据\n';
+                }
+                
+                result += '\n' + '='.repeat(50) + '\n';
+                
+                // 追加到现有结果
+                if (resultDiv.textContent === '点击标签按钮查看结果...') {
+                    resultDiv.textContent = result;
+                } else {
+                    resultDiv.textContent += result;
+                }
+                
+                resultDiv.className = 'result success';
+                
+            } catch (error) {
+                const errorResult = `tag_id=${tagId} 错误: ${error.message}\n${'='.repeat(50)}\n`;
+                
+                if (resultDiv.textContent === '点击标签按钮查看结果...') {
+                    resultDiv.textContent = errorResult;
+                } else {
+                    resultDiv.textContent += errorResult;
+                }
+                
+                resultDiv.className = 'result error';
+            }
+        }
+        
+        // 页面加载时自动分析
+        window.onload = function() {
+            analyzeAllRooms();
+        };
+    </script>
+</body>
+</html>
