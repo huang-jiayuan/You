@@ -9,6 +9,7 @@ import Home from '../views/Home.vue'
 import About from '../views/About.vue'
 import Contact from '../views/Contact.vue'
 import Chat from '../views/Chat.vue'
+import Room from '../views/Room.vue'
 import ApiTest from '../views/ApiTest.vue'
 
 // 定义路由配置
@@ -81,6 +82,20 @@ const routes = [
       keepAlive: true,
       transition: 'slide-up',
       icon: '💬'
+    }
+  },
+  {
+    path: '/room/:id?',
+    name: 'Room',
+    component: Room,
+    meta: {
+      title: '聊天室',
+      description: '语音聊天室，支持礼物互动',
+      keywords: 'Vue3, 聊天室, 语音, 礼物',
+      requiresAuth: true,
+      keepAlive: true,
+      transition: 'slide-up',
+      icon: '🎙️'
     }
   },
   {

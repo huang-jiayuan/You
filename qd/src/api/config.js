@@ -40,6 +40,13 @@ export const API_ENDPOINTS = {
     LOGOUT: '/auth/logout'                   // 退出登录
   },
   
+  // 房间相关接口
+  ROOM: {
+    GIFTS: '/room/:roomId/gifts',            // 获取房间礼物列表
+    SEND_GIFT: '/room/gift/send',            // 发送礼物
+    GIFT_RECORDS: '/room/:roomId/gift/records' // 礼物记录
+  },
+  
   // 其他业务接口
   COMMON: {
     UPLOAD: '/common/upload',                // 文件上传
