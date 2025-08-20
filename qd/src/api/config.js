@@ -40,6 +40,13 @@ export const API_ENDPOINTS = {
     LOGOUT: '/auth/logout'                   // 退出登录
   },
   
+  // 用户信息管理接口
+  PROFILE: {
+    GET_INFO: '/user/profile',               // 获取当前用户信息
+    GET_USER_INFO: '/user/center',           // 获取用户详情信息
+    UPDATE_INFO: '/user/improve-info'        // 更新用户信息
+  },
+
   // 房间相关接口
   ROOM: {
     GET_RECOMMEND_ROOMS: '/room/getRecommendRooms',     // 获取推荐房间
@@ -57,7 +64,7 @@ export const API_ENDPOINTS = {
     KICK_FROM_MIC: '/room/kickFromMic',                 // 踢人下麦
     MUTE_MIC_USER: '/room/muteMicUser'                  // 禁言麦位用户
   },
-  
+
   // 其他业务接口
   COMMON: {
     UPLOAD: '/common/upload',                // 文件上传
@@ -78,7 +85,7 @@ export const HTTP_STATUS = {
 
 // 业务状态码（根据后端实际响应码）
 export const BUSINESS_CODE = {
-  SUCCESS: 200,      // 后端成功状态码是200
+  SUCCESS: 0,      // 后端成功状态码是200
   FAIL: 1,
   REQUEST_ERROR: 1000,     // 请求失败！无法找到获取的资源
   SERVER_ERROR: 1001,      // 请求失败！服务器内部错误

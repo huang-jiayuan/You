@@ -40,7 +40,7 @@ class HttpRequest {
 
     // 添加认证头，确保用户ID能够被后端正确识别
     if (this.token) {
-      headers['Authorization'] = `Bearer ${this.token}`
+      headers['x-token'] = this.token
     }
 
     return headers
@@ -59,12 +59,21 @@ class HttpRequest {
     const contentType = response.headers.get('content-type')
     let data
 
+    console.log('HTTP响应状态:', {
+      status: response.status,
+      statusText: response.statusText,
+      ok: response.ok,
+      contentType: contentType
+    })
+
     try {
       if (contentType && contentType.includes('application/json')) {
         data = await response.json()
       } else {
         data = await response.text()
       }
+      
+      console.log('解析后的响应数据:', data)
     } catch (parseError) {
       console.error('Response parsing error:', parseError)
       throw new Error('响应数据解析失败')
@@ -72,6 +81,11 @@ class HttpRequest {
 
     // 处理 HTTP 错误状态码
     if (!response.ok) {
+      console.error('HTTP错误响应:', {
+        status: response.status,
+        data: data
+      })
+      
       // 如果是 JSON 响应且包含错误信息，优先使用业务错误信息
       if (typeof data === 'object' && data.msg) {
         throw new Error(data.msg)

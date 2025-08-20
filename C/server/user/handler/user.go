@@ -4,14 +4,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/go-redis/redis/v8"
 	"math/rand"
 	"regexp"
 	"server/models"
 	"server/pkg"
 	"server/user/basic/inits"
 	__ "server/user/proto"
-
-	"github.com/go-redis/redis/v8"
 )
 
 type Server struct {
@@ -263,4 +262,27 @@ func (s *Server) MarkMessageAsDelivered(_ context.Context, in *__.MarkMessageAsD
 	return &__.MarkMessageAsDeliveredResponse{
 		Success: true,
 	}, nil
+}
+
+func (s *Server) UserCenterList(_ context.Context, in *__.UserCenterListRequest) (*__.UserCenterListResponse, error) {
+	u := &models.User{}
+	id, err := u.FindUsersById(in.UserId)
+	if err != nil {
+		return nil, err
+	}
+	var Item []*__.UserCenterList
+	for _, i := range id {
+		Item = append(Item, &__.UserCenterList{
+			Nickname:     i.Nickname,
+			Avatar:       i.Avatar,
+			Gender:       i.Gender,
+			VoiceTag:     i.VoiceTag,
+			InterestTags: i.InterestTags,
+			Level:        int64(i.Level),
+			VipStatus:    i.Status,
+			Balance:      float32(i.Balance),
+			Diamond:      int64(i.Diamond),
+		})
+	}
+	return &__.UserCenterListResponse{List: Item}, nil
 }

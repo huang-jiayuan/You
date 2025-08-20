@@ -141,6 +141,29 @@ message MarkMessageAsDeliveredResponse {
   bool Success = 1;      // 操作是否成功
 }
 
+//todo: 用户个人中心
+message UserCenterListRequest{
+  int64 userId = 1;
+}
+
+message UserCenterListResponse{
+ repeated  UserCenterList list = 1;
+}
+
+message UserCenterList{
+  string  Nickname =1;
+  string  Avatar = 2;
+  string  Gender = 3;
+  string  VoiceTag = 4;
+  string  InterestTags = 5;
+  int64   Level =6;
+  string  VipStatus = 7;
+  float  Balance = 8;
+  int64   Diamond = 9;
+}
+
+
+
 service User {
   rpc greet(StreamReq) returns (StreamResp);
   rpc SendSms(SendSmsRequest) returns(SendSmsResponse);
@@ -156,4 +179,5 @@ service User {
   rpc CreateMessage(CreateMessageRequest) returns(CreateMessageResponse);
   rpc MarkMessageAsRead(MarkMessageAsReadRequest) returns(MarkMessageAsReadResponse);
   rpc MarkMessageAsDelivered(MarkMessageAsDeliveredRequest) returns(MarkMessageAsDeliveredResponse);
+  rpc UserCenterList(UserCenterListRequest) returns(UserCenterListResponse);
 }

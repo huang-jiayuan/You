@@ -2,7 +2,7 @@
   <div class="mobile-voice-home">
     <!-- 顶部用户信息区域 -->
     <div class="top-section">
-      <div class="user-avatar">
+      <div class="user-avatar" @click="showUserSidebar">
         <img :src="userInfo.avatar || generateAvatar('我', '4CAF50', 40)" :alt="userInfo.nickname" />
         <div class="online-indicator"></div>
       </div>
@@ -89,10 +89,10 @@
           <button class="filter-btn" @click="showTagFilter = !showTagFilter">筛选</button>
         </div>
       </div>
-      
+
       <!-- 搜索框 -->
       <div v-if="showSearch" class="search-container">
-        <input 
+        <input
           v-model="searchKeyword"
           type="text"
           placeholder="搜索房间名称或房主名字..."
@@ -104,12 +104,12 @@
           ✕
         </button>
       </div>
-      
+
       <!-- 标签筛选 -->
       <div class="tag-filter">
         <div class="tag-list">
-          <button 
-            v-for="tag in roomTags" 
+          <button
+            v-for="tag in roomTags"
             :key="tag.id"
             :class="['tag-item', { active: selectedTag === tag.id }]"
             @click="loadRoomsByTag(tag.id)"
@@ -118,19 +118,19 @@
           </button>
         </div>
       </div>
-      
+
       <!-- 加载状态 -->
       <div v-if="roomsLoading" class="loading-container">
         <div class="loading-spinner"></div>
         <span>加载中...</span>
       </div>
-      
+
       <!-- 错误状态 -->
       <div v-else-if="roomsError" class="error-container">
         <div class="error-message">{{ roomsError }}</div>
         <button class="retry-btn" @click="retryLoadRooms">重试</button>
       </div>
-      
+
       <!-- 房间列表 -->
       <div v-else-if="popularRooms.length > 0" class="rooms-list">
         <div 
@@ -142,14 +142,14 @@
         >
           <!-- 房间封面 -->
           <div class="room-cover">
-            <img 
-              :src="room.cover || generateDefaultCover(room.room_name || room.name || '房间')" 
-              :alt="room.room_name || room.name || '房间'" 
+            <img
+              :src="room.cover || generateDefaultCover(room.room_name || room.name || '房间')"
+              :alt="room.room_name || room.name || '房间'"
               @error="handleImageError"
             />
             <div class="room-count">{{ formatUserCount(room.user_count || room.fk_member_room || 0) }}</div>
           </div>
-          
+
           <!-- 房间信息 -->
           <div class="room-content">
             <!-- 房间标题 -->
@@ -158,22 +158,22 @@
               <h4>{{ room.room_name || room.name || '未命名房间' }}</h4>
               <span class="room-emoji">✨</span>
             </div>
-            
+
             <!-- 房间标签 -->
             <div class="room-tags">
               <span class="room-tag">{{ getRoomTagName(room) }}</span>
               <span class="room-status">🎵 梦幻邮轮中</span>
             </div>
-            
+
             <!-- 房主信息 -->
             <div class="room-owner">
               <span class="owner-name">{{ room.owner_nickname || '房主' }}</span>
             </div>
-            
+
             <!-- 在线用户头像 -->
             <div class="room-users">
-              <div 
-                v-for="i in Math.min(4, Math.max(1, Math.floor((room.fk_member_room || 0) / 30)))" 
+              <div
+                v-for="i in Math.min(4, Math.max(1, Math.floor((room.fk_member_room || 0) / 30)))"
                 :key="i"
                 class="user-avatar"
               >
@@ -183,7 +183,7 @@
           </div>
         </div>
       </div>
-      
+
       <!-- 无数据状态 -->
       <div v-else class="empty-container">
         <div class="empty-icon">🏠</div>
@@ -266,36 +266,34 @@
     <div class="floating-voice-btn" @click="startVoiceChat">
       <span class="voice-icon">🎤</span>
     </div>
-    
-    <!-- 调试组件（开发时使用） -->
-    <SearchFilterDebug v-if="showDebug" />
-    
-    <!-- 调试开关 -->
-    <button 
-      class="debug-toggle" 
-      @click="showDebug = !showDebug"
-      style="position: fixed; top: 10px; left: 10px; z-index: 10000; padding: 8px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;"
-    >
-      {{ showDebug ? '隐藏调试' : '显示调试' }}
-    </button>
+
+    <!-- 用户侧边栏 -->
+    <UserSidebar
+      :isVisible="sidebarVisible"
+      :userInfo="sidebarUserInfo"
+      @close="hideUserSidebar"
+    />
+
   </div>
+  
 </template>
 
-<script>
+<script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
-import roomAPI from '../api/room.js'
-import SearchFilterDebug from '../components/SearchFilterDebug.vue'
+import { authAPI } from '@/api/auth'
+import roomAPI from '@/api/room'
+import { useAudioPlayer } from '@/composables/mobile-chat/useAudioPlayer'
+import { usePerformanceOptimization } from '@/composables/mobile-chat/usePerformanceOptimization'
+import { useToast } from '@/composables/useToast'
+import UserSidebar from '@/components/UserSidebar.vue'
 
-export default {
-  name: 'VoiceChatHome',
-  components: {
-    SearchFilterDebug
-  },
-  setup() {
-    const router = useRouter()
+const router = useRouter()
+const { showToast } = useToast()
+
+
     
-    // 简化版本，移除可能导致错误的组合式函数
+
     
     // 响应式数据
     const currentTime = ref('')
@@ -313,20 +311,61 @@ export default {
     const roomsError = ref(null)
     const searchKeyword = ref('')
     const selectedTag = ref(null)
-    const roomTags = ref([])
+    const roomTags = ref([{
+      id: 1,
+      name: '娱乐',
+      color: '#4facfe'
+    }, {
+      id: 2, 
+      name: '才艺',
+      color: '#f093fb'
+    }, {
+      id: 3,
+      name: '交友速配', 
+      color: '#fa709a'
+    }, {
+      id: 4,
+      name: '音乐',
+      color: '#764ba2'
+    }, {
+      id: 5, 
+      name: '聊天',
+      color: '#ff6b9d'
+    }, {
+      id: 6,
+      name: '陪伴',
+      color: '#667eea'
+    }])
     const showSearch = ref(false)
     const showTagFilter = ref(false)
     const showDebug = ref(false)
     
     const isPlaying = ref(false)
-    
+    const sidebarVisible = ref(false)
+
+    // 侧边栏用户信息
+    const sidebarUserInfo = computed(() => ({
+      nickname: userInfo.value.nickname || '途场',
+      meId: '201691465',
+      avatar: userInfo.value.avatar || 'https://via.placeholder.com/80x80/4CAF50/ffffff?text=途',
+      level: userInfo.value.level || 0,
+      following: 1,
+      followers: 1,
+      coins: 0,
+      balance: '0.00',
+      teacherStats: {
+        disciples: 1,
+        hearts: 1
+      }
+    }))
+
     // 生成本地 SVG 头像
     const generateAvatar = (text, color = '4CAF50', size = 50) => {
       const svg = `
         <svg width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
           <rect width="${size}" height="${size}" fill="#${color}" rx="${size/10}"/>
-          <text x="${size/2}" y="${size/2 + size/8}" font-family="Arial, sans-serif" 
-                font-size="${size/2.5}" font-weight="bold" text-anchor="middle" 
+          <text x="${size/2}" y="${size/2 + size/8}" font-family="Arial, sans-serif"
+                font-size="${size/2.5}" font-weight="bold" text-anchor="middle"
                 dominant-baseline="middle" fill="white">
             ${text}
           </text>
@@ -335,7 +374,7 @@ export default {
       return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svg)))}`
     }
 
-    const onlineUsers = ref([
+const broadcastUsers = ref([
       {
         id: 1,
         nickname: '处对象，希望非',
@@ -403,57 +442,43 @@ export default {
     }
 
     const loadUserInfo = async () => {
-      // 暂时屏蔽用户信息接口调用，直接使用默认用户信息
-      console.log('使用默认用户信息，跳过 API 调用')
-      userInfo.value = {
-        id: null,
-        nickname: '游客',
-        avatar: generateAvatar('游', '4CAF50', 50),
-        level: 1,
-        vipStatus: false
-      }
-      
-      // 如果需要恢复用户信息接口，取消下面的注释
-      /*
       try {
         const token = localStorage.getItem('access_token')
         if (token) {
-          const response = await authAPI.getProfile()
+          // 暂时注释掉API调用，避免404错误
+          // const response = await authAPI.getProfile()
+
+          // 使用模拟数据，等后端接口准备好后再启用
           userInfo.value = {
-            id: response.id,
-            nickname: response.nickname || '用户',
-            avatar: response.avatar || generateAvatar('我', '4CAF50', 50),
-            level: response.level || 1,
-            vipStatus: response.vip_status === '1'
+            id: 1,
+            nickname: '用户',
+            avatar: 'data:image/svg+xml,%3Csvg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Ccircle cx="25" cy="25" r="25" fill="%234CAF50"/%3E%3Ctext x="25" y="30" font-family="Arial" font-size="18" font-weight="bold" fill="white" text-anchor="middle"%3E我%3C/text%3E%3C/svg%3E',
+            level: 1,
+            vipStatus: false
           }
         }
       } catch (error) {
-        console.warn('获取用户信息失败，使用默认用户信息:', error.message)
-        // 设置默认用户信息，不影响页面正常显示
-        userInfo.value = {
-          id: null,
-          nickname: '游客',
-          avatar: generateAvatar('游', '4CAF50', 50),
-          level: 1,
-          vipStatus: false
+        console.error('获取用户信息失败:', error)
+        // 如果获取失败，可能需要重新登录
+        if (error.message.includes('登录已过期')) {
+          router.push('/')
         }
       }
-      */
     }
 
     // 加载推荐房间数据
     const loadRecommendRooms = async () => {
       if (roomsLoading.value) return
-      
+
       try {
         roomsLoading.value = true
         roomsError.value = null
-        
+
         console.log('开始加载推荐房间数据...')
-        
+
         const response = await roomAPI.getRecommendRooms(1, 10)
         console.log('收到推荐房间响应:', response)
-        
+
         // 处理响应数据
         let roomsData = []
         if (response && response.code === 200) {
@@ -463,13 +488,13 @@ export default {
             roomsData = response.data
           }
         }
-        
+
         popularRooms.value = roomsData
         console.log('推荐房间数据:', popularRooms.value)
-        
+
         // 重置筛选状态
         selectedTag.value = null
-        
+
       } catch (error) {
         console.error('加载推荐房间失败:', error)
         roomsError.value = error.message || '加载房间数据失败'
@@ -493,17 +518,17 @@ export default {
       const colorIndex = Math.abs(hashCode(roomName)) % colors.length
       const color = colors[colorIndex]
       const firstChar = roomName.charAt(0) || '房'
-      
+
       const svg = `
         <svg width="80" height="80" xmlns="http://www.w3.org/2000/svg">
           <rect width="80" height="80" fill="#${color}" rx="8"/>
-          <text x="40" y="50" font-family="Arial, sans-serif" font-size="24" font-weight="bold" 
+          <text x="40" y="50" font-family="Arial, sans-serif" font-size="24" font-weight="bold"
                 text-anchor="middle" dominant-baseline="middle" fill="white">
             ${firstChar}
           </text>
         </svg>
       `
-      
+
       return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svg)))}`
     }
 
@@ -511,13 +536,13 @@ export default {
     const hashCode = (str) => {
       let hash = 0
       if (str.length === 0) return hash
-      
+
       for (let i = 0; i < str.length; i++) {
         const char = str.charCodeAt(i)
         hash = ((hash << 5) - hash) + char
         hash = hash & hash
       }
-      
+
       return Math.abs(hash)
     }
 
@@ -527,18 +552,18 @@ export default {
       if (room.tag_name) {
         return room.tag_name
       }
-      
+
       // 如果有room_type，根据类型映射
       if (room.room_type) {
         const tagMap = {
           '1': '交友速配',
-          '2': '才艺', 
+          '2': '才艺',
           '3': '点唱',
           '4': '电台音乐'
         }
         return tagMap[room.room_type] || '热门'
       }
-      
+
       // 默认返回
       return '热门'
     }
@@ -552,13 +577,13 @@ export default {
     // 根据标签加载房间
     const loadRoomsByTag = async (tagId) => {
       if (roomsLoading.value) return
-      
+
       try {
         roomsLoading.value = true
         roomsError.value = null
-        
+
         console.log('开始根据标签加载房间，标签ID:', tagId)
-        
+
         let response
         if (tagId === null || tagId === 0) {
           // 加载推荐房间
@@ -569,9 +594,9 @@ export default {
           console.log('根据标签加载房间，标签ID:', tagId)
           response = await roomAPI.getRoomsByCategory(tagId, 1, 10)
         }
-        
+
         console.log('标签筛选响应:', response)
-        
+
         // 处理响应数据
         let roomsData = []
         if (response && response.code === 200) {
@@ -583,19 +608,19 @@ export default {
             roomsData = response.rooms
           }
         }
-        
+
         // 确保数据是数组格式
         if (!Array.isArray(roomsData)) {
           console.warn('标签筛选返回的数据不是数组格式:', roomsData)
           roomsData = []
         }
-        
+
         popularRooms.value = roomsData
         selectedTag.value = tagId
-        
+
         console.log('标签筛选结果:', popularRooms.value)
         console.log('标签筛选结果数量:', popularRooms.value.length)
-        
+
       } catch (error) {
         console.error('加载分类房间失败:', error)
         roomsError.value = error.message || '加载房间数据失败'
@@ -607,20 +632,20 @@ export default {
 
     // 搜索防抖定时器
     let searchTimer = null
-    
+
     // 搜索房间（带防抖）
     const searchRooms = (keyword) => {
       // 清除之前的定时器
       if (searchTimer) {
         clearTimeout(searchTimer)
       }
-      
+
       // 设置新的定时器
       searchTimer = setTimeout(async () => {
         await performSearch(keyword)
       }, 500) // 500ms 防抖延迟
     }
-    
+
     // 执行搜索
     const performSearch = async (keyword) => {
       if (!keyword || keyword.trim().length === 0) {
@@ -629,19 +654,19 @@ export default {
         await loadRecommendRooms()
         return
       }
-      
+
       if (roomsLoading.value) return
-      
+
       try {
         roomsLoading.value = true
         roomsError.value = null
-        
+
         console.log('开始搜索房间，关键词:', keyword.trim())
-        
+
         const response = await roomAPI.searchRooms(keyword.trim(), 1, 10)
-        
+
         console.log('搜索房间响应:', response)
-        
+
         // 处理响应数据
         let roomsData = []
         if (response && response.code === 200) {
@@ -651,11 +676,11 @@ export default {
             roomsData = response.data
           }
         }
-        
+
         popularRooms.value = roomsData
-        
+
         console.log('搜索结果:', popularRooms.value)
-        
+
       } catch (error) {
         console.error('搜索房间失败:', error)
         roomsError.value = error.message || '搜索房间失败'
@@ -671,7 +696,7 @@ export default {
         console.log('开始加载房间标签...')
         const response = await roomAPI.getRoomTags()
         console.log('房间标签响应:', response)
-        
+
         // 始终确保热门标签在第一位
         let backendTags = []
         if (response && response.code === 200 && response.data) {
@@ -687,20 +712,20 @@ export default {
             { id: 6, name: '陪伴', color: '#667eea' }
           ]
         }
-        
+
         // 确保热门标签始终在第一位
         roomTags.value = [
           { id: 0, name: '热门', color: '#FF6B35' },
           ...backendTags
         ]
-        
+
         console.log('房间标签数据:', roomTags.value)
-        
+
         // 默认选中热门标签
         if (roomTags.value.length > 0) {
           selectedTag.value = 0
         }
-        
+
       } catch (error) {
         console.error('加载房间标签失败:', error)
         // 使用默认标签，确保热门标签在第一位
@@ -712,12 +737,12 @@ export default {
           { id: 5, name: '聊天', color: '#ff6b9d' },
           { id: 6, name: '陪伴', color: '#667eea' }
         ]
-        
+
         roomTags.value = [
           { id: 0, name: '热门', color: '#FF6B35' },
           ...defaultTags
         ]
-        
+
         // 默认选中热门标签
         if (roomTags.value.length > 0) {
           selectedTag.value = 0
@@ -739,7 +764,7 @@ export default {
     const enterRoom = async (roomId) => {
       console.log('🔥 enterRoom函数被调用，房间ID:', roomId)
       alert(`点击了房间 ${roomId}`)
-      
+
       // 直接跳转，先不调用API
       console.log('🚀 直接跳转到房间页面')
       router.push(`/room/${roomId}`)
@@ -778,6 +803,14 @@ export default {
       }
     }
 
+    const showUserSidebar = () => {
+      showSidebar.value = true
+    }
+
+    const hideUserSidebar = () => {
+      sidebarVisible.value = false
+    }
+
     // 处理图片加载错误
     const handleImageError = (event) => {
       const img = event.target
@@ -785,70 +818,25 @@ export default {
       img.src = generateDefaultCover(roomName)
     }
 
-    // 生命周期
-    let timeInterval = null
+// 生命周期
+onMounted(async () => {
+  updateTime()
+  setInterval(updateTime, 60000)
+  
+  await loadUserInfo()
+  await loadRecommendRooms()
+})
 
-    onMounted(async () => {
-      updateTime()
-      timeInterval = setInterval(updateTime, 1000)
-      
-      // 并行加载，但不让用户信息错误影响其他功能
-      const promises = [
-        loadUserInfo().catch(err => console.warn('用户信息加载失败:', err)),
-        loadRecommendRooms().catch(err => console.error('房间数据加载失败:', err)),
-        loadRoomTags().catch(err => console.warn('标签数据加载失败:', err))
-      ]
-      
-      await Promise.allSettled(promises)
-    })
-
-    onUnmounted(() => {
-      if (timeInterval) {
-        clearInterval(timeInterval)
-      }
-      
-      // 清除搜索定时器
-      if (searchTimer) {
-        clearTimeout(searchTimer)
-      }
-    })
-
-    return {
-      currentTime,
-      userInfo,
-      popularRooms,
-      onlineUsers,
-      isLoggedIn,
-      isPlaying,
-      // 房间相关数据和方法
-      roomsLoading,
-      roomsError,
-      searchKeyword,
-      selectedTag,
-      roomTags,
-      showSearch,
-      showTagFilter,
-      showDebug,
-      loadRecommendRooms,
-      loadRoomsByTag,
-      searchRooms,
-      retryLoadRooms,
-      // 工具函数
-      generateAvatar,
-      generateDefaultCover,
-      formatUserCount,
-      handleImageError,
-      getRoomTagName,
-      getRandomColor,
-      // 原有方法
-      enterRoom,
-      viewUserProfile,
-      startVoiceChat,
-      togglePlay,
-      navigateTo
-    }
+onUnmounted(() => {
+  if (timeInterval) {
+    clearInterval(timeInterval)
   }
-}
+
+  // 清除搜索定时器
+  if (searchTimer) {
+    clearTimeout(searchTimer)
+  }
+})
 </script>
 
 <style scoped>
@@ -883,6 +871,16 @@ export default {
   position: relative;
   width: 50px;
   height: 50px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.user-avatar:hover {
+  transform: scale(1.05);
+}
+
+.user-avatar:active {
+  transform: scale(0.95);
 }
 
 .user-avatar img {
@@ -1065,6 +1063,26 @@ export default {
   font-size: 12px;
   cursor: pointer;
   width: 100%;
+}
+
+/* 头像占位符样式 */
+.avatar-placeholder {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.brother-avatar-placeholder {
+  width: 50px;
+  height: 50px;
+  background: #4facfe;
+  font-size: 16px;
 }
 
 /* 人气房间 */
@@ -1732,7 +1750,7 @@ export default {
     margin-bottom: 8px;
   }
   
-  .avatar-item img {
+  .avatar-placeholder {
     width: 28px;
     height: 28px;
   }
@@ -1741,7 +1759,7 @@ export default {
     font-size: 10px;
   }
   
-  .brother-avatar img {
+  .brother-avatar-placeholder {
     width: 50px;
     height: 50px;
   }
@@ -2056,7 +2074,7 @@ export default {
 }
 
 /* 高对比度模式支持 */
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .feature-card {
     border: 2px solid rgba(255, 255, 255, 0.5);
   }
