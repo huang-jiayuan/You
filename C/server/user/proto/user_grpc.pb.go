@@ -33,6 +33,7 @@ const (
 	User_CreateMessage_FullMethodName          = "/user.User/CreateMessage"
 	User_MarkMessageAsRead_FullMethodName      = "/user.User/MarkMessageAsRead"
 	User_MarkMessageAsDelivered_FullMethodName = "/user.User/MarkMessageAsDelivered"
+	User_UserCenterList_FullMethodName         = "/user.User/UserCenterList"
 )
 
 // UserClient is the client API for User service.
@@ -53,6 +54,7 @@ type UserClient interface {
 	CreateMessage(ctx context.Context, in *CreateMessageRequest, opts ...grpc.CallOption) (*CreateMessageResponse, error)
 	MarkMessageAsRead(ctx context.Context, in *MarkMessageAsReadRequest, opts ...grpc.CallOption) (*MarkMessageAsReadResponse, error)
 	MarkMessageAsDelivered(ctx context.Context, in *MarkMessageAsDeliveredRequest, opts ...grpc.CallOption) (*MarkMessageAsDeliveredResponse, error)
+	UserCenterList(ctx context.Context, in *UserCenterListRequest, opts ...grpc.CallOption) (*UserCenterListResponse, error)
 }
 
 type userClient struct {
@@ -203,6 +205,16 @@ func (c *userClient) MarkMessageAsDelivered(ctx context.Context, in *MarkMessage
 	return out, nil
 }
 
+func (c *userClient) UserCenterList(ctx context.Context, in *UserCenterListRequest, opts ...grpc.CallOption) (*UserCenterListResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UserCenterListResponse)
+	err := c.cc.Invoke(ctx, User_UserCenterList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -221,6 +233,7 @@ type UserServer interface {
 	CreateMessage(context.Context, *CreateMessageRequest) (*CreateMessageResponse, error)
 	MarkMessageAsRead(context.Context, *MarkMessageAsReadRequest) (*MarkMessageAsReadResponse, error)
 	MarkMessageAsDelivered(context.Context, *MarkMessageAsDeliveredRequest) (*MarkMessageAsDeliveredResponse, error)
+	UserCenterList(context.Context, *UserCenterListRequest) (*UserCenterListResponse, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -269,6 +282,9 @@ func (UnimplementedUserServer) MarkMessageAsRead(context.Context, *MarkMessageAs
 }
 func (UnimplementedUserServer) MarkMessageAsDelivered(context.Context, *MarkMessageAsDeliveredRequest) (*MarkMessageAsDeliveredResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MarkMessageAsDelivered not implemented")
+}
+func (UnimplementedUserServer) UserCenterList(context.Context, *UserCenterListRequest) (*UserCenterListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserCenterList not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -535,6 +551,24 @@ func _User_MarkMessageAsDelivered_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_UserCenterList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserCenterListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UserCenterList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_UserCenterList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UserCenterList(ctx, req.(*UserCenterListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -597,6 +631,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "MarkMessageAsDelivered",
 			Handler:    _User_MarkMessageAsDelivered_Handler,
+		},
+		{
+			MethodName: "UserCenterList",
+			Handler:    _User_UserCenterList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

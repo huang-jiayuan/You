@@ -8,16 +8,21 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "test:navigation": "node test-navigation.js",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage"
   },
   "dependencies": {
     "vue": "^3.4.0",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
+    "@types/node": "^24.3.0",
     "@vitejs/plugin-vue": "^4.5.0",
     "@vue/test-utils": "^2.4.0",
     "jsdom": "^23.0.0",
+    "typescript": "^5.9.2",
     "vite": "^5.0.0",
     "vitest": "^1.0.0"
   }

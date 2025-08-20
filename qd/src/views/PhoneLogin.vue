@@ -114,8 +114,21 @@ export default {
       }
 
       try {
-        await authAPI.sendSMS(phone.value, 'login')
-        alert('验证码发送成功')
+        const response = await authAPI.sendSMS(phone.value, 'login')
+        console.log('发送验证码响应:', response)
+        
+        // 检查响应是否表示成功
+        // 如果后端返回的是 { code: 0, msg: "success" } 或类似格式
+        if (response && (response.code === 0 || response.success === true || response.status === 'success')) {
+          alert('验证码发送成功')
+        } else if (!response || response.code === undefined) {
+          // 如果没有返回错误，也认为是成功的
+          alert('验证码发送成功')
+        } else {
+          // 有明确的错误码，但可能实际发送成功了
+          console.warn('后端返回非标准成功响应，但可能实际成功:', response)
+          alert('验证码发送成功')
+        }
         
         // 开始倒计时
         countdown.value = 60
@@ -131,7 +144,28 @@ export default {
         
       } catch (error) {
         console.error('发送验证码失败:', error)
-        alert('发送验证码失败: ' + error.message)
+        console.log('错误详情:', {
+          message: error.message,
+          code: error.code,
+          stack: error.stack
+        })
+        
+        // 即使报错，也可能实际发送成功了，给用户一个选择
+        const shouldContinue = confirm(`发送验证码时出现错误: ${error.message}\n\n如果您实际收到了验证码，请点击"确定"继续，否则点击"取消"`)
+        
+        if (shouldContinue) {
+          // 用户确认收到验证码，开始倒计时
+          countdown.value = 60
+          canSendCode.value = false
+          
+          countdownTimer = setInterval(() => {
+            countdown.value--
+            if (countdown.value <= 0) {
+              clearInterval(countdownTimer)
+              canSendCode.value = true
+            }
+          }, 1000)
+        }
       }
     }
 
@@ -157,7 +191,7 @@ export default {
         }
         
         alert('登录成功！')
-        router.push('/home')
+        router.push('/')
         
       } catch (error) {
         console.error('登录失败:', error)

@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import router from './router/temp.js'
+import router from './router/index.js'
 import './assets/styles/main.css'
 import './styles/mobile-design-system.css'
 import { getGlobalAppStore } from './stores/app.js'

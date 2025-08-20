@@ -4,7 +4,7 @@
  */
 
 import { API_CONFIG, HTTP_STATUS, BUSINESS_CODE } from './config.js'
-import ResponseHandler from './responseHandler.js'
+import { isUserLoggedIn, clearUserAuth } from '../utils/userUtils.js'
 
 class HttpRequest {
   constructor() {
@@ -38,8 +38,9 @@ class HttpRequest {
       'Accept': 'application/json'
     }
 
+    // 添加认证头，确保用户ID能够被后端正确识别
     if (this.token) {
-      headers['Authorization'] = `Bearer ${this.token}`
+      headers['x-token'] = this.token
     }
 
     return headers
@@ -58,12 +59,21 @@ class HttpRequest {
     const contentType = response.headers.get('content-type')
     let data
 
+    console.log('HTTP响应状态:', {
+      status: response.status,
+      statusText: response.statusText,
+      ok: response.ok,
+      contentType: contentType
+    })
+
     try {
       if (contentType && contentType.includes('application/json')) {
         data = await response.json()
       } else {
         data = await response.text()
       }
+      
+      console.log('解析后的响应数据:', data)
     } catch (parseError) {
       console.error('Response parsing error:', parseError)
       throw new Error('响应数据解析失败')
@@ -71,6 +81,11 @@ class HttpRequest {
 
     // 处理 HTTP 错误状态码
     if (!response.ok) {
+      console.error('HTTP错误响应:', {
+        status: response.status,
+        data: data
+      })
+      
       // 如果是 JSON 响应且包含错误信息，优先使用业务错误信息
       if (typeof data === 'object' && data.msg) {
         throw new Error(data.msg)
@@ -96,6 +111,14 @@ class HttpRequest {
   // 处理错误
   handleError(error) {
     console.error('API Request Error:', error)
+    
+    // 如果是认证错误，清除无效的token
+    if (error.message.includes('未授权') || error.message.includes('401')) {
+      console.warn('Authentication failed, clearing tokens')
+      clearUserAuth()
+      // 可以在这里触发跳转到登录页面
+      // window.location.href = '/login'
+    }
     
     // 根据错误类型进行处理
     if (error.name === 'AbortError') {
@@ -132,17 +155,10 @@ class HttpRequest {
       
       const data = await this.handleResponse(response)
       
-      // 使用 ResponseHandler 处理业务逻辑
-      try {
-        return ResponseHandler.handleApiResponse(data)
-      } catch (businessError) {
-        // 处理需要重新登录的错误
-        if (ResponseHandler.shouldRelogin(businessError.code)) {
-          this.clearToken()
-          window.location.href = '/'
-        }
-        throw businessError
-      }
+      // 直接返回完整的响应数据，让上层组件处理业务逻辑
+      // 不要在这里根据 code 判断成功失败，因为后端可能返回 code !== 200 但仍然是有效响应
+      console.log('HTTP请求完成，返回数据:', data)
+      return data
     } catch (error) {
       clearTimeout(timeoutId)
       return this.handleError(error)

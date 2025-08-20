@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>最终搜索测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
+        .search-input { padding: 10px; width: 300px; border: 1px solid #ddd; border-radius: 4px; margin-right: 10px; }
+        .button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .result { margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 4px; max-height: 400px; overflow-y: auto; }
+        .success { background-color: #d4edda; }
+        .error { background-color: #f8d7da; }
+        .room-item { margin: 10px 0; padding: 10px; background: white; border-radius: 4px; border-left: 4px solid #007bff; }
+        .test-btn { padding: 8px 15px; margin: 5px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .highlight { background-color: yellow; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>🔍 最终搜索功能测试</h1>
+    <p>测试修复表名后的搜索功能（房间表：room，用户表：user）</p>
+    
+    <div class="test-section">
+        <h3>搜索测试</h3>
+        <div>
+            <input type="text" id="searchInput" class="search-input" placeholder="输入房间名称或房主昵称..." />
+            <button class="button" onclick="performSearch()">搜索</button>
+        </div>
+        
+        <div style="margin: 15px 0;">
+            <strong>快速测试：</strong><br>
+            <button class="test-btn" onclick="testSearch('郑潇')">搜索"郑潇"</button>
+            <button class="test-btn" onclick="testSearch('用户1')">搜索"用户1"</button>
+            <button class="test-btn" onclick="testSearch('用户2')">搜索"用户2"</button>
+            <button class="test-btn" onclick="testSearch('房间')">搜索"房间"</button>
+            <button class="test-btn" onclick="testSearch('陪玩')">搜索"陪玩"</button>
+        </div>
+        
+        <div id="searchResult" class="result">输入关键词开始搜索...</div>
+    </div>
+
+    <script>
+        async function performSearch() {
+            const keyword = document.getElementById('searchInput').value.trim();
+            if (!keyword) {
+                alert('请输入搜索关键词');
+                return;
+            }
+            await testSearch(keyword);
+        }
+        
+        async function testSearch(keyword) {
+            document.getElementById('searchInput').value = keyword;
+            
+            const resultDiv = document.getElementById('searchResult');
+            resultDiv.innerHTML = `<div style="color: #007bff;">🔍 正在搜索 "${keyword}"...</div>`;
+            resultDiv.className = 'result';
+            
+            try {
+                const response = await fetch('/api/room/searchRooms', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        keyword: keyword,
+                        page: 1,
+                        page_size: 20
+                    })
+                });
+                
+                const data = await response.json();
+                console.log(`搜索"${keyword}"结果:`, data);
+                
+                let resultHtml = `<h4>🔍 搜索关键词: "${keyword}"</h4>`;
+                resultHtml += `<p><strong>状态:</strong> ${data.code === 200 ? '✅ 成功' : '❌ 失败'} (${data.code})</p>`;
+                resultHtml += `<p><strong>消息:</strong> ${data.msg}</p>`;
+                
+                if (data.code === 200 && data.data && data.data.rooms) {
+                    const rooms = data.data.rooms;
+                    resultHtml += `<p><strong>找到房间数:</strong> ${rooms.length}</p>`;
+                    
+                    if (rooms.length > 0) {
+                        resultHtml += '<div style="margin-top: 15px;"><strong>📋 搜索结果:</strong></div>';
+                        rooms.forEach((room, index) => {
+                            const matchInfo = analyzeMatch(keyword, room);
+                            resultHtml += `
+                                <div class="room-item">
+                                    <strong>${index + 1}. ${highlightMatch(room.room_name || '未命名房间', keyword)}</strong>
+                                    <br><strong>房主:</strong> ${highlightMatch(room.owner_nickname || '未知', keyword)}
+                                    <br><strong>房间ID:</strong> ${room.id || room.room_id}
+                                    <br><strong>标签:</strong> ${room.tag_name || '无'}
+                                    <br><strong>用户数:</strong> ${room.fk_member_room || room.user_count || 0}
+                                    <br><strong>匹配类型:</strong> <span style="color: #007bff; font-weight: bold;">${matchInfo}</span>
+                                </div>
+                            `;
+                        });
+                    }
+                } else {
+                    resultHtml += '<div style="color: orange; padding: 15px; text-align: center;">🔍 未找到相关房间</div>';
+                }
+                
+                resultDiv.innerHTML = resultHtml;
+                resultDiv.className = data.code === 200 ? 'result success' : 'result error';
+                
+            } catch (error) {
+                console.error('搜索失败:', error);
+                resultDiv.innerHTML = `<div style="color: red;">❌ 搜索失败: ${error.message}</div>`;
+                resultDiv.className = 'result error';
+            }
+        }
+        
+        function highlightMatch(text, keyword) {
+            if (!text || !keyword) return text || '';
+            const regex = new RegExp(`(${keyword})`, 'gi');
+            return text.replace(regex, '<span class="highlight">$1</span>');
+        }
+        
+        function analyzeMatch(keyword, room) {
+            const reasons = [];
+            const lowerKeyword = keyword.toLowerCase();
+            
+            if (room.room_name && room.room_name.toLowerCase().includes(lowerKeyword)) {
+                reasons.push('房间名匹配');
+            }
+            if (room.owner_nickname && room.owner_nickname.toLowerCase().includes(lowerKeyword)) {
+                reasons.push('房主名匹配');
+            }
+            if (room.tag_name && room.tag_name.toLowerCase().includes(lowerKeyword)) {
+                reasons.push('标签匹配');
+            }
+            
+            return reasons.length > 0 ? reasons.join(' + ') : '其他匹配';
+        }
+        
+        // 回车键搜索
+        document.getElementById('searchInput').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            }
+        });
+    </script>
+</body>
+</html>

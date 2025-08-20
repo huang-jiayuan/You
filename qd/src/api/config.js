@@ -46,7 +46,32 @@ export const API_ENDPOINTS = {
     SEND_GIFT: '/room/gift/send',            // 发送礼物
     GIFT_RECORDS: '/room/:roomId/gift/records' // 礼物记录
   },
-  
+
+  // 用户信息管理接口
+  PROFILE: {
+    GET_INFO: '/user/profile',               // 获取当前用户信息
+    GET_USER_INFO: '/user/center',           // 获取用户详情信息
+    UPDATE_INFO: '/user/improve-info'        // 更新用户信息
+  },
+
+  // 房间相关接口
+  ROOM: {
+    GET_RECOMMEND_ROOMS: '/room/getRecommendRooms',     // 获取推荐房间
+    GET_ROOMS_BY_CATEGORY: '/room/getRoomsByCategory',  // 根据分类获取房间
+    SEARCH_ROOMS: '/room/searchRooms',                  // 搜索房间
+    JOIN_ROOM: '/room/joinRoom',                        // 进入房间
+    LEAVE_ROOM: '/room/leaveRoom',                      // 离开房间
+    CREATE_ROOM: '/room/createroom',                    // 创建房间
+    UPDATE_ROOM: '/room/updateroom',                    // 更新房间
+    CLOSE_ROOM: '/room/closeRoom',                      // 关闭房间
+    // 麦位管理接口
+    APPLY_MIC: '/room/applyMic',                        // 申请上麦
+    LEAVE_MIC: '/room/leaveMic',                        // 下麦
+    HANDLE_MIC_APPLICATION: '/room/handleMicApplication', // 处理麦位申请
+    KICK_FROM_MIC: '/room/kickFromMic',                 // 踢人下麦
+    MUTE_MIC_USER: '/room/muteMicUser'                  // 禁言麦位用户
+  },
+
   // 其他业务接口
   COMMON: {
     UPLOAD: '/common/upload',                // 文件上传

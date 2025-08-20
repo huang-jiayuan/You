@@ -12,17 +12,33 @@ export class ResponseHandler {
    * @returns {*} 处理后的数据
    */
   static handleApiResponse(response) {
+    console.log('ResponseHandler 处理响应:', response)
+    
     // 检查响应格式是否符合后端统一格式
-    if (typeof response === 'object' && response !== null && 'code' in response) {
-      const { code, msg, data } = response
-      
-      // 处理成功响应
-      if (code === BUSINESS_CODE.SUCCESS) {
-        return data || response
+    if (typeof response === 'object' && response !== null) {
+      // 处理标准格式 { code, msg, data }
+      if ('code' in response) {
+        const { code, msg, data } = response
+        
+        // 处理成功响应 (code === 0 表示成功)
+        if (code === BUSINESS_CODE.SUCCESS) {
+          return data || response
+        }
+        
+        // 处理业务错误
+        console.warn('业务错误响应:', { code, msg })
+        throw new Error(msg || '请求失败')
       }
       
-      // 处理业务错误
-      throw new Error(msg || '请求失败')
+      // 处理其他可能的成功格式
+      if (response.success === true || response.status === 'success') {
+        return response.data || response
+      }
+      
+      // 处理错误格式
+      if (response.error || response.status === 'error') {
+        throw new Error(response.message || response.error || '请求失败')
+      }
     }
     
     // 如果不是统一格式，直接返回原始数据

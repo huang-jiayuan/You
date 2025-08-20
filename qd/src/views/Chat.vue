@@ -59,6 +59,10 @@
         v-for="chat in chatList" 
         :key="chat.id"
         class="chat-item"
+        :class="{ 
+          'chat-item-navigating': isNavigating && navigatingChatId === chat.id,
+          'chat-item-disabled': isNavigating
+        }"
         @click="openChat(chat.id)"
       >
         <div class="chat-avatar">
@@ -78,6 +82,10 @@
           <div class="chat-time">{{ chat.time }}</div>
           <div v-if="chat.unreadCount > 0" class="unread-badge">
             {{ chat.unreadCount }}
+          </div>
+          <!-- 导航加载指示器 -->
+          <div v-if="isNavigating && navigatingChatId === chat.id" class="loading-indicator">
+            <div class="loading-spinner"></div>
           </div>
         </div>
       </div>
@@ -115,18 +123,31 @@
 <script>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useToast } from '@/composables/useToast'
+import { useNavigationError } from '@/composables/useNavigationError'
 
 export default {
   name: 'ChatPage',
   setup() {
     const router = useRouter()
+    const { error: showError, success: showSuccess } = useToast()
+    const { 
+      handleNavigationError, 
+      handleParameterError, 
+      showSuccessMessage 
+    } = useNavigationError()
+    
+    // 导航状态管理
+    const isNavigating = ref(false)
+    const navigatingChatId = ref(null)
+    const navigationError = ref(null)
     
     // 聊天列表数据
     const chatList = ref([
       {
         id: 1,
         name: '高Sir',
-        avatar: 'https://via.placeholder.com/48x48/333333/ffffff?text=高',
+        avatar: 'data:image/svg+xml,%3Csvg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Ccircle cx="24" cy="24" r="24" fill="%23333333"/%3E%3Ctext x="24" y="28" font-family="Arial" font-size="16" font-weight="bold" fill="white" text-anchor="middle"%3E高%3C/text%3E%3C/svg%3E',
         lastMessage: '帅子声的小仙女！',
         time: '刚刚',
         unreadCount: 0,
@@ -135,7 +156,7 @@ export default {
       {
         id: 2,
         name: '进',
-        avatar: 'https://via.placeholder.com/48x48/4facfe/ffffff?text=进',
+        avatar: 'data:image/svg+xml,%3Csvg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Ccircle cx="24" cy="24" r="24" fill="%234facfe"/%3E%3Ctext x="24" y="28" font-family="Arial" font-size="16" font-weight="bold" fill="white" text-anchor="middle"%3E进%3C/text%3E%3C/svg%3E',
         lastMessage: 'hi小可爱，晚安喽呀',
         time: '刚刚',
         unreadCount: 0,
@@ -144,7 +165,7 @@ export default {
       {
         id: 3,
         name: '再再',
-        avatar: 'https://via.placeholder.com/48x48/fa709a/ffffff?text=再',
+        avatar: 'data:image/svg+xml,%3Csvg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Ccircle cx="24" cy="24" r="24" fill="%23fa709a"/%3E%3Ctext x="24" y="28" font-family="Arial" font-size="16" font-weight="bold" fill="white" text-anchor="middle"%3E再%3C/text%3E%3C/svg%3E',
         lastMessage: '接触觉你挺特别',
         time: '2分钟前',
         unreadCount: 0,
@@ -153,7 +174,7 @@ export default {
       {
         id: 4,
         name: '想要了',
-        avatar: 'https://via.placeholder.com/48x48/667eea/ffffff?text=想',
+        avatar: 'data:image/svg+xml,%3Csvg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Ccircle cx="24" cy="24" r="24" fill="%23667eea"/%3E%3Ctext x="24" y="28" font-family="Arial" font-size="16" font-weight="bold" fill="white" text-anchor="middle"%3E想%3C/text%3E%3C/svg%3E',
         lastMessage: '可以聊聊吗美女',
         time: '3分钟前',
         unreadCount: 0,
@@ -162,7 +183,7 @@ export default {
       {
         id: 5,
         name: '小m',
-        avatar: 'https://via.placeholder.com/48x48/ff6b9d/ffffff?text=小',
+        avatar: 'data:image/svg+xml,%3Csvg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Ccircle cx="24" cy="24" r="24" fill="%23ff6b9d"/%3E%3Ctext x="24" y="28" font-family="Arial" font-size="16" font-weight="bold" fill="white" text-anchor="middle"%3E小%3C/text%3E%3C/svg%3E',
         lastMessage: '我觉觉你挺特别',
         time: '2分钟前',
         unreadCount: 0,
@@ -171,7 +192,7 @@ export default {
       {
         id: 6,
         name: '峰俊男',
-        avatar: 'https://via.placeholder.com/48x48/764ba2/ffffff?text=峰',
+        avatar: 'data:image/svg+xml,%3Csvg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Ccircle cx="24" cy="24" r="24" fill="%23764ba2"/%3E%3Ctext x="24" y="28" font-family="Arial" font-size="16" font-weight="bold" fill="white" text-anchor="middle"%3E峰%3C/text%3E%3C/svg%3E',
         lastMessage: '想要吗',
         time: '4分钟前',
         unreadCount: 0,
@@ -180,7 +201,7 @@ export default {
       {
         id: 7,
         name: '榊涂蛋',
-        avatar: 'https://via.placeholder.com/48x48/f093fb/ffffff?text=榊',
+        avatar: 'data:image/svg+xml,%3Csvg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Ccircle cx="24" cy="24" r="24" fill="%23f093fb"/%3E%3Ctext x="24" y="28" font-family="Arial" font-size="16" font-weight="bold" fill="white" text-anchor="middle"%3E榊%3C/text%3E%3C/svg%3E',
         lastMessage: '前新小仙女你好呢一',
         time: '',
         unreadCount: 1,
@@ -193,11 +214,81 @@ export default {
       return chatList.value.reduce((total, chat) => total + chat.unreadCount, 0)
     })
 
+    // 本地错误处理函数（包装全局错误处理）
+    const handleChatNavigationError = (error, chatUser) => {
+      // 使用全局错误处理函数
+      handleNavigationError(error, { userName: chatUser?.name })
+      
+      // 重置导航状态
+      isNavigating.value = false
+      navigatingChatId.value = null
+      navigationError.value = error.message || '导航失败'
+    }
+
     // 方法
-    const openChat = (chatId) => {
+    const openChat = async (chatId) => {
+      // 防止重复点击
+      if (isNavigating.value) {
+        console.log('导航正在进行中，忽略重复点击')
+        return
+      }
+
+      // 参数验证
+      if (!chatId) {
+        handleParameterError('chatId', chatId)
+        return
+      }
+
       console.log('打开聊天:', chatId)
-      // 这里可以导航到具体的聊天页面
-      // router.push(`/chat/${chatId}`)
+      
+      // 查找对应的聊天用户信息
+      const chatUser = chatList.value.find(chat => chat.id === chatId)
+      if (!chatUser) {
+        console.error('未找到聊天用户信息')
+        handleParameterError('用户信息', chatId)
+        return
+      }
+      
+      // 设置导航状态
+      isNavigating.value = true
+      navigatingChatId.value = chatId
+      navigationError.value = null
+      
+      try {
+        // 构建导航参数
+        const params = { userId: String(chatId) }
+        const query = {
+          name: chatUser.name,
+          isOnline: String(chatUser.isOnline)
+          // 不传递avatar，避免URL过长问题
+        }
+        
+        // 调试信息
+        console.log('准备导航到:', {
+          name: 'ChatDetail',
+          params,
+          query
+        })
+
+        // 执行导航
+        await router.push({
+          name: 'ChatDetail',
+          params,
+          query
+        })
+        
+        console.log('导航成功:', { params, query })
+        showSuccessMessage(`正在打开与${chatUser.name}的聊天`)
+        
+      } catch (error) {
+        handleChatNavigationError(error, chatUser)
+      } finally {
+        // 延迟重置状态，确保页面转换完成
+        setTimeout(() => {
+          isNavigating.value = false
+          navigatingChatId.value = null
+        }, 300)
+      }
     }
 
     const showMessageOptions = () => {
@@ -209,7 +300,7 @@ export default {
       console.log('导航到:', page)
       switch(page) {
         case 'home':
-          router.push('/home')
+          router.push('/')
           break
         case 'room':
           // router.push('/room')
@@ -233,6 +324,9 @@ export default {
     return {
       chatList,
       totalUnreadCount,
+      isNavigating,
+      navigatingChatId,
+      navigationError,
       openChat,
       showMessageOptions,
       navigateTo
@@ -389,11 +483,106 @@ export default {
   padding: 12px 16px;
   border-bottom: 1px solid #f8f9ff;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  min-height: 44px; /* 确保触摸友好的最小高度 */
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent; /* 移除移动端点击高亮 */
+}
+
+.chat-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.1), transparent);
+  transition: left 0.5s ease;
 }
 
 .chat-item:hover {
   background: #f8f9ff;
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chat-item:hover::before {
+  left: 100%;
+}
+
+.chat-item:active {
+  background: #e8f5e8;
+  transform: scale(0.98) translateX(2px);
+  transition: all 0.1s ease;
+}
+
+/* 移动端触摸优化 */
+@media (hover: none) and (pointer: coarse) {
+  .chat-item:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  
+  .chat-item:active {
+    background: #e8f5e8;
+    transform: scale(0.96);
+  }
+}
+
+/* 导航状态样式 */
+.chat-item-navigating {
+  background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
+  position: relative;
+  transform: scale(0.98);
+  box-shadow: inset 0 0 0 2px rgba(76, 175, 80, 0.3);
+}
+
+.chat-item-navigating::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg, 
+    transparent 0%, 
+    rgba(76, 175, 80, 0.2) 50%, 
+    transparent 100%
+  );
+  animation: loading-shimmer 1.2s ease-in-out infinite;
+}
+
+.chat-item-disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  filter: grayscale(0.3);
+  transition: all 0.3s ease;
+}
+
+@keyframes loading-shimmer {
+  0% {
+    transform: translateX(-100%) skewX(-15deg);
+  }
+  50% {
+    transform: translateX(0%) skewX(-15deg);
+  }
+  100% {
+    transform: translateX(100%) skewX(-15deg);
+  }
+}
+
+/* 脉冲动画用于加载指示器 */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
 }
 
 .chat-item:last-child {
@@ -492,6 +681,37 @@ export default {
   border-radius: 10px;
   min-width: 16px;
   text-align: center;
+}
+
+/* 加载指示器 */
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.loading-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(76, 175, 80, 0.2);
+  border-top: 2px solid #4CAF50;
+  border-right: 2px solid #4CAF50;
+  border-radius: 50%;
+  animation: spin 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+}
+
+@keyframes spin {
+  0% { 
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.1);
+  }
+  100% { 
+    transform: rotate(360deg) scale(1);
+  }
 }
 
 /* 底部导航栏 */
@@ -596,7 +816,8 @@ export default {
   }
   
   .chat-item {
-    padding: 10px 12px;
+    padding: 12px;
+    min-height: 48px; /* 移动端更大的触摸目标 */
   }
   
   .floating-message-btn {

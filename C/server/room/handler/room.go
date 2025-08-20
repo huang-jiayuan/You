@@ -595,22 +595,44 @@ func (s *Server) SearchRooms(ctx context.Context, req *__.SearchRoomsReq) (*__.S
 		return nil, fmt.Errorf("搜索关键词长度不能超过50个字符")
 	}
 
-	// 模糊查询条件
+	// 模糊查询条件 - 支持房间名称和房主昵称搜索
 	searchPattern := "%" + req.Keyword + "%"
-	z := "status = '0' AND closed_at IS NULL AND deleted_at IS NULL AND room_name LIKE ?"
 
-	// 查询总数
-	var total int64
-	err := global.DB.Model(&models.Room{}).Where(z, searchPattern).Count(&total).Error
+	// 先查询符合条件的房间ID
+	var roomIds []uint
+	err := global.DB.Table("room").
+		Select("DISTINCT room.id").
+		Joins("LEFT JOIN user ON room.user_id = user.id").
+		Where("room.status = '0' AND room.closed_at IS NULL AND room.deleted_at IS NULL").
+		Where("(room.room_name LIKE ? OR user.nickname LIKE ?)", searchPattern, searchPattern).
+		Pluck("room.id", &roomIds).Error
 	if err != nil {
-		return nil, fmt.Errorf("查询搜索结果总数失败: %v", err)
+		return nil, fmt.Errorf("搜索房间ID失败: %v", err)
 	}
 
-	// 查询房间列表
+	fmt.Printf("搜索关键词: %s, 找到房间ID: %v\n", req.Keyword, roomIds)
+
+	// 如果没有找到房间，直接返回空结果
+	if len(roomIds) == 0 {
+		return &__.SearchRoomsResp{
+			Rooms:    []*__.RoomInfo{},
+			Total:    0,
+			Page:     1,
+			PageSize: int32(req.PageSize),
+			Keyword:  req.Keyword,
+		}, nil
+	}
+
+	// 查询总数
+	total := int64(len(roomIds))
+
+	// 分页查询房间详细信息
 	paginateScope, page, pageSize := Paginate(req.Page, req.PageSize)
 	var rooms []*models.Room
 	//根据在线人数倒序展示
-	err = global.DB.Scopes(paginateScope).Where(z, searchPattern).Order("fk_member_room DESC, created_at DESC").
+	err = global.DB.Where("id IN ?", roomIds).
+		Order("fk_member_room DESC, created_at DESC").
+		Scopes(paginateScope).
 		Find(&rooms).Error
 	if err != nil {
 		return nil, fmt.Errorf("搜索房间失败: %v", err)
@@ -662,16 +684,6 @@ func (s *Server) CloseRoom(ctx context.Context, req *__.CloseRoomStreamReq) (*__
 	// 验证用户是否是房主
 	if room.UserId != req.UserId {
 		return nil, fmt.Errorf("只有房主才能关闭房间 %v", err)
-	}
-
-	// 检查房间是否已经关闭
-	if room.Status == "1" || !room.ClosedAt.IsZero() {
-		return nil, fmt.Errorf("房间已关闭 %v", err)
-	}
-
-	// 检查房间是否已经被软删除
-	if !room.DeletedAt.IsZero() {
-		return nil, fmt.Errorf("房间已被删除 %v", err)
 	}
 
 	//开始事务处理
@@ -903,15 +915,15 @@ func (s *Server) ApplyMic(ctx context.Context, req *__.ApplyMicReq) (*__.ApplyMi
 		return nil, fmt.Errorf("查询房间失败: %v", err)
 	}
 
-	// 验证用户是否在房间中
-	var userRoom models.UserRoom
-	err = global.DB.Where("user_id = ? AND room_id = ? AND is_online = 1", req.UserId, req.RoomId).First(&userRoom).Error
-	if err != nil {
-		return &__.ApplyMicResp{
-			Success: false,
-			Message: "用户不在房间中",
-		}, nil
-	}
+	//// 验证用户是否在房间中
+	//var userRoom models.UserRoom
+	//err = global.DB.Where("user_id = ? AND room_id = ? AND is_online = 1", req.UserId, req.RoomId).First(&userRoom).Error
+	//if err != nil {
+	//	return &__.ApplyMicResp{
+	//		Success: false,
+	//		Message: "用户不在房间中",
+	//	}, nil
+	//}
 
 	// 先执行自动解禁过期用户
 	s.autoUnmuteExpiredUsers()
@@ -979,6 +991,18 @@ func (s *Server) ApplyMic(ctx context.Context, req *__.ApplyMicReq) (*__.ApplyMi
 		}, nil
 	}
 
+	// 检查用户是否已有待审批的申请记录
+	var existingApplication models.MicApplication
+	err = global.DB.Where("room_id = ? AND user_id = ? AND status = 0", req.RoomId, req.UserId).First(&existingApplication).Error
+	if err == nil {
+		return &__.ApplyMicResp{
+			Success: false,
+			Message: "您已有待审批的上麦申请，请等待审批结果",
+		}, nil
+	} else if err != gorm.ErrRecordNotFound {
+		return nil, fmt.Errorf("查询申请记录失败: %v", err)
+	}
+
 	// 创建申请记录
 	application := models.MicApplication{
 		RoomId:    req.RoomId,
@@ -994,7 +1018,7 @@ func (s *Server) ApplyMic(ctx context.Context, req *__.ApplyMicReq) (*__.ApplyMi
 
 	return &__.ApplyMicResp{
 		Success:       true,
-		Message:       "申请已提交，等待房主/管理员审批",
+		Message:       "申请已提交",
 		ApplicationId: application.Id,
 	}, nil
 }
@@ -1447,6 +1471,112 @@ func (s *Server) initializeRoomMics(roomId int64) error {
 }
 
 // 禁言管理功能
+// 自动审批上麦申请（用于开发测试）
+func (s *Server) autoApproveMicApplication(applicationId int64, roomId int64, userId int64) {
+	// 查询申请记录并验证状态
+	var application models.MicApplication
+	err := global.DB.Where("id = ?", applicationId).First(&application).Error
+	if err != nil {
+		log.Printf("[AUTO_APPROVE] 查询申请记录失败: %v", err)
+		return
+	}
+
+	// 验证申请状态，只处理待审批的申请
+	if application.Status != 0 {
+		log.Printf("[AUTO_APPROVE] 申请已被处理，跳过自动审批")
+		return
+	}
+
+	// 验证房间存在性和状态
+	var room models.Room
+	err = global.DB.Where("id = ? AND status = '0' AND closed_at IS NULL AND deleted_at IS NULL", roomId).First(&room).Error
+	if err != nil {
+		log.Printf("[AUTO_APPROVE] 房间不存在或已关闭: %v", err)
+		return
+	}
+
+	// 检查用户是否还在房间中
+	var userRoom models.UserRoom
+	err = global.DB.Where("user_id = ? AND room_id = ? AND is_online = 1", userId, roomId).First(&userRoom).Error
+	if err != nil {
+		// 用户已离开房间，取消申请
+		global.DB.Model(&application).Updates(map[string]interface{}{
+			"status":      3, // 已取消
+			"handle_time": time.Now(),
+			"handler_id":  0, // 系统自动处理
+			"reason":      "用户已离开房间",
+		})
+		log.Printf("[AUTO_APPROVE] 用户已离开房间，申请已自动取消")
+		return
+	}
+
+	// 开始事务处理
+	tx := global.DB.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
+	// 确保房间麦位已初始化
+	err = s.initializeRoomMics(roomId)
+	if err != nil {
+		tx.Rollback()
+		log.Printf("[AUTO_APPROVE] 初始化房间麦位失败: %v", err)
+		return
+	}
+
+	// 检查用户是否已在麦位上
+	var existingMic models.RoomMic
+	err = tx.Where("room_id = ? AND user_id = ? AND status = 1", roomId, userId).First(&existingMic).Error
+	if err == nil {
+		tx.Rollback()
+		log.Printf("[AUTO_APPROVE] 用户已在麦位上")
+		return
+	}
+
+	// 查找可用麦位
+	var availableMic models.RoomMic
+	err = tx.Where("room_id = ? AND status = 0 AND is_locked = 0", roomId).Order("mic_position").First(&availableMic).Error
+	if err != nil {
+		tx.Rollback()
+		log.Printf("[AUTO_APPROVE] 没有可用的麦位: %v", err)
+		return
+	}
+
+	// 分配麦位
+	err = tx.Model(&availableMic).Updates(map[string]interface{}{
+		"status":      1, // 占用
+		"user_id":     userId,
+		"occupy_time": time.Now(),
+	}).Error
+	if err != nil {
+		tx.Rollback()
+		log.Printf("[AUTO_APPROVE] 分配麦位失败: %v", err)
+		return
+	}
+
+	// 更新申请状态为已批准
+	err = tx.Model(&application).Updates(map[string]interface{}{
+		"status":      1, // 已批准
+		"handle_time": time.Now(),
+		"handler_id":  0, // 系统自动处理
+	}).Error
+	if err != nil {
+		tx.Rollback()
+		log.Printf("[AUTO_APPROVE] 更新申请状态失败: %v", err)
+		return
+	}
+
+	// 提交事务
+	if err := tx.Commit().Error; err != nil {
+		log.Printf("[AUTO_APPROVE] 处理申请失败: %v", err)
+		return
+	}
+
+	log.Printf("[AUTO_APPROVE] 自动审批成功，用户 %d 已上麦位 %d", userId, availableMic.MicPosition)
+}
+
 func (s *Server) MuteMicUser(ctx context.Context, req *__.MuteMicUserReq) (*__.MuteMicUserResp, error) {
 	// 先执行自动解禁过期用户
 	s.autoUnmuteExpiredUsers()
