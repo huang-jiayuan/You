@@ -3,8 +3,6 @@
     <!-- 顶部用户信息区域 -->
     <div class="top-section">
       <div class="user-avatar" @click="showUserSidebar">
-        <img :src="userInfo.avatar || 'https://via.placeholder.com/40x40/4CAF50/ffffff?text=我'" :alt="userInfo.nickname" />
-      <div class="user-avatar">
         <img :src="userInfo.avatar || generateAvatar('我', '4CAF50', 40)" :alt="userInfo.nickname" />
         <div class="online-indicator"></div>
       </div>
@@ -31,12 +29,10 @@
         <div class="card-content">
           <div class="avatar-showcase">
             <div class="avatar-item">
-              <div class="avatar-placeholder" style="background: #ff6b9d;">西</div>
               <img :src="generateAvatar('西', 'ff6b9d', 40)" alt="西法" />
               <span>西法</span>
             </div>
             <div class="avatar-item">
-              <div class="avatar-placeholder" style="background: #ff6b9d;">通</div>
               <img :src="generateAvatar('通', 'ff6b9d', 40)" alt="通阿里" />
               <span>通阿里</span>
             </div>
@@ -56,7 +52,6 @@
         </div>
         <div class="card-content">
           <div class="brother-avatar">
-            <div class="avatar-placeholder brother-avatar-placeholder">哥</div>
             <img :src="generateAvatar('哥', '4facfe', 60)" alt="小哥哥" />
           </div>
           <div class="voice-controls">
@@ -279,42 +274,26 @@
       @close="hideUserSidebar"
     />
 
-    <!-- 调试组件（开发时使用） -->
-    <SearchFilterDebug v-if="showDebug" />
-
-    <!-- 调试开关 -->
-    <button
-      class="debug-toggle"
-      @click="showDebug = !showDebug"
-      style="position: fixed; top: 10px; left: 10px; z-index: 10000; padding: 8px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;"
-    >
-      {{ showDebug ? '隐藏调试' : '显示调试' }}
-    </button>
-    </div>
   </div>
+  
 </template>
 
-<script>
+<script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { authAPI } from '@/api'
+import { authAPI } from '@/api/auth'
+import roomAPI from '@/api/room'
 import { useAudioPlayer } from '@/composables/mobile-chat/useAudioPlayer'
 import { usePerformanceOptimization } from '@/composables/mobile-chat/usePerformanceOptimization'
 import { useToast } from '@/composables/useToast'
 import UserSidebar from '@/components/UserSidebar.vue'
 
-export default {
-  name: 'VoiceChatHome',
-  components: {
-    UserSidebar
-  },
-  setup() {
-    const router = useRouter()
+const router = useRouter()
+const { showToast } = useToast()
+
+
     
-    // 使用组合式函数
-    const audioPlayer = useAudioPlayer()
-    const performanceOptimization = usePerformanceOptimization()
-    const toast = useToast()
+
     
     // 响应式数据
     const currentTime = ref('')
@@ -332,7 +311,31 @@ export default {
     const roomsError = ref(null)
     const searchKeyword = ref('')
     const selectedTag = ref(null)
-    const roomTags = ref([])
+    const roomTags = ref([{
+      id: 1,
+      name: '娱乐',
+      color: '#4facfe'
+    }, {
+      id: 2, 
+      name: '才艺',
+      color: '#f093fb'
+    }, {
+      id: 3,
+      name: '交友速配', 
+      color: '#fa709a'
+    }, {
+      id: 4,
+      name: '音乐',
+      color: '#764ba2'
+    }, {
+      id: 5, 
+      name: '聊天',
+      color: '#ff6b9d'
+    }, {
+      id: 6,
+      name: '陪伴',
+      color: '#667eea'
+    }])
     const showSearch = ref(false)
     const showTagFilter = ref(false)
     const showDebug = ref(false)
@@ -371,7 +374,7 @@ export default {
       return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svg)))}`
     }
 
-    const onlineUsers = ref([
+const broadcastUsers = ref([
       {
         id: 1,
         nickname: '处对象，希望非',
@@ -801,7 +804,7 @@ export default {
     }
 
     const showUserSidebar = () => {
-      sidebarVisible.value = true
+      showSidebar.value = true
     }
 
     const hideUserSidebar = () => {
@@ -815,74 +818,25 @@ export default {
       img.src = generateDefaultCover(roomName)
     }
 
-    // 生命周期
-    let timeInterval = null
+// 生命周期
+onMounted(async () => {
+  updateTime()
+  setInterval(updateTime, 60000)
+  
+  await loadUserInfo()
+  await loadRecommendRooms()
+})
 
-    onMounted(async () => {
-      updateTime()
-      timeInterval = setInterval(updateTime, 1000)
-
-      // 并行加载，但不让用户信息错误影响其他功能
-      const promises = [
-        loadUserInfo().catch(err => console.warn('用户信息加载失败:', err)),
-        loadRecommendRooms().catch(err => console.error('房间数据加载失败:', err)),
-        loadRoomTags().catch(err => console.warn('标签数据加载失败:', err))
-      ]
-
-      await Promise.allSettled(promises)
-    })
-
-    onUnmounted(() => {
-      if (timeInterval) {
-        clearInterval(timeInterval)
-      }
-
-      // 清除搜索定时器
-      if (searchTimer) {
-        clearTimeout(searchTimer)
-      }
-    })
-
-    return {
-      currentTime,
-      userInfo,
-      popularRooms,
-      onlineUsers,
-      isLoggedIn,
-      isPlaying,
-      // 房间相关数据和方法
-      roomsLoading,
-      roomsError,
-      searchKeyword,
-      selectedTag,
-      roomTags,
-      showSearch,
-      showTagFilter,
-      showDebug,
-      loadRecommendRooms,
-      loadRoomsByTag,
-      searchRooms,
-      retryLoadRooms,
-      // 工具函数
-      generateAvatar,
-      generateDefaultCover,
-      formatUserCount,
-      handleImageError,
-      getRoomTagName,
-      getRandomColor,
-      // 原有方法
-      sidebarVisible,
-      sidebarUserInfo,
-      enterRoom,
-      viewUserProfile,
-      startVoiceChat,
-      togglePlay,
-      navigateTo,
-      showUserSidebar,
-      hideUserSidebar
-    }
+onUnmounted(() => {
+  if (timeInterval) {
+    clearInterval(timeInterval)
   }
-}
+
+  // 清除搜索定时器
+  if (searchTimer) {
+    clearTimeout(searchTimer)
+  }
+})
 </script>
 
 <style scoped>
