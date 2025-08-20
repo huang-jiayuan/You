@@ -9,7 +9,6 @@ import Home from '../views/Home.vue'
 import About from '../views/About.vue'
 import Contact from '../views/Contact.vue'
 import Chat from '../views/Chat.vue'
-import Room from '../views/Room.vue'
 import ApiTest from '../views/ApiTest.vue'
 
 // 定义路由配置
