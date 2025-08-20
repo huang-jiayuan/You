@@ -273,48 +273,4 @@ pre {
 pre code {
   background: none;
   padding: 0;
-}/* 礼物动画样
-式 */
-@keyframes giftFly {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.5);
-  }
-  20% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.2);
-  }
-  40% {
-    transform: translate(-50%, -60%) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -80%) scale(0.8);
-  }
-}
-
-.gift-animation {
-  position: fixed;
-  z-index: 9999;
-  pointer-events: none;
-}
-
-.gift-fly {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
-  color: white;
-  padding: 12px 20px;
-  border-radius: 25px;
-  box-shadow: 0 4px 20px rgba(255, 107, 53, 0.4);
-  font-weight: bold;
-}
-
-.gift-fly .gift-icon {
-  font-size: 24px;
-}
-
-.gift-fly .gift-text {
-  font-size: 16px;
 }
