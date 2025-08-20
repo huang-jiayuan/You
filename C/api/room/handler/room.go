@@ -56,7 +56,6 @@ func KickUser(c *gin.Context) {
 		"msg":  "踢出用户成功",
 		"data": resp,
 	})
-	return
 
 }
 
@@ -104,7 +103,6 @@ func MuteUser(c *gin.Context) {
 		"msg":  "禁言用户成功",
 		"data": resp,
 	})
-	return
 }
 
 // UnmuteUser 解除禁言接口
@@ -151,7 +149,6 @@ func UnmuteUser(c *gin.Context) {
 		"msg":  "解除禁言成功",
 		"data": resp,
 	})
-	return
 }
 func CreateRoom(c *gin.Context) {
 	var req request.CreateRoom
@@ -201,7 +198,6 @@ func CreateRoom(c *gin.Context) {
 		"msg":  "房间创建成功",
 		"data": create,
 	})
-	return
 }
 
 func UpdateRoom(c *gin.Context) {
@@ -239,7 +235,6 @@ func UpdateRoom(c *gin.Context) {
 		"msg":  "房间信息修改成功",
 		"data": create,
 	})
-	return
 }
 
 func GetRecommendRooms(c *gin.Context) {
@@ -277,7 +272,6 @@ func GetRecommendRooms(c *gin.Context) {
 		"msg":  "房间展示成功",
 		"data": create,
 	})
-	return
 }
 
 func GetRoomsByCategory(c *gin.Context) {
@@ -316,7 +310,6 @@ func GetRoomsByCategory(c *gin.Context) {
 		"msg":  "房间展示成功",
 		"data": create,
 	})
-	return
 }
 
 func SearchRooms(c *gin.Context) {
@@ -376,7 +369,6 @@ func SearchRooms(c *gin.Context) {
 		"msg":  "房间搜索成功",
 		"data": create,
 	})
-	return
 }
 
 func CloseRoom(c *gin.Context) {
@@ -418,7 +410,6 @@ func CloseRoom(c *gin.Context) {
 		"msg":  "房间关闭成功",
 		"data": create,
 	})
-	return
 }
 
 func JoinRoom(c *gin.Context) {
@@ -478,7 +469,6 @@ func JoinRoom(c *gin.Context) {
 		"msg":  "进入房间成功",
 		"data": create,
 	})
-	return
 }
 
 // 申请上麦
@@ -552,7 +542,6 @@ func ApplyMic(c *gin.Context) {
 			"application_id": result.ApplicationId,
 		},
 	})
-	return
 }
 
 // 下麦
@@ -626,7 +615,6 @@ func LeaveMic(c *gin.Context) {
 			"mic_position": result.MicPosition,
 		},
 	})
-	return
 }
 
 func SendGifts(c *gin.Context) {
@@ -710,7 +698,6 @@ func HandleMicApplication(c *gin.Context) {
 		"msg":  "处理申请成功",
 		"data": create,
 	})
-	return
 }
 
 func KickFromMic(c *gin.Context) {
@@ -797,7 +784,6 @@ func KickFromMic(c *gin.Context) {
 			"mic_position": result.MicPosition,
 		},
 	})
-	return
 }
 
 func MuteMicUser(c *gin.Context) {
@@ -884,7 +870,6 @@ func MuteMicUser(c *gin.Context) {
 		"msg":  result.Message,
 		"data": nil,
 	})
-	return
 }
 
 func SetAdmin(c *gin.Context) {

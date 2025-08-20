@@ -3,7 +3,11 @@
     <!-- 顶部用户信息区域 -->
     <div class="top-section">
       <div class="user-avatar" @click="showUserSidebar">
-        <img :src="userInfo.avatar || generateAvatar('我', '4CAF50', 40)" :alt="userInfo.nickname" />
+        <img 
+          :src="userInfo.avatar || '/default-avatar.png'" 
+          :alt="userInfo.nickname"
+          @error="handleAvatarError"
+        />
         <div class="online-indicator"></div>
       </div>
       <div class="top-actions">
@@ -29,11 +33,11 @@
         <div class="card-content">
           <div class="avatar-showcase">
             <div class="avatar-item">
-              <img :src="generateAvatar('西', 'ff6b9d', 40)" alt="西法" />
+              <img :src="'/default-avatar.png'" alt="西法" />
               <span>西法</span>
             </div>
             <div class="avatar-item">
-              <img :src="generateAvatar('通', 'ff6b9d', 40)" alt="通阿里" />
+              <img :src="'/default-avatar.png'" alt="通阿里" />
               <span>通阿里</span>
             </div>
           </div>
@@ -52,7 +56,7 @@
         </div>
         <div class="card-content">
           <div class="brother-avatar">
-            <img :src="generateAvatar('哥', '4facfe', 60)" alt="小哥哥" />
+            <img :src="'/default-avatar.png'" alt="小哥哥" />
           </div>
           <div class="voice-controls">
             <button class="voice-btn" @click="togglePlay">
@@ -142,10 +146,12 @@
         >
           <!-- 房间封面 -->
           <div class="room-cover">
-            <img
+            <img 
               :src="room.cover || generateDefaultCover(room.room_name || room.name || '房间')"
               :alt="room.room_name || room.name || '房间'"
+              class="room-cover-img"
               @error="handleImageError"
+              @load="handleImageLoad"
             />
             <div class="room-count">{{ formatUserCount(room.user_count || room.fk_member_room || 0) }}</div>
           </div>
@@ -177,7 +183,7 @@
                 :key="i"
                 class="user-avatar"
               >
-                <img :src="generateAvatar(`用户${i}`, getRandomColor(), 24)" :alt="`用户${i}`" />
+                <img :src="'/default-avatar.png'" :alt="`用户${i}`" />
               </div>
             </div>
           </div>
@@ -205,13 +211,13 @@
       </div>
       <div class="broadcast-list">
         <div 
-          v-for="user in onlineUsers" 
+          v-for="user in broadcastUsers" 
           :key="user.id"
           class="broadcast-item"
           @click="viewUserProfile(user.id)"
         >
           <div class="user-avatar">
-            <img :src="user.avatar" :alt="user.nickname" />
+            <img :src="user.avatar || '/default-avatar.png'" :alt="user.nickname" />
             <div class="user-level">{{ user.level }}</div>
             <div v-if="user.isPlaying" class="playing-indicator">
               <span class="play-icon">⏸️</span>
@@ -379,7 +385,7 @@ const broadcastUsers = ref([
         id: 1,
         nickname: '处对象，希望非',
         age: 33,
-        avatar: generateAvatar('处', 'ff6b9d', 48),
+        avatar: '/default-avatar.png',
         level: 4,
         statusText: '天友连麦-千青',
         statusEmoji: '😊',
@@ -392,7 +398,7 @@ const broadcastUsers = ref([
         id: 2,
         nickname: '没有节操的清欢',
         age: 69,
-        avatar: generateAvatar('清', '4facfe', 48),
+        avatar: '/default-avatar.png',
         level: 1,
         statusText: '电台音乐',
         statusEmoji: '🎵',
@@ -405,7 +411,7 @@ const broadcastUsers = ref([
         id: 3,
         nickname: '茶',
         age: 15,
-        avatar: generateAvatar('茶', 'fa709a', 48),
+        avatar: '/default-avatar.png',
         level: 2,
         statusText: '电台音乐',
         statusEmoji: '🎵',
@@ -418,7 +424,7 @@ const broadcastUsers = ref([
         id: 4,
         nickname: '聊五块美金的清欢',
         age: 69,
-        avatar: generateAvatar('聊', '667eea', 48),
+        avatar: '/default-avatar.png',
         level: 1,
         statusText: '天友连麦',
         statusEmoji: '💬',
@@ -804,7 +810,7 @@ const broadcastUsers = ref([
     }
 
     const showUserSidebar = () => {
-      showSidebar.value = true
+      sidebarVisible.value = true
     }
 
     const hideUserSidebar = () => {
@@ -812,10 +818,45 @@ const broadcastUsers = ref([
     }
 
     // 处理图片加载错误
+    const handleAvatarError = (event) => {
+      const img = event.target
+      console.log('头像加载失败:', img.src)
+      
+      // 避免无限循环
+      if (img.src.includes('data:image/svg+xml')) {
+        return
+      }
+      
+      // 生成默认头像SVG
+      const defaultAvatar = `
+        <svg width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="20" fill="#4facfe"/>
+          <text x="20" y="26" font-family="Arial, sans-serif" font-size="16" font-weight="bold"
+                text-anchor="middle" fill="white">
+            用
+          </text>
+        </svg>
+      `
+      
+      img.src = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(defaultAvatar)))}`
+    }
+
+    // 优化现有的图片错误处理
     const handleImageError = (event) => {
       const img = event.target
       const roomName = img.alt || '房间'
-      img.src = generateDefaultCover(roomName)
+      console.log('图片加载失败:', img.src, '房间名:', roomName)
+      
+      // 避免无限循环
+      if (img.src.startsWith('data:image/svg+xml')) {
+        console.warn('默认SVG图片也加载失败')
+        return
+      }
+      
+      // 生成新的默认封面
+      const newSrc = generateDefaultCover(roomName)
+      console.log('使用默认封面:', newSrc)
+      img.src = newSrc
     }
 
 // 生命周期
@@ -1167,10 +1208,16 @@ onUnmounted(() => {
   flex-shrink: 0;
 }
 
-.room-cover img {
+.room-cover-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.room-cover-img:hover {
+  transform: scale(1.05);
 }
 
 .room-count {

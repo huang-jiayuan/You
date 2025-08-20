@@ -21,8 +21,15 @@
               保存
             </button>
           </template>
-          <button v-if="!isOwnProfile" class="action-btn" @click="toggleFollow">
-            {{ isFollowing ? '已关注' : '关注' }}
+          <button 
+            v-if="!isOwnProfile" 
+            class="action-btn"
+            :class="{ 'following': isFollowing, 'loading': isFollowLoading }"
+            :disabled="isFollowLoading"
+            @click="toggleFollow"
+          >
+            <span v-if="isFollowLoading">处理中...</span>
+            <span v-else>{{ isFollowing ? '已关注' : '关注' }}</span>
           </button>
           <button v-if="!isOwnProfile" class="action-btn" @click="sendMessage">
             发消息
@@ -35,11 +42,12 @@
     <div class="user-info-card">
       <div class="user-avatar-section">
         <div class="avatar-container">
+          <!-- 修复头像显示 -->
           <img 
-            :src="userInfo.avatar" 
-            :alt="userInfo.name" 
+            :src="userInfo.avatar || '/default-avatar.png'" 
+            :alt="userInfo.nickname || '用户头像'" 
             class="user-avatar"
-            @error="handleAvatarError"
+            @error="handleImageError"
           />
           <div v-if="userInfo.isOnline" class="online-indicator"></div>
         </div>
@@ -224,6 +232,12 @@ import { userAPI } from '@/api/user.js'
 const route = useRoute()
 const router = useRouter()
 
+// 将handleImageError函数移动到这里
+const handleImageError = (event) => {
+  console.log('Avatar load error, using default avatar')
+  event.target.src = '/default-avatar.png'
+}
+
 // 响应式数据
 const activeTab = ref('posts')
 const isFollowing = ref(false)
@@ -279,107 +293,84 @@ const getCurrentUserId = () => {
   return localStorage.getItem('userId') || '1'
 }
 
-const loadUserInfo = async () => {
+// 添加加载状态
+const isFollowLoading = ref(false)
+
+// 修复toggleFollow方法
+const toggleFollow = async () => {
+  if (isFollowLoading.value) return // 防止重复点击
+  
   try {
-    const userId = route.params.userId || getCurrentUserId()
+    isFollowLoading.value = true
+    const targetUserId = userInfo.value.id
     
-    console.log('Loading user info for userId:', userId)
-    
-    // 调用API获取用户信息
-    const response = await userAPI.getUserInfo(userId)
-    
-    console.log('API Response:', response)
-    console.log('response.data:', response.data)
-    console.log('response.data.list:', response.data.list)
-    console.log('response.data.list.length:', response.data.list ? response.data.list.length : 'undefined')
-    console.log('条件判断结果:', !!(response && response.data && response.data.list && response.data.list.length > 0))
-    
-    if (response && response.data && response.data.list && response.data.list.length > 0) {
-      console.log('✅ 进入了if分支 - 使用API数据')
-      // 获取数组中的第一个用户数据
-      const userData = response.data.list[0]
-      
-      console.log('User Data:', userData)
-      
-      console.log('Nickname fields:', {
-        Nickname: userData.Nickname,
-        nickname: userData.nickname, 
-        name: userData.name
-      })
-      userInfo.value = {
-        id: userData.id || userId,
-        name: userData.Nickname || userData.nickname || userData.name || '用户' + (userData.id || userId),
-        avatar: '/default-avatar.png',
-        signature: userData.signature || '这个人很懒，什么都没有留下~',
-        isOnline: userData.is_online || false,
-        followingCount: userData.following_count || 0,
-        followersCount: userData.followers_count || 0,
-        postsCount: userData.posts_count || 0,
-        // 从API获取性别信息并转换显示
-        gender: userData.Gender === '0' ? '女' : userData.Gender === '1' ? '男' : '未设置',
-        age: userData.age || '未设置',
-        location: userData.location || '未设置',
-        createdAt: userData.created_at || new Date().toISOString(),
-        // 从API获取余额、钻石等信息
-        balance: userData.Balance || 0,
-        diamond: userData.Diamond || 0,
-        level: userData.Level || 1,
-        vipStatus: userData.VipStatus || '0'
+    if (isFollowing.value) {
+      // 取消关注
+      const response = await userAPI.unfollow(targetUserId)
+      if (response.data.code === 200) {
+        isFollowing.value = false
+        // 更新粉丝数
+        if (userInfo.value.followersCount > 0) {
+          userInfo.value.followersCount--
+        }
+        console.log('取消关注成功')
+      } else {
+        throw new Error(response.data.msg || '取消关注失败')
       }
-      
-      console.log('Final userInfo name:', userInfo.value.name)
-      console.log('userData.Nickname value:', userData.Nickname)
-      console.log('Is entering else branch?')
     } else {
-      console.log('❌ 进入了else分支 - 使用默认数据，这就是问题所在！')
-      console.log('No valid data received from API')
-      // 如果API没有返回有效数据，使用默认数据
-      userInfo.value = {
-        id: userId,
-        name: isOwnProfile.value ? '我' : '用户' + userId,
-        avatar: '/default-avatar.png',
-        signature: '这是一个个性签名',
-        isOnline: false,
-        followingCount: 0,
-        followersCount: 0,
-        postsCount: 0,
-        gender: '未设置',
-        age: '未设置',
-        location: '未设置',
-        createdAt: new Date().toISOString()
+      // 关注用户
+      const response = await userAPI.follow(targetUserId)
+      if (response.data.code === 200) {
+        isFollowing.value = true
+        // 更新粉丝数
+        userInfo.value.followersCount++
+        console.log('关注成功')
+      } else {
+        throw new Error(response.data.msg || '关注失败')
       }
     }
   } catch (error) {
-    console.error('Error loading user info:', error)
-    // 错误处理
-    if (error.response?.status === 401) {
-      router.push('/login')
-    } else {
-      userInfo.value = {
-        id: getCurrentUserId(),
-        name: '桑梨', // 临时硬编码测试
-        avatar: '/default-avatar.png',
-        signature: '这个人很懒，什么都没有留下~',
-        isOnline: false,
-        followingCount: 0,
-        followersCount: 0,
-        postsCount: 0,
-        gender: '未知',
-        age: '未知',
-        location: '未知',
-        createdAt: new Date().toISOString()
-      }
-    }
+    console.error('关注操作失败:', error)
+    // 可以添加用户提示，比如使用toast组件
+    alert(error.message || '操作失败，请稍后重试')
+  } finally {
+    isFollowLoading.value = false
   }
 }
 
-const toggleFollow = async () => {
+// 添加获取关注状态的方法
+const checkFollowStatus = async (targetUserId) => {
   try {
-    isFollowing.value = !isFollowing.value
-    // 这里应该调用关注/取消关注的API
-    console.log(isFollowing.value ? '已关注' : '已取消关注')
+    // 这里需要后端提供检查关注状态的API
+    // 暂时可以通过获取关注列表来判断
+    const response = await userAPI.getFollowList()
+    if (response.data.code === 200) {
+      const followList = response.data.data.list || []
+      isFollowing.value = followList.some(user => user.id === targetUserId)
+    }
   } catch (error) {
-    console.error('操作失败:', error)
+    console.error('获取关注状态失败:', error)
+  }
+}
+
+// 修改loadUserInfo方法
+const loadUserInfo = async () => {
+  try {
+    const userId = route.params.userId
+    const response = await userAPI.getUserInfo(userId)
+    if (response.data.code === 200) {
+      userInfo.value = response.data.data
+      
+      // 如果不是自己的主页，检查关注状态
+      if (!isOwnProfile.value) {
+        await checkFollowStatus(userInfo.value.id)
+      }
+    }
+  } catch (error) {
+    console.error('加载用户信息失败:', error)
+    if (error.response?.status === 401) {
+      router.push('/login')
+    }
   }
 }
 
@@ -1011,7 +1002,3 @@ const resetAvatar = () => {
   }
 }
 </style>
-const handleAvatarError = (event) => {
-  console.log('Avatar load error, using default avatar')
-  event.target.src = '/default-avatar.png'
-}
